@@ -1,0 +1,2147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Throwback Fitness | Scorecard</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f6f9;--white:#fff;--blue:#0673c1;--blue-dark:#045a9e;
+    --blue-dim:rgba(6,115,193,0.08);--blue-mid:rgba(6,115,193,0.15);
+    --red:#fb3640;--red-dim:rgba(251,54,64,0.08);
+    --card:#fff;--border:#dde3ec;--border-dark:#c5cdd9;
+    --text:#1a2330;--text-mid:#4a5568;--text-muted:#8a96a8;
+    --shadow:0 1px 4px rgba(0,0,0,0.07);--shadow-md:0 4px 16px rgba(0,0,0,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;background:var(--blue);box-shadow:0 2px 8px rgba(6,115,193,0.25);position:sticky;top:0;z-index:100;}
+  .nav-logo{display:flex;align-items:center;gap:10px;}
+  .nav-logo-mark{width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;}
+  .nav-logo-text{font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff;line-height:1.2;}
+  .nav-logo-sub{font-size:9px;font-weight:600;letter-spacing:2.5px;color:rgba(255,255,255,0.65);text-transform:uppercase;}
+  .nav-tabs{display:flex;gap:4px;}
+  .nav-tab{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);padding:6px 10px;border-radius:6px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+  .nav-tab.active{background:#fff;border-color:#fff;color:var(--blue);}
+  .nav-tab:hover:not(.active){background:rgba(255,255,255,0.2);}
+
+  /* LAYOUT */
+  .page{display:none;padding:24px 20px;max-width:720px;margin:0 auto;}
+  .page.active{display:block;}
+  h1{font-size:24px;font-weight:900;letter-spacing:-0.5px;text-transform:uppercase;margin-bottom:4px;}
+  h1 span{color:var(--blue);}
+  .subtitle{color:var(--text-muted);font-size:13px;font-weight:500;margin-bottom:20px;}
+  .accent-line{width:36px;height:3px;background:var(--blue);border-radius:2px;margin-bottom:18px;}
+  .sec-label{font-size:10px;font-weight:800;letter-spacing:2px;color:var(--blue);text-transform:uppercase;margin-bottom:12px;}
+  .card{background:var(--card);border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid var(--border);box-shadow:var(--shadow);}
+
+  /* FORMS */
+  label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:6px;}
+  input[type="text"],input[type="date"],select{width:100%;background:#fff;border:1.5px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:500;margin-bottom:14px;outline:none;transition:border-color .2s;box-shadow:var(--shadow);}
+  input[type="text"]:focus,input[type="date"]:focus,select:focus{border-color:var(--blue);}
+  select option{background:#fff;}
+
+  /* BUTTONS */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;cursor:pointer;border:none;transition:all .15s;text-transform:uppercase;letter-spacing:.5px;}
+  .btn-primary{background:var(--blue);color:#fff;width:100%;font-size:14px;padding:14px;margin-top:8px;letter-spacing:1px;}
+  .btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);}
+  .btn-sm{background:var(--bg);color:var(--text-mid);border:1.5px solid var(--border);padding:6px 12px;font-size:11px;border-radius:6px;}
+  .btn-sm:hover{border-color:var(--blue);color:var(--blue);}
+  .btn-danger{background:transparent;color:var(--red);border:1.5px solid var(--red);padding:5px 10px;font-size:11px;border-radius:6px;}
+  .btn-danger:hover{background:var(--red-dim);}
+  .btn-ghost{background:transparent;color:var(--text-muted);border:1.5px solid var(--border);padding:5px 10px;font-size:11px;border-radius:6px;}
+  .btn-ghost:hover{border-color:var(--blue);color:var(--blue);}
+
+  /* BADGES */
+  .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;}
+  .badge-active{background:var(--blue-mid);color:var(--blue);border:1px solid var(--blue);}
+  .badge-upcoming{background:rgba(251,54,64,.08);color:var(--red);border:1px solid var(--red);}
+  .badge-completed{background:#f0f0f0;color:var(--text-muted);border:1px solid var(--border-dark);}
+
+  /* EVENT LIST */
+  .event-list-item{display:flex;align-items:center;background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;transition:all .2s;box-shadow:var(--shadow);}
+  .event-list-item:hover{border-color:var(--blue);box-shadow:var(--shadow-md);}
+  .event-name{font-weight:700;font-size:15px;}
+  .event-date{font-size:12px;color:var(--text-muted);margin-top:2px;font-weight:500;}
+
+  /* STATUS */
+  .status-btn-wrap{display:flex;gap:6px;}
+  .status-btn{flex:1;padding:8px 6px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-muted);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .2s;text-align:center;}
+  .status-btn.cur-active{background:var(--blue-mid);border-color:var(--blue);color:var(--blue);}
+  .status-btn.cur-upcoming{background:rgba(251,54,64,.08);border-color:var(--red);color:var(--red);}
+  .status-btn.cur-completed{background:#f0f0f0;border-color:var(--border-dark);color:var(--text-muted);}
+
+  /* TEAMS */
+  .team-row{display:flex;align-items:center;gap:8px;background:#f8fafc;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;margin-bottom:8px;}
+  .team-swatch{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,0.1);}
+  .color-palette{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+  .color-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s;flex-shrink:0;}
+  .color-swatch:hover{transform:scale(1.15);}
+  .color-swatch.selected{border-color:#000;transform:scale(1.1);box-shadow:0 0 0 2px #fff,0 0 0 4px #000;}
+  .camo-swatch{background:linear-gradient(135deg,#4a5e3a 25%,#6b7c4a 25%,#6b7c4a 50%,#3d4f2e 50%,#3d4f2e 75%,#8a9a6a 75%) !important;background-size:12px 12px !important;}
+
+  /* GAMES */
+  .game-item{display:flex;align-items:center;gap:8px;background:#f8fafc;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:8px;}
+  .game-badge{font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;text-transform:uppercase;white-space:nowrap;}
+  .game-badge.h2h{background:var(--blue-mid);color:var(--blue);border:1px solid var(--blue);}
+  .game-badge.allteams{background:rgba(251,54,64,.08);color:var(--red);border:1px solid var(--red);}
+  .type-btn{padding:8px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-muted);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap;}
+  .type-btn.active{background:var(--blue-mid);border-color:var(--blue);color:var(--blue);}
+  .type-btn.active.allteams-btn{background:rgba(251,54,64,.08);border-color:var(--red);color:var(--red);}
+
+  /* INFO BOX */
+  .info-box{background:var(--blue-dim);border:1px solid rgba(6,115,193,0.2);border-radius:8px;padding:10px 14px;font-size:11px;font-weight:600;color:var(--blue);line-height:1.6;margin-bottom:14px;}
+  .info-box.warn{background:rgba(247,180,0,.06);border-color:rgba(247,180,0,.35);color:#b38600;}
+  .info-box.red{background:rgba(251,54,64,.06);border-color:rgba(251,54,64,.2);color:var(--red);}
+
+  /* ── SCHEDULE BUILDER ── */
+  .set-block{background:#f8fafc;border:2px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;}
+  .set-block.allteams-set{border-color:rgba(251,54,64,.3);background:rgba(251,54,64,.03);}
+  .set-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .set-title{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--blue);text-transform:uppercase;flex:1;}
+  .set-block.allteams-set .set-title{color:var(--red);}
+  .set-meta{font-size:11px;color:var(--text-muted);font-weight:600;}
+
+  /* Station slot within a set */
+  .slot-row{display:grid;grid-template-columns:56px 1fr auto;gap:8px;align-items:center;margin-bottom:8px;}
+  .slot-label{font-size:10px;font-weight:800;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;}
+  .slot-game-select{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:7px 10px;border-radius:7px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;outline:none;cursor:pointer;width:100%;box-shadow:var(--shadow);margin-bottom:0;}
+  .slot-game-select:focus{border-color:var(--blue);}
+  .slot-coach-input{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:6px 10px;border-radius:7px;font-family:'Montserrat',sans-serif;font-size:12px;outline:none;width:100%;box-shadow:var(--shadow);margin-bottom:0;}
+  .slot-coach-input:focus{border-color:var(--blue);}
+
+  /* Rotation matchup rows within a set */
+  .rot-header{display:grid;grid-template-columns:56px 1fr 24px 1fr;gap:8px;align-items:center;margin-bottom:6px;padding:0 4px;}
+  .rot-col-label{font-size:9px;font-weight:800;letter-spacing:1.5px;color:var(--text-muted);text-transform:uppercase;}
+  .matchup-row{display:grid;grid-template-columns:56px 1fr 24px 1fr;gap:6px;align-items:center;margin-bottom:6px;}
+  .matchup-row select{margin-bottom:0;padding:9px 6px;font-size:12px;}
+  .rot-num-badge{font-size:10px;font-weight:800;color:var(--blue);letter-spacing:1px;text-transform:uppercase;text-align:center;background:var(--blue-dim);border-radius:4px;padding:3px 6px;white-space:nowrap;}
+  .vs-dot{text-align:center;font-weight:800;font-size:10px;color:var(--text-muted);}
+  .set-rotations{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+  .set-rot-label{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;}
+
+  /* COACH */
+  .event-header{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);border-radius:12px;padding:18px 20px;margin-bottom:20px;position:relative;overflow:hidden;box-shadow:var(--shadow-md);}
+  .event-header::after{content:'TBF';position:absolute;right:-8px;top:-8px;font-size:72px;font-weight:900;color:rgba(255,255,255,.07);pointer-events:none;}
+  .event-title-lg{font-size:20px;font-weight:900;letter-spacing:-.5px;text-transform:uppercase;color:#fff;}
+  .event-meta{font-size:12px;color:rgba(255,255,255,.65);margin-top:4px;font-weight:600;}
+  .station-selector{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-bottom:22px;}
+  .station-btn{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);}
+  .station-btn:hover{border-color:var(--blue);box-shadow:var(--shadow-md);}
+  .station-btn.active{border-color:var(--blue);background:var(--blue-dim);}
+  .station-btn.allteams-stn{border-color:rgba(251,54,64,.3);}
+  .station-btn.allteams-stn.active{background:rgba(251,54,64,.06);border-color:var(--red);}
+  .stn-num{font-size:28px;font-weight:900;color:var(--blue);line-height:1;}
+  .station-btn.allteams-stn .stn-num{color:var(--red);}
+  .stn-game{font-size:10px;font-weight:600;color:var(--text-muted);margin-top:5px;line-height:1.3;text-transform:uppercase;}
+
+  /* SCORECARD */
+  .scorecard-wrap{animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .rotation-indicator{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .rot-nav-row{display:flex;gap:8px;margin-bottom:14px;}
+  .rot-nav-btn{flex:1;padding:8px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s;color:var(--text-mid);display:flex;align-items:center;justify-content:center;gap:6px;}
+  .rot-nav-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue);}
+  .rot-nav-btn:disabled{opacity:.35;cursor:not-allowed;}
+  .rot-nav-btn.jump-active{border-color:var(--blue);background:var(--blue-dim);color:var(--blue);}
+  .rotation-pips{display:flex;gap:5px;flex:1;}
+  .pip{flex:1;height:5px;border-radius:3px;background:var(--border);transition:background .3s;}
+  .pip.done{background:var(--blue);}
+  .pip.current{background:var(--blue);opacity:.4;}
+  .rotation-label{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
+  .game-label-sm{text-align:center;font-size:18px;font-weight:900;letter-spacing:-.5px;color:var(--text);margin-bottom:14px;line-height:1.2;}
+  .dual-badge{display:inline-flex;align-items:center;gap:5px;background:var(--blue-dim);border:1px solid rgba(6,115,193,0.3);border-radius:20px;padding:3px 12px;font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;}
+  .dual-notice{text-align:center;margin-bottom:14px;}
+  .matchup{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch;margin-bottom:16px;}
+  .team-score-btn{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:22px 10px;text-align:center;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:135px;-webkit-tap-highlight-color:transparent;box-shadow:var(--shadow);}
+  .team-score-btn:active{transform:scale(.97);}
+  .team-score-btn.winner{border-width:3px;box-shadow:var(--shadow-md);}
+  .team-name-lg{font-size:15px;font-weight:900;letter-spacing:-.5px;text-transform:uppercase;line-height:1.1;color:var(--text);}
+  .tap-hint{font-size:10px;font-weight:600;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;}
+  .team-score-btn.winner .tap-hint{display:none;}
+  .winner-badge{display:none;font-size:10px;font-weight:800;letter-spacing:1.5px;padding:4px 12px;border-radius:20px;text-transform:uppercase;background:var(--blue);color:#fff;}
+  .team-score-btn.winner .winner-badge{display:block;}
+  .vs-center{display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:var(--text-muted);letter-spacing:2px;}
+  .score-summary{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);}
+  .score-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:4px;}
+  .score-tally{font-size:28px;font-weight:900;letter-spacing:-1px;}
+  .score-divider-v{width:1px;height:38px;background:var(--border);}
+  .next-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:16px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 12px rgba(6,115,193,0.3);}
+  .next-btn:hover{background:var(--blue-dark);transform:translateY(-1px);}
+  .next-btn:disabled{background:var(--border-dark);color:var(--text-muted);cursor:not-allowed;transform:none;box-shadow:none;}
+  .undo-btn{width:100%;background:transparent;color:var(--text-muted);border:1.5px solid var(--border);border-radius:8px;padding:10px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:all .15s;}
+  .undo-btn:hover{border-color:var(--red);color:var(--red);}
+
+  /* TALLY SCORECARD */
+  .tally-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .tally-teams{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:14px;}
+  .tally-side{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .tally-team-name{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:-.5px;text-align:center;}
+  .tally-score{font-size:44px;font-weight:900;letter-spacing:-2px;line-height:1;}
+  .tally-btns{display:flex;gap:8px;}
+  .tally-btn{width:44px;height:44px;border-radius:10px;border:none;font-size:22px;font-weight:900;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
+  .tally-btn:active{transform:scale(.92);}
+  .tally-btn-plus{background:var(--blue);color:#fff;box-shadow:0 3px 8px rgba(6,115,193,0.3);}
+  .tally-btn-minus{background:var(--bg);color:var(--text-muted);border:1.5px solid var(--border);}
+  .tally-btn-minus:disabled{opacity:.35;cursor:not-allowed;}
+  .tally-vs{font-size:16px;font-weight:900;color:var(--text-muted);text-align:center;}
+  .tally-award-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .tally-award-btn{padding:12px 8px;border-radius:10px;border:2px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .15s;text-align:center;}
+  .tally-award-btn:hover{border-color:var(--blue);background:var(--blue-dim);}
+  .tally-award-btn.leading{border-color:var(--blue);background:var(--blue);color:#fff;}
+  .tally-award-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .tally-note{text-align:center;font-size:11px;font-weight:600;color:var(--text-muted);margin-top:8px;letter-spacing:.3px;}
+
+  /* PONG FEUD SCORECARD */
+  .pf-header{text-align:center;margin-bottom:14px;}
+  .pf-question{background:var(--blue);color:#fff;border-radius:10px;padding:14px 16px;font-size:14px;font-weight:700;line-height:1.4;text-align:center;margin-bottom:14px;}
+  .pf-groups{display:grid;gap:10px;margin-bottom:12px;}
+  .pf-groups.split-1{grid-template-columns:1fr 1fr;}
+  .pf-groups.split-2{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));}
+  .pf-groups.split-3{grid-template-columns:repeat(auto-fill,minmax(70px,1fr));}
+  .pf-group{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:10px 8px;text-align:center;box-shadow:var(--shadow);}
+  .pf-group-name{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+  .pf-group-score{font-size:26px;font-weight:900;letter-spacing:-1px;line-height:1;}
+  .pf-answers{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+  .pf-answer{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow);}
+  .pf-answer:active{transform:scale(.99);}
+  .pf-answer.used{opacity:.45;cursor:not-allowed;}
+  .pf-answer.used-by-t1{border-color:var(--blue);background:var(--blue-dim);}
+  .pf-answer.used-by-t2{border-color:var(--red);background:var(--red-dim);}
+  .pf-answer-pts{font-size:18px;font-weight:900;color:var(--blue);min-width:36px;text-align:center;letter-spacing:-1px;}
+  .pf-answer.used .pf-answer-pts{color:var(--text-muted);}
+  .pf-answer-text{flex:1;font-size:13px;font-weight:700;color:var(--text);}
+  .pf-award-for{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:2px;}
+  .pf-no-answer{width:100%;background:transparent;border:1.5px dashed var(--border);border-radius:8px;padding:10px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);cursor:pointer;margin-bottom:14px;transition:all .15s;}
+  .pf-no-answer:hover{border-color:var(--red);color:var(--red);}
+  /* Score edit mode */
+  .score-edit-wrap{background:var(--card);border:1.5px solid var(--blue);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow-md);}
+  .score-edit-title{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .score-edit-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .score-edit-label{font-size:12px;font-weight:700;color:var(--text-mid);flex:1;}
+  .score-edit-input{width:80px;padding:8px 10px;border-radius:8px;border:1.5px solid var(--blue);background:#fff;font-family:'Montserrat',sans-serif;font-size:18px;font-weight:900;text-align:center;color:var(--text);outline:none;flex-shrink:0;}
+  .score-edit-btn{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;font-family:'Montserrat',sans-serif;color:var(--text-muted);transition:all .15s;}
+  .score-edit-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .score-edit-btn.save{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .score-edit-btn.save:hover{background:var(--blue-dark);}
+  /* Shot order phase */
+  .shot-order-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .shot-order-title{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+  .shot-order-subtitle{font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:12px;line-height:1.4;}
+  .shot-order-groups{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  .shot-btn{padding:10px 16px;border-radius:10px;border:2px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;color:var(--text-muted);}
+  .shot-btn:active{transform:scale(.95);}
+  .shot-btn.shot-made{border-width:2px;color:#fff;}
+  .shot-order-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;min-height:28px;}
+  .shot-order-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;color:#fff;letter-spacing:.5px;}
+  .shot-order-badge .shot-pos{font-size:9px;opacity:.8;}
+  .shot-order-clear{font-size:11px;font-weight:700;color:var(--text-muted);background:none;border:none;cursor:pointer;padding:2px 0;font-family:'Montserrat',sans-serif;text-decoration:underline;}
+  .pf-round-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .pf-round-lbl{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);}
+  .pf-team-totals{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:12px;box-shadow:var(--shadow);}
+  .pf-team-total-side{text-align:center;}
+  .pf-team-total-name{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px;}
+  .pf-team-total-pts{font-size:28px;font-weight:900;letter-spacing:-1px;}
+  .pf-selecting-lbl{font-size:11px;font-weight:700;color:var(--text-muted);text-align:center;margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase;}
+  .pf-group-selector{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:12px;}
+  .pf-group-sel-btn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .15s;color:var(--text-muted);}
+  .pf-group-sel-btn.active{border-color:var(--blue);background:var(--blue);color:#fff;}
+  /* Question picker admin */
+  .qbank-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+  .qbank-tag{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .15s;color:var(--text-muted);}
+  .qbank-tag.active{border-color:var(--blue);background:var(--blue-dim);color:var(--blue);}
+  .qbank-item{display:flex;align-items:flex-start;gap:10px;background:#f8fafc;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:6px;cursor:pointer;transition:all .15s;}
+  .qbank-item.selected{border-color:var(--blue);background:var(--blue-dim);}
+  .qbank-item-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;}
+  .qbank-item.selected .qbank-item-check{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .qbank-item-q{font-size:13px;font-weight:600;flex:1;line-height:1.4;}
+  .qbank-item-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+  .qbank-item-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:10px;background:var(--border);color:var(--text-muted);}
+  .qbank-item-header{display:flex;align-items:flex-start;gap:10px;width:100%;}
+  .qbank-expand-btn{font-size:10px;font-weight:700;color:var(--blue);background:none;border:none;cursor:pointer;padding:0;white-space:nowrap;margin-top:2px;font-family:'Montserrat',sans-serif;letter-spacing:.5px;flex-shrink:0;}
+  .qbank-answers{margin-top:10px;border-top:1px solid var(--border);padding-top:10px;display:none;}
+  .qbank-answers.open{display:block;}
+  .qbank-answer-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);}
+  .qbank-answer-row:last-child{border-bottom:none;}
+  .qbank-answer-pts{font-size:15px;font-weight:900;color:var(--blue);min-width:32px;text-align:right;letter-spacing:-0.5px;}
+  .qbank-answer-bar{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .qbank-answer-fill{height:100%;background:var(--blue);border-radius:3px;opacity:0.5;}
+  .qbank-answer-text{font-size:12px;font-weight:600;color:var(--text);min-width:120px;}
+  .pf-split-selector{display:flex;gap:6px;margin-bottom:14px;}
+  .pf-split-btn{flex:1;padding:8px 6px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .2s;text-align:center;color:var(--text-muted);}
+  .pf-split-btn.active{background:var(--blue-mid);border-color:var(--blue);color:var(--blue);}
+  .all-done-card{text-align:center;padding:40px 20px;}
+  .all-done-icon{font-size:56px;margin-bottom:16px;}
+  .all-done-title{font-size:26px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
+
+  /* LEADERBOARD */
+  .lb-header{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);border-radius:14px;padding:22px 20px;margin-bottom:22px;position:relative;overflow:hidden;box-shadow:var(--shadow-md);}
+  .lb-header::before{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.06);}
+  .lb-event-name{font-size:20px;font-weight:900;letter-spacing:-.5px;text-transform:uppercase;color:#fff;margin-bottom:4px;position:relative;}
+  .lb-subtitle{font-size:12px;color:rgba(255,255,255,.65);font-weight:600;position:relative;}
+  .lb-refresh-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .lb-last-updated{font-size:11px;color:var(--text-muted);font-weight:600;}
+  .lb-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;margin-bottom:8px;background:var(--card);border:1.5px solid var(--border);box-shadow:var(--shadow);transition:all .3s;}
+  .lb-row.first{background:var(--blue-dim);border-color:var(--blue);}
+  .lb-rank{font-size:18px;font-weight:900;color:var(--text-muted);width:26px;flex-shrink:0;text-align:center;}
+  .lb-row.first .lb-rank{color:var(--blue);}
+  .lb-color-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,.1);}
+  .lb-team-name{flex:1;font-weight:700;font-size:14px;text-transform:uppercase;color:var(--text);}
+  .lb-points{font-size:24px;font-weight:900;color:var(--blue);letter-spacing:-1px;}
+  .lb-bar-wrap{width:56px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .lb-bar{height:100%;background:var(--blue);border-radius:2px;transition:width .6s ease;}
+  .lb-row{cursor:pointer;}
+  .lb-detail{background:#f8fafc;border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:none;}
+  .lb-detail.open{display:block;}
+  .lb-detail-title{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+  .lb-game-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;}
+  .lb-game-row:last-child{border-bottom:none;}
+  .lb-game-name{flex:1;font-weight:600;color:var(--text);}
+  .lb-game-result{font-weight:800;font-size:13px;}
+  .lb-game-result.win{color:var(--blue);}
+  .lb-game-result.tie{color:var(--text-muted);}
+  .lb-game-result.loss{color:var(--red);}
+  .lb-game-result.pending{color:var(--text-muted);font-weight:600;}
+
+  /* ITINERARY */
+  .itinerary-wrap{margin-top:18px;border-top:1px solid var(--border);padding-top:16px;}
+  .itinerary-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0;margin-bottom:0;user-select:none;}
+  .itinerary-toggle-lbl{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);}
+  .itinerary-toggle-icon{font-size:14px;color:var(--text-muted);transition:transform .2s;}
+  .itinerary-toggle-icon.open{transform:rotate(180deg);}
+  .itinerary-body{display:none;margin-top:14px;}
+  .itinerary-body.open{display:block;}
+  .itinerary-set{margin-bottom:18px;}
+  .itinerary-set-title{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
+  .itinerary-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .itinerary-table th{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);padding:5px 8px;border-bottom:2px solid var(--border);text-align:left;background:var(--bg);}
+  .itinerary-table td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:middle;font-weight:600;}
+  .itinerary-table tr:last-child td{border-bottom:none;}
+  .itinerary-table tr:nth-child(even) td{background:#f8fafc;}
+  .it-rot-num{font-size:10px;font-weight:800;color:var(--text-muted);white-space:nowrap;}
+  .it-matchup{display:flex;align-items:center;gap:4px;white-space:nowrap;}
+  .it-vs{font-size:9px;color:var(--text-muted);font-weight:600;}
+  .it-team{font-size:11px;font-weight:800;}
+
+  /* ── MOBILE OVERRIDES ── */
+  @media(max-width:400px){
+    nav{padding:0 12px;}
+    .page{padding:16px 14px;}
+    .nav-logo-text{font-size:11px;letter-spacing:1px;}
+    .nav-logo-sub{display:none;}
+    h1{font-size:20px;}
+    .card{padding:14px;}
+    .tally-score{font-size:38px;}
+    .pf-question{font-size:13px;padding:12px;}
+    .pf-answer{padding:8px 10px;}
+    .pf-answer-pts{font-size:15px;min-width:28px;}
+    .pf-answer-text{font-size:12px;}
+    .team-score-btn{min-height:110px;padding:16px 8px;}
+    .team-name-lg{font-size:13px;}
+    .score-tally{font-size:24px;}
+    .next-btn{font-size:12px;padding:14px;}
+    .rot-nav-btn{font-size:10px;padding:6px 8px;}
+    .stn-num{font-size:22px;}
+    .stn-game{font-size:9px;}
+    .lb-team-name{font-size:12px;}
+    .lb-points{font-size:20px;}
+    .lb-bar-wrap{width:36px;}
+    .shot-order-title{font-size:9px;}
+    .shot-btn{padding:8px 10px;font-size:12px;}
+    .tally-btn{width:40px;height:40px;font-size:20px;}
+    .score-edit-input{width:70px;font-size:16px;}
+  }
+
+  /* MISC */
+  .row{display:flex;gap:10px;} .row>*{flex:1;}
+  .mt-8{margin-top:8px;}
+  .text-muted{color:var(--text-muted);font-size:13px;font-weight:500;}
+  .no-event-msg{text-align:center;color:var(--text-muted);padding:40px 20px;font-size:14px;font-weight:600;}
+  .loading-state{text-align:center;padding:40px;color:var(--text-muted);}
+  .spinner{width:22px;height:22px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(30,50,80,0.35);backdrop-filter:blur(2px);z-index:200;align-items:flex-end;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:#fff;border-radius:16px 16px 0 0;padding:28px 24px 40px;width:100%;max-width:500px;max-height:85vh;overflow-y:auto;border-top:3px solid var(--blue);box-shadow:0 -4px 24px rgba(0,0,0,0.12);}
+  .modal h2{font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;color:var(--text);}
+  .modal-close{float:right;background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;margin-top:-4px;}
+  .modal-close:hover{color:var(--text);}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--blue);color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;padding:12px 24px;border-radius:30px;z-index:999;transition:transform .3s ease;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(6,115,193,0.4);}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .toast.error{background:var(--red);}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-mark">TF</div>
+    <div>
+      <div class="nav-logo-text">Throwback</div>
+      <div class="nav-logo-sub">Scorecard</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('admin',this)">Admin</button>
+    <button class="nav-tab" onclick="showPage('coach',this)">Coach</button>
+    <button class="nav-tab" onclick="showPage('schedule',this)">Schedule</button>
+    <button class="nav-tab" onclick="showPage('leaderboard',this)">Scores</button>
+  </div>
+</nav>
+
+<!-- ══ ADMIN ══ -->
+<div class="page active" id="admin-page">
+  <div id="admin-event-list-section">
+    <h1>Field Day <span>Events</span></h1>
+    <div class="accent-line"></div>
+    <div id="admin-event-list"><div class="loading-state"><div class="spinner"></div></div></div>
+    <button class="btn btn-primary" onclick="openNewEventModal()">+ Create New Event</button>
+  </div>
+  <div id="admin-editor-section" style="display:none">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+      <button class="btn btn-sm" onclick="backToEventList()">← Back</button>
+      <h1 id="editor-event-name" style="margin-bottom:0;font-size:20px"></h1>
+    </div>
+    <p class="subtitle" id="editor-event-date"></p>
+    <div class="card">
+      <div class="sec-label">Event Status</div>
+      <div class="status-btn-wrap" id="status-buttons"></div>
+    </div>
+    <!-- TEAMS -->
+    <div class="card">
+      <div class="sec-label">Teams</div>
+      <div id="teams-container"></div>
+      <div style="margin-top:12px">
+        <label>New Team Name</label>
+        <input type="text" id="new-team-name" placeholder="e.g. Black, Orange, Camo..." onkeydown="if(event.key==='Enter')addTeam()">
+        <label>Team Color</label>
+        <div class="color-palette" id="new-team-palette"></div>
+      </div>
+      <button class="btn btn-primary" onclick="addTeam()">+ Add Team</button>
+    </div>
+    <!-- GAMES -->
+    <div class="card">
+      <div class="sec-label">Games</div>
+      <div class="info-box">Add every game for this event. <strong>1v1</strong> = two teams head-to-head. <strong>All Teams</strong> = everyone competes at once, played as a final round at the end.</div>
+      <div id="games-container"></div>
+      <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:flex-start;margin-top:8px">
+        <input type="text" id="new-game-name" placeholder="Game name..." onkeydown="if(event.key==='Enter')addGame()" style="margin-bottom:0">
+        <div style="display:flex;gap:4px">
+          <button class="type-btn active" id="type-h2h-btn" onclick="setNewGameType('h2h')">1v1</button>
+          <button class="type-btn allteams-btn" id="type-all-btn" onclick="setNewGameType('allteams')">All Teams</button>
+        </div>
+        <button class="btn btn-sm" onclick="addGame()">+ Add</button>
+      </div>
+    </div>
+    <!-- SCHEDULE -->
+    <div class="card">
+      <div class="sec-label">Schedule</div>
+      <div id="schedule-container"></div>
+    </div>
+    <button class="btn btn-primary" onclick="saveEventConfig()" style="font-size:14px;padding:18px;letter-spacing:2px">💾 Save Event</button>
+    <div style="height:40px"></div>
+  </div>
+</div>
+
+<!-- ══ COACH ══ -->
+<div class="page" id="coach-page">
+  <div id="coach-inner"><div class="loading-state"><div class="spinner"></div></div></div>
+</div>
+
+<!-- ══ SCHEDULE ══ -->
+<div class="page" id="schedule-page">
+  <div id="schedule-inner"><div class="loading-state"><div class="spinner"></div></div></div>
+</div>
+
+<!-- ══ LEADERBOARD ══ -->
+<div class="page" id="leaderboard-page">
+  <div id="lb-inner"><div class="loading-state"><div class="spinner"></div></div></div>
+</div>
+
+<!-- NEW EVENT MODAL -->
+<div class="modal-overlay" id="new-event-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('new-event-modal')">×</button>
+    <h2>New Event</h2>
+    <label>Event Name</label>
+    <input type="text" id="new-event-name" placeholder="e.g. JPMorgan Field Day">
+    <label>Date</label>
+    <input type="date" id="new-event-date">
+    <button class="btn btn-primary" onclick="createNewEvent()">Create Event</button>
+  </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="modal-overlay" id="delete-event-modal">
+  <div class="modal" style="border-top-color:var(--red)">
+    <button class="modal-close" onclick="closeModal('delete-event-modal')">×</button>
+    <h2 style="color:var(--red)">Delete Event</h2>
+    <p style="color:var(--text-muted);font-size:13px;font-weight:500;margin-bottom:20px;line-height:1.6">Permanently deletes <strong id="delete-event-label" style="color:var(--text)"></strong> including all teams, games, and scores. Cannot be undone.</p>
+    <label>Type DELETE to confirm</label>
+    <input type="text" id="delete-confirm-input" placeholder="DELETE" oninput="checkDeleteConfirm()" style="border-color:rgba(251,54,64,.4);letter-spacing:2px;text-transform:uppercase">
+    <button class="btn btn-primary" id="delete-confirm-btn" onclick="confirmDeleteEvent()" disabled style="background:var(--border-dark);color:var(--text-muted);cursor:not-allowed">Delete Event</button>
+  </div>
+</div>
+
+<!-- EDIT TEAM MODAL -->
+<div class="modal-overlay" id="edit-team-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('edit-team-modal')">×</button>
+    <h2>Edit Team</h2>
+    <label>Team Name</label>
+    <input type="text" id="edit-team-name">
+    <label>Team Color</label>
+    <div class="color-palette" id="edit-team-palette"></div>
+    <button class="btn btn-primary" onclick="saveTeamEdit()">Save Changes</button>
+  </div>
+</div>
+
+<!-- EDIT GAME MODAL -->
+<div class="modal-overlay" id="edit-game-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('edit-game-modal')">×</button>
+    <h2>Edit Game</h2>
+    <label>Game Name</label>
+    <input type="text" id="edit-game-name">
+    <label>Station Scorecard</label>
+    <select id="edit-game-scorecard" onchange="onScorecardTypeChange()">
+      <option value="none">No Scorecard</option>
+      <option value="tally">Simple Tally</option>
+      <option value="pongfeud">Pong Feud</option>
+    </select>
+    <div id="pongfeud-settings" style="display:none">
+      <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
+        <label>Team Split</label>
+        <div class="pf-split-selector">
+          <button class="pf-split-btn active" id="split-btn-none" onclick="setPfSplit('none')">No Split</button>
+          <button class="pf-split-btn" id="split-btn-2" onclick="setPfSplit('2')">2 Groups</button>
+          <button class="pf-split-btn" id="split-btn-3" onclick="setPfSplit('3')">3 Groups</button>
+        </div>
+        <label style="margin-top:8px">Questions for this event</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span id="qbank-selected-count" style="font-size:12px;font-weight:700;color:var(--blue)">0 selected</span>
+          <button class="btn btn-sm" onclick="clearAllQuestions()">Clear All</button>
+        </div>
+        <div class="qbank-filters" id="qbank-filters"></div>
+        <div id="qbank-list" style="max-height:260px;overflow-y:auto;padding-right:4px"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="saveGameEdit()">Save Changes</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════════
+const SB='https://wdizsxhdrnzsrnuxwpkm.supabase.co';
+const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkaXpzeGhkcm56c3JudXh3cGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyOTA1MTUsImV4cCI6MjA4OTg2NjUxNX0.1lFnPXBChNjZw6TBT0gD3pBGy0gDXiVtcGylgwW_XmQ';
+const H={'apikey':SK,'Authorization':`Bearer ${SK}`,'Content-Type':'application/json','Prefer':'return=representation'};
+
+const COLORS=[
+  {name:'Black',hex:'#1a1a1a'},{name:'Charcoal',hex:'#4a4a4a'},{name:'White',hex:'#f0f0f0'},
+  {name:'Silver',hex:'#a8b0bc'},{name:'Red',hex:'#e02020'},{name:'Crimson',hex:'#9b1c1c'},
+  {name:'Orange',hex:'#f97316'},{name:'Gold',hex:'#f59e0b'},{name:'Yellow',hex:'#eab308'},
+  {name:'Lime',hex:'#84cc16'},{name:'Green',hex:'#16a34a'},{name:'Forest',hex:'#166534'},
+  {name:'Teal',hex:'#0d9488'},{name:'Cyan',hex:'#06b6d4'},{name:'Light Blue',hex:'#38bdf8'},
+  {name:'Blue',hex:'#0673c1'},{name:'Dark Blue',hex:'#1e3a8a'},{name:'Navy',hex:'#1e2d5a'},
+  {name:'Purple',hex:'#7c3aed'},{name:'Violet',hex:'#4c1d95'},{name:'Pink',hex:'#ec4899'},
+  {name:'Hot Pink',hex:'#db2777'},{name:'Maroon',hex:'#7f1d1d'},{name:'Brown',hex:'#92400e'},
+  {name:'Tan',hex:'#d4a76a'},{name:'Bright Yellow',hex:'#ffe033'},{name:'Lavender',hex:'#b99cf5'},{name:'Light Pink',hex:'#f9a8d4'},{name:'Camo',hex:'CAMO'},
+];
+const CAMO_CSS='linear-gradient(135deg,#4a5e3a 25%,#6b7c4a 25%,#6b7c4a 50%,#3d4f2e 50%,#3d4f2e 75%,#8a9a6a 75%)';
+
+// ══════════════════════════════════════════════════════════
+// PONG FEUD QUESTION BANK
+// ══════════════════════════════════════════════════════════
+const ALL_TAGS=['Food & Drink','Summer','Sports & Athletes','Pop Culture','Travel & Places','Funny / Awkward','Trivia & Knowledge','Everyday Life','Holidays','2025 Additions'];
+const QUESTION_BANK=[
+  {id:1,q:'Name a messy summer picnic food',tags:['Food & Drink','Summer'],answers:[{a:'Watermelon',pts:56},{a:'BBQ',pts:16},{a:'Ice Cream',pts:12},{a:'Pie',pts:11}]},
+  {id:2,q:'Name a popular summer activity',tags:['Summer'],answers:[{a:'Swimming',pts:40},{a:'Camping',pts:23},{a:'Volleyball',pts:12},{a:'Baseball',pts:12},{a:'Fishing',pts:8},{a:'Surfing',pts:4}]},
+  {id:3,q:'Name a superhero',tags:['Pop Culture'],answers:[{a:'Superman',pts:31},{a:'Batman',pts:24},{a:'Ironman',pts:19},{a:'Wonder Woman',pts:15},{a:'Captain America',pts:11}]},
+  {id:4,q:'What is the first thing most people do in the morning?',tags:['Everyday Life'],answers:[{a:'Bathroom',pts:24},{a:'Shower',pts:19},{a:'Breakfast / Coffee',pts:18},{a:'Open Eyes',pts:12},{a:'Turn off alarm / Snooze',pts:10},{a:'Brush Teeth',pts:7},{a:'Look at phone',pts:5},{a:'Get dressed',pts:2}]},
+  {id:5,q:'Name a common candy bar component',tags:['Food & Drink'],answers:[{a:'Chocolate',pts:36},{a:'Peanuts',pts:22},{a:'Caramel',pts:15},{a:'Almonds',pts:12},{a:'Nougat',pts:10},{a:'Coconut',pts:6}]},
+  {id:6,q:'Name a state that has a lot of sports teams',tags:['Sports & Athletes','Trivia & Knowledge'],answers:[{a:'New York',pts:33},{a:'California',pts:30},{a:'Florida',pts:18},{a:'Texas',pts:13},{a:'Pennsylvania',pts:3},{a:'Illinois',pts:2}]},
+  {id:7,q:'Name a food you eat with your fingers',tags:['Food & Drink'],answers:[{a:'French Fries',pts:24},{a:'Chicken',pts:19},{a:'Hamburger',pts:17},{a:'Taco',pts:10},{a:'Sandwich',pts:8},{a:'Pizza',pts:8},{a:'Chips',pts:8}]},
+  {id:8,q:"I won't go camping because I'm afraid of ______",tags:['Summer','Funny / Awkward'],answers:[{a:'Wild Animals / Bears',pts:57},{a:'Bugs / Ticks',pts:31},{a:'The Dark',pts:5},{a:'Bad Guys / Monsters',pts:3},{a:'Bad Weather',pts:2}]},
+  {id:9,q:"If you had to share a bed with grandma, what do you hope she doesn\'t do?",tags:['Funny / Awkward'],answers:[{a:'Fart',pts:32},{a:'Snore',pts:25},{a:'Wet the Bed',pts:22},{a:'Die',pts:13},{a:'Hog the covers',pts:2},{a:'Spoon me',pts:2}]},
+  {id:10,q:'Name something people start worrying about more after they turn 30',tags:['Everyday Life'],answers:[{a:'Graying / Balding',pts:26},{a:'Age / Near Death',pts:22},{a:'Weight',pts:14},{a:'Wrinkles',pts:10},{a:'Love / Marriage',pts:8},{a:'$ / Retirement',pts:8},{a:'Having Kids',pts:5},{a:'Health',pts:4}]},
+  {id:11,q:"Name something that\'s fun to pop",tags:['Funny / Awkward'],answers:[{a:'Bubble Wrap',pts:31},{a:'Balloon',pts:29},{a:'Bubblegum',pts:18},{a:'Zit',pts:13},{a:'Bottle / Champagne',pts:4},{a:'Fingers / Knuckles',pts:2}]},
+  {id:12,q:"Most people would fail a lie detector test when asked if they\'ve ever cheated on what?",tags:['Funny / Awkward'],answers:[{a:'A Test',pts:42},{a:'Spouse / Mate',pts:33},{a:'Their Taxes',pts:14},{a:'A Diet',pts:5},{a:'The Job / Work',pts:3},{a:'Game / Game Show',pts:3}]},
+  {id:13,q:'Name an item you might buy in a souvenir shop',tags:['Travel & Places'],answers:[{a:'T-shirt',pts:28},{a:'Keychain',pts:21},{a:'Postcard',pts:18},{a:'Magnet',pts:12},{a:'Mug',pts:11},{a:'Stuffed animal',pts:10}]},
+  {id:14,q:'Name an espresso drink',tags:['Food & Drink'],answers:[{a:'Latte',pts:27},{a:'Cappuccino',pts:24},{a:'Espresso shot',pts:19},{a:'Americano',pts:17},{a:'Cortado',pts:13}]},
+  {id:15,q:'Name a country where French is commonly spoken',tags:['Trivia & Knowledge'],answers:[{a:'France',pts:48},{a:'Canada',pts:17},{a:'Belgium',pts:16},{a:'Switzerland',pts:9},{a:'DR Congo',pts:6}]},
+  {id:16,q:'Name a play by Shakespeare',tags:['Trivia & Knowledge','Pop Culture'],answers:[{a:'Romeo and Juliet',pts:30},{a:'Hamlet',pts:25},{a:'Macbeth',pts:19},{a:"A Midsummer Night's Dream",pts:14},{a:'Julius Caesar',pts:12}]},
+  {id:17,q:"Name a US president whose first name was John",tags:['Trivia & Knowledge'],answers:[{a:'John F Kennedy',pts:37},{a:'John Adams',pts:27},{a:'John Quincy Adams',pts:25},{a:'John Tyler',pts:11}]},
+  {id:18,q:'Name an animal sound you may hear in a children\'s book',tags:['Funny / Awkward','Everyday Life'],answers:[{a:'Moo',pts:30},{a:'Oink',pts:28},{a:'Bow wow / Ruff',pts:15},{a:'Meow',pts:15},{a:'Roar',pts:12}]},
+  {id:19,q:'Name the best fruit to buy in the summer',tags:['Food & Drink','Summer'],answers:[{a:'Watermelon',pts:39},{a:'Strawberry',pts:23},{a:'Pineapple',pts:12},{a:'Cherry',pts:7},{a:'Peach',pts:6},{a:'Blueberry',pts:5},{a:'Mango',pts:4}]},
+  {id:20,q:'Name something people like to ride in the summer',tags:['Summer'],answers:[{a:'Bicycle',pts:23},{a:'Boat',pts:19},{a:'Motorcycle',pts:16},{a:'Roller coaster',pts:13},{a:'Convertible',pts:10},{a:'Horse',pts:8},{a:'Wave',pts:7}]},
+  {id:21,q:'Name a popular tanning lotion or oil brand',tags:['Summer','Trivia & Knowledge'],answers:[{a:'Coppertone',pts:28},{a:'Banana Boat',pts:25},{a:'Hawaiian Tropic',pts:19},{a:'Johnson & Johnson',pts:7},{a:'Australian Gold',pts:5},{a:'Panama Jack',pts:3}]},
+  {id:22,q:'Name a popular fast food restaurant in America',tags:['Food & Drink'],answers:[{a:"McDonald's",pts:40},{a:'Burger King',pts:25},{a:"Wendy's",pts:15},{a:'Taco Bell',pts:10},{a:'Chick-fil-A',pts:7},{a:'Subway',pts:3}]},
+  {id:23,q:'Name a famous landmark in New York City',tags:['Travel & Places','Trivia & Knowledge'],answers:[{a:'Statue of Liberty',pts:35},{a:'Empire State Building',pts:25},{a:'Central Park',pts:16},{a:'Times Square',pts:15},{a:'Brooklyn Bridge',pts:4},{a:'Rockefeller Center',pts:3},{a:'One World Trade Center',pts:2}]},
+  {id:24,q:'Name a popular activity to do at the beach during the summer',tags:['Summer'],answers:[{a:'Swimming',pts:40},{a:'Sunbathing',pts:25},{a:'Playing volleyball',pts:15},{a:'Building sandcastles',pts:10},{a:'Surfing',pts:5},{a:'Collecting seashells',pts:3},{a:'Picnicking',pts:2}]},
+  {id:25,q:'Name a sport that is played in the Summer Olympics',tags:['Sports & Athletes','Summer'],answers:[{a:'Swimming',pts:35},{a:'Track and Field',pts:30},{a:'Gymnastics',pts:15},{a:'Basketball',pts:10},{a:'Volleyball',pts:5},{a:'Soccer',pts:3},{a:'Cycling',pts:2}]},
+  {id:26,q:'Name a famous American athlete known for playing basketball',tags:['Sports & Athletes'],answers:[{a:'Michael Jordan',pts:55},{a:'LeBron James',pts:29},{a:'Kobe Bryant',pts:10},{a:"Shaquille O'Neal",pts:3},{a:'Steph Curry',pts:2},{a:'Magic Johnson',pts:1}]},
+  {id:27,q:'Name a classic Hollywood movie still popular today (pre 1955)',tags:['Pop Culture'],answers:[{a:'Gone with the Wind',pts:40},{a:'Casablanca',pts:25},{a:'The Wizard of Oz',pts:15},{a:"It\'s a Wonderful Life",pts:10},{a:"Singin\' in the Rain",pts:6},{a:'Citizen Kane',pts:4}]},
+  {id:28,q:'Name a famous American company known worldwide',tags:['Trivia & Knowledge'],answers:[{a:'Apple',pts:42},{a:"McDonald's",pts:22},{a:'Nike',pts:16},{a:'Coca-Cola',pts:15},{a:'Ford',pts:5}]},
+  {id:29,q:'Name a U.S. city famous for its music scene',tags:['Travel & Places','Pop Culture'],answers:[{a:'Nashville',pts:44},{a:'New Orleans',pts:29},{a:'New York City',pts:13},{a:'Austin',pts:6},{a:'Los Angeles',pts:3}]},
+  {id:30,q:'Name a country where French is an official language, other than France',tags:['Trivia & Knowledge'],answers:[{a:'Canada',pts:49},{a:'Belgium',pts:29},{a:'Switzerland',pts:10},{a:'Senegal',pts:9},{a:'Haiti',pts:3}]},
+  {id:31,q:'Name a brand of sparkling water or seltzer',tags:['Food & Drink'],answers:[{a:'LaCroix',pts:40},{a:'Perrier',pts:25},{a:'San Pellegrino',pts:15},{a:'Bubly',pts:10},{a:'Polar',pts:5},{a:'Spindrift',pts:5}]},
+  {id:32,q:'Name one of the official "Big Six" marathons',tags:['Sports & Athletes','Trivia & Knowledge'],answers:[{a:'Boston Marathon',pts:40},{a:'NYC Marathon',pts:25},{a:'London Marathon',pts:15},{a:'Berlin Marathon',pts:10},{a:'Tokyo Marathon',pts:5},{a:'Chicago Marathon',pts:5}]},
+  {id:33,q:'Name a popular movie starring Leonardo DiCaprio',tags:['Pop Culture'],answers:[{a:'Titanic',pts:35},{a:'Inception',pts:25},{a:'The Wolf of Wall Street',pts:15},{a:'The Revenant',pts:10},{a:'Catch Me If You Can',pts:8},{a:'Shutter Island',pts:7}]},
+  {id:34,q:"Name something you associate with New Year's Eve",tags:['Holidays'],answers:[{a:'Fireworks',pts:28},{a:'Champagne',pts:22},{a:'Countdown',pts:20},{a:'Kissing',pts:14},{a:'Resolutions',pts:9},{a:'Times Square',pts:7}]},
+  {id:35,q:'Name a place people often lose their phone',tags:['Everyday Life','Funny / Awkward'],answers:[{a:'Couch cushions',pts:35},{a:'Car',pts:21},{a:'Bathroom',pts:18},{a:'Restaurant',pts:12},{a:'Bed',pts:9},{a:"Friend's house",pts:5}]},
+  {id:36,q:'Name a famous cartoon character',tags:['Pop Culture'],answers:[{a:'Mickey Mouse',pts:29},{a:'Bugs Bunny',pts:22},{a:'SpongeBob',pts:20},{a:'Scooby-Doo',pts:14},{a:'Homer Simpson',pts:9},{a:'Bart Simpson',pts:6}]},
+  {id:37,q:'Name a food people often put ketchup on',tags:['Food & Drink'],answers:[{a:'French fries',pts:48},{a:'Burgers',pts:22},{a:'Hot dogs',pts:15},{a:'Eggs',pts:8},{a:'Meatloaf',pts:4},{a:'Chicken nuggets',pts:3}]},
+  {id:38,q:'Name a popular board game',tags:['Pop Culture','Everyday Life'],answers:[{a:'Monopoly',pts:34},{a:'Scrabble',pts:24},{a:'Clue',pts:16},{a:'Candy Land',pts:13},{a:'Life',pts:8},{a:'Risk',pts:5}]},
+  {id:39,q:'Name a type of pie',tags:['Food & Drink'],answers:[{a:'Apple',pts:36},{a:'Pumpkin',pts:24},{a:'Pecan',pts:16},{a:'Cherry',pts:12},{a:'Key Lime',pts:7},{a:'Blueberry',pts:5}]},
+  {id:40,q:'Name a place where people try to be quiet',tags:['Everyday Life','2025 Additions'],answers:[{a:'Library',pts:42},{a:'Church',pts:20},{a:'Movie theater',pts:15},{a:'Hospital',pts:10},{a:'Museum',pts:8},{a:'Classroom',pts:5}]},
+  {id:41,q:'Name something you do before going on vacation',tags:['Travel & Places','Everyday Life','2025 Additions'],answers:[{a:'Pack',pts:38},{a:'Book flights / hotel',pts:24},{a:'Tell work / request PTO',pts:17},{a:'Make a checklist',pts:11},{a:'Arrange pet care',pts:6},{a:'Clean the house',pts:4}]},
+  {id:42,q:'Name something people often forget to pack',tags:['Travel & Places','2025 Additions'],answers:[{a:'Toothbrush',pts:42},{a:'Phone charger',pts:28},{a:'Underwear',pts:14},{a:'Passport / ID',pts:10},{a:'Hairbrush',pts:6}]},
+  {id:43,q:'Name the best Christmas movie',tags:['Holidays','Pop Culture'],answers:[{a:'Elf',pts:16},{a:"It\'s a Wonderful Life",pts:15},{a:'A Christmas Story',pts:14},{a:'Home Alone',pts:11},{a:'White Christmas',pts:10},{a:"National Lampoon's Christmas Vacation",pts:10},{a:'Miracle on 34th Street',pts:7},{a:'How the Grinch Stole Christmas',pts:6},{a:'A Christmas Carol',pts:5},{a:'Rudolph',pts:4}]},
+  {id:44,q:'Name one thing you do on Christmas Eve',tags:['Holidays'],answers:[{a:'Attend church / mass',pts:26},{a:'Open gifts',pts:24},{a:'Party / celebrate with family',pts:12},{a:'Wrap gifts',pts:9},{a:'Eat / drink',pts:8},{a:'Play games / bingo',pts:6},{a:'Watch movies',pts:5},{a:'Read the Nativity Story',pts:4},{a:'Sing Christmas Carols',pts:3},{a:'Sleep',pts:2}]},
+  {id:45,q:'Name a popular Christmas tradition',tags:['Holidays'],answers:[{a:'Decorating / putting up a tree',pts:37},{a:'Hanging stockings',pts:17},{a:'Caroling',pts:16},{a:'Opening / Exchanging Gifts',pts:9},{a:'Midnight Mass / Going to Church',pts:8},{a:'Advent Calendars',pts:7},{a:'Baking',pts:6}]},
+  {id:46,q:'Name a word or phrase that begins with "snow"',tags:['Holidays'],answers:[{a:'Snowflake',pts:30},{a:'Snowman',pts:25},{a:'Snowball',pts:23},{a:'Snow White',pts:8},{a:'Snow Angel',pts:3},{a:'Snowfall',pts:3}]},
+  {id:47,q:"Name a gift kids don\'t want to open on Christmas or Hanukkah",tags:['Holidays','Funny / Awkward'],answers:[{a:'Underwear',pts:31},{a:'Socks',pts:27},{a:'Hygiene products',pts:15},{a:'Books',pts:10},{a:'Sweater / something knitted',pts:8},{a:'Puzzle',pts:4}]},
+  {id:48,q:'Name something people decorate with in winter to get in the holiday spirit',tags:['Holidays'],answers:[{a:'Lights',pts:36},{a:'Fake Snow',pts:26},{a:'Pine / Trees',pts:13},{a:'Menorah',pts:8},{a:'Tinsel / Garland',pts:7},{a:'Wreath / Mistletoe',pts:5},{a:'Candles',pts:4}]},
+  {id:49,q:"Name an activity often described in Christmas songs that people seldom do in real life",tags:['Holidays','Funny / Awkward'],answers:[{a:'Caroling',pts:35},{a:'Deck the halls',pts:24},{a:'Sleigh Ride',pts:18},{a:'Roast Chestnuts',pts:16},{a:'Walk / play in snow',pts:6}]},
+  {id:50,q:'Name something people enjoy doing at a ski resort besides skiing',tags:['Travel & Places','Sports & Athletes'],answers:[{a:'Snowboarding',pts:29},{a:'Drinking / Eating',pts:23},{a:'Sitting around fire',pts:16},{a:'Sledding',pts:15},{a:'Hot Tub',pts:9},{a:'Playing in snow / snowball fight',pts:4}]},
+];
+function swatchStyle(hex){return hex==='CAMO'?`background:${CAMO_CSS};background-size:14px 14px`:`background:${hex}`;}
+function camoDot(size=14){return`<div style="width:${size}px;height:${size}px;border-radius:50%;background:${CAMO_CSS};background-size:8px 8px;border:1.5px solid rgba(0,0,0,0.15);flex-shrink:0"></div>`;}
+function colorDot(hex,size=14){return hex==='CAMO'?camoDot(size):`<div style="width:${size}px;height:${size}px;border-radius:50%;background:${hex};border:1.5px solid rgba(0,0,0,0.1);flex-shrink:0"></div>`;}
+
+async function db(m,t,p='',b=null){
+  const r=await fetch(`${SB}/rest/v1/${t}${p}`,{method:m,headers:H,body:b?JSON.stringify(b):null});
+  if(!r.ok){const e=await r.json();throw new Error(e.message||'DB error');}
+  return r.status===204?null:r.json();
+}
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+/*
+  schedule = array of sets:
+  [
+    {
+      type: 'h2h' | 'allteams',
+      stations: [             // length = numStations
+        { gameIdx: number,    // index into editorGames (h2h only)
+          coaches: string }
+      ],
+      rotations: [            // length = numStations (each team visits each station once)
+        {                     // one per rotation within this set
+          matchups: [         // one per station slot
+            { team1: string, team2: string }
+          ]
+        }
+      ]
+    }
+  ]
+*/
+let currentEventId=null,currentEventStatus='upcoming';
+let editorTeams=[],editorGames=[],schedule=[];
+let preferredNumSets=null; // null = auto
+let newGameType='h2h',newTeamColor=COLORS[0].hex;
+let editingTeamIdx=null,editTeamColor=null,editingGameIdx=null,deleteEventId=null;
+let teamColorCache={};
+let coachEventData=null,coachSelectedStation=null,coachCurrentRotation=0,coachScores={},coachRotationData=[];
+let tallyScores={}; // rotationNumber -> {t1:n, t2:n} — local tally, resets per rotation
+let tallyEditMode=false;
+// Pong Feud state
+let pfSplit='none'; // 'none'|'2'|'3' — set per game in admin, adjustable by coach
+let pfRoundScores={}; // rotationNum -> {groupKey: pts} e.g. {'t1g1':12,'t1g2':8,'t2g1':5,'t2g2':15}
+let pfUsedAnswers={}; // rotationNum -> {answerIdx: groupKey}
+let pfSelectedQuestions=[]; // list of question IDs selected for this game (admin)
+let pfEditSplit='none'; // split setting being edited in modal
+let qbankActiveTag=null; // currently filtered tag in question bank
+let qbankExpandedId=null; // currently expanded question id
+
+function tallySaveEdits(rotNum){
+  const t1=parseInt(document.getElementById('tallyedit_t1')?.value)||0;
+  const t2=parseInt(document.getElementById('tallyedit_t2')?.value)||0;
+  if(!tallyScores[rotNum])tallyScores[rotNum]={t1:0,t2:0};
+  tallyScores[rotNum].t1=Math.max(0,t1);
+  tallyScores[rotNum].t2=Math.max(0,t2);
+  tallyEditMode=false;
+  renderCoachScorecard();
+}
+
+function resetTally(rotNum){
+  if(!tallyScores[rotNum])tallyScores[rotNum]={t1:0,t2:0};
+}
+function tallyAdjust(rotNum,side,delta){
+  resetTally(rotNum);
+  tallyScores[rotNum][side]=Math.max(0,tallyScores[rotNum][side]+delta);
+  renderCoachScorecard();
+}
+
+// ══════════════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════════════
+function showPage(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(`${name}-page`).classList.add('active');btn.classList.add('active');
+  if(name==='admin')loadAdminEventList();
+  if(name==='coach')loadCoachPage();
+  if(name==='leaderboard')loadLeaderboard();
+  if(name==='schedule')loadSchedulePage();
+}
+function toast(msg,err=false){
+  const t=document.getElementById('toast');t.textContent=msg;
+  t.className='toast show'+(err?' error':'');setTimeout(()=>t.className='toast',2800);
+}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openNewEventModal(){document.getElementById('new-event-name').value='';document.getElementById('new-event-date').value='';openModal('new-event-modal');}
+
+function renderPalette(containerId,selectedHex,onSelectName){
+  const el=document.getElementById(containerId);if(!el)return;
+  el.innerHTML=COLORS.map(c=>`<div class="color-swatch ${c.hex==='CAMO'?'camo-swatch':''} ${selectedHex===c.hex?'selected':''}" style="${swatchStyle(c.hex)}" title="${c.name}" onclick="${onSelectName}('${c.hex}')"></div>`).join('');
+}
+function selectNewTeamColor(hex){newTeamColor=hex;renderPalette('new-team-palette',newTeamColor,'selectNewTeamColor');}
+function selectEditTeamColor(hex){editTeamColor=hex;renderPalette('edit-team-palette',editTeamColor,'selectEditTeamColor');}
+
+// ══════════════════════════════════════════════════════════
+// ADMIN — EVENT LIST
+// ══════════════════════════════════════════════════════════
+async function loadAdminEventList(){
+  const el=document.getElementById('admin-event-list');
+  el.innerHTML='<div class="loading-state"><div class="spinner"></div></div>';
+  try{
+    const events=await db('GET','events','?order=created_at.desc');
+    if(!events.length){el.innerHTML='<p class="text-muted" style="text-align:center;padding:24px">No events yet.</p>';return;}
+    el.innerHTML=events.map(e=>{
+      const s=e.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      return`<div class="event-list-item">
+        <div onclick="openEventEditor('${e.id}','${s}','${e.date||''}')" style="flex:1;cursor:pointer;padding:2px 0">
+          <div class="event-name">${e.name}</div><div class="event-date">${e.date||'No date set'}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <span class="badge badge-${e.status}">${e.status}</span>
+          <button class="btn btn-danger" onclick="openDeleteModal('${e.id}','${s}')">🗑</button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(err){el.innerHTML=`<p class="text-muted" style="text-align:center;padding:24px">Error: ${err.message}</p>`;}
+}
+async function createNewEvent(){
+  const name=document.getElementById('new-event-name').value.trim();
+  const date=document.getElementById('new-event-date').value;
+  if(!name){toast('Enter an event name',true);return;}
+  try{const [ev]=await db('POST','events','',{name,date,status:'upcoming'});closeModal('new-event-modal');openEventEditor(ev.id,ev.name,ev.date||'');}
+  catch(err){toast(err.message,true);}
+}
+
+// ══════════════════════════════════════════════════════════
+// ADMIN — EDITOR
+// ══════════════════════════════════════════════════════════
+async function openEventEditor(id,name,date){
+  currentEventId=id;editorTeams=[];editorGames=[];schedule=[];preferredNumSets=null;newTeamColor=COLORS[0].hex;
+  document.getElementById('admin-event-list-section').style.display='none';
+  document.getElementById('admin-editor-section').style.display='block';
+  document.getElementById('editor-event-name').textContent=name;
+  document.getElementById('editor-event-date').textContent=date;
+  renderPalette('new-team-palette',newTeamColor,'selectNewTeamColor');
+  try{
+    const [evArr,teams,stations,rotations]=await Promise.all([
+      db('GET','events',`?id=eq.${id}&limit=1`),
+      db('GET','teams',`?event_id=eq.${id}&order=name`),
+      db('GET','stations',`?event_id=eq.${id}&order=number`),
+      db('GET','rotations',`?event_id=eq.${id}&order=rotation_number`)
+    ]);
+    currentEventStatus=evArr[0]?.status||'upcoming';renderStatusButtons();
+    editorTeams=teams.map(t=>({id:t.id,name:t.name,color:t.color||COLORS[0].hex}));
+
+    // Rebuild editorGames & schedule from saved stations+rotations
+    // stations: number, games (name or name|ALLTEAMS or name|name2|COACHES:x|SET:n)
+    // We encode set membership and slot in a structured games field on save
+    // For now, reconstruct a flat game list and rebuild schedule
+    editorGames=stations.map(s=>{
+      const raw=s.games||'';
+      const isAll=raw.includes('|ALLTEAMS');
+      const isTally=raw.includes('|TALLY');
+      const isPongFeud=raw.includes('|PONGFEUD');
+      const gname=raw.replace('|ALLTEAMS','').replace('ALLTEAMS','').replace('|TALLY','').replace('|PONGFEUD','').split('|')[0];
+      const sct=isTally?'tally':isPongFeud?'pongfeud':'none';
+      // Pong Feud settings encoded as extra pipe segments: |SPLIT:2|QS:1,3,5
+      const rawParts=raw.split('|');
+      const splitPart=rawParts.find(p=>p.startsWith('SPLIT:'));
+      const qsPart=rawParts.find(p=>p.startsWith('QS:'));
+      const pfSplitVal=splitPart?splitPart.replace('SPLIT:',''):'none';
+      const pfQs=qsPart?qsPart.replace('QS:','').split(',').map(Number):[];
+      return{id:s.id,name:gname||'',type:isAll?'allteams':'h2h',coaches:s.coaches||'',scorecardType:sct,pfSplit:pfSplitVal,pfQuestions:pfQs,_stationId:s.id,_stationNum:s.number};
+    });
+
+    // Rebuild schedule from rotations
+    // rotations has: rotation_number, station_id, team1, team2
+    // rotation_number encoding: setIdx*1000 + rotWithinSet (we'll re-derive on load)
+    // Actually on first load from old data, just auto-generate schedule
+    autoGenerateSchedule(rotations,stations);
+    renderTeams();renderGames();renderSchedule();
+  }catch(err){toast(err.message,true);}
+}
+function backToEventList(){
+  document.getElementById('admin-editor-section').style.display='none';
+  document.getElementById('admin-event-list-section').style.display='block';
+  currentEventId=null;loadAdminEventList();
+}
+
+// STATUS
+function renderStatusButtons(){
+  const el=document.getElementById('status-buttons');if(!el)return;
+  [{s:'upcoming',l:'Upcoming'},{s:'active',l:'Set Active'},{s:'completed',l:'Completed'}].forEach(({s,l})=>{
+    const cur=s===currentEventStatus;
+    el.innerHTML=[{s:'upcoming',l:'Upcoming'},{s:'active',l:'Set Active'},{s:'completed',l:'Completed'}]
+      .map(({s,l})=>`<button class="status-btn ${currentEventStatus===s?`cur-${s}`:''}" onclick="setEventStatus('${s}')">${currentEventStatus===s?'✓ ':''}${l}</button>`).join('');
+  });
+  // fix double render
+  el.innerHTML=[{s:'upcoming',l:'Upcoming'},{s:'active',l:'Set Active'},{s:'completed',l:'Completed'}]
+    .map(({s,l})=>`<button class="status-btn ${currentEventStatus===s?`cur-${s}`:''}" onclick="setEventStatus('${s}')">${currentEventStatus===s?'✓ ':''}${l}</button>`).join('');
+}
+async function setEventStatus(status){
+  if(!currentEventId)return;
+  try{await db('PATCH','events',`?id=eq.${currentEventId}`,{status});currentEventStatus=status;renderStatusButtons();toast(`✓ Status: ${status}`);}
+  catch(err){toast(err.message,true);}
+}
+
+// ══════════════════════════════════════════════════════════
+// TEAMS
+// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+// PONG FEUD ADMIN
+// ══════════════════════════════════════════════════════════
+function onScorecardTypeChange(){
+  const val=document.getElementById('edit-game-scorecard').value;
+  document.getElementById('pongfeud-settings').style.display=val==='pongfeud'?'block':'none';
+  if(val==='pongfeud') renderQBank();
+}
+function setPfSplit(val){
+  pfEditSplit=val;
+  ['none','2','3'].forEach(v=>document.getElementById(`split-btn-${v}`).classList.toggle('active',v===val));
+}
+function clearAllQuestions(){
+  if(editingGameIdx===null)return;
+  editorGames[editingGameIdx].pfQuestions=[];
+  pfSelectedQuestions=[];
+  renderQBank();
+}
+function renderQBank(){
+  // Tag filters
+  const fEl=document.getElementById('qbank-filters');
+  fEl.innerHTML='<button class="qbank-tag '+(qbankActiveTag===null?'active':'')+'" onclick="setQBankTag(null)">All</button>'+
+    ALL_TAGS.map(t=>`<button class="qbank-tag ${qbankActiveTag===t?'active':''}" onclick="setQBankTag('${t}')">${t}</button>`).join('');
+  // Question list
+  const filtered=qbankActiveTag?QUESTION_BANK.filter(q=>q.tags.includes(qbankActiveTag)):QUESTION_BANK;
+  const selected=pfSelectedQuestions;
+  document.getElementById('qbank-selected-count').textContent=`${selected.length} selected`;
+  const maxPts=Math.max(...QUESTION_BANK.flatMap(q=>q.answers.map(a=>a.pts)));
+  document.getElementById('qbank-list').innerHTML=filtered.map(q=>{
+    const isSel=selected.includes(q.id);
+    const isExp=qbankExpandedId===q.id;
+    const topPts=q.answers[0]?.pts||1;
+    return`<div class="qbank-item ${isSel?'selected':''}" style="flex-direction:column;align-items:stretch">
+      <div class="qbank-item-header">
+        <div class="qbank-item-check" onclick="event.stopPropagation();toggleQuestion(${q.id})" style="cursor:pointer;flex-shrink:0;margin-top:2px">${isSel?'✓':''}</div>
+        <div style="flex:1;cursor:pointer" onclick="event.stopPropagation();toggleQuestion(${q.id})">
+          <div class="qbank-item-q">${q.q}</div>
+          <div class="qbank-item-tags">${q.tags.map(t=>`<span class="qbank-item-tag">${t}</span>`).join('')}</div>
+        </div>
+        <button class="qbank-expand-btn" onclick="event.stopPropagation();toggleQExpand(${q.id})">${isExp?'▲ Hide':'▼ Answers'}</button>
+      </div>
+      <div class="qbank-answers ${isExp?'open':''}">
+        ${q.answers.map(a=>`
+          <div class="qbank-answer-row">
+            <div class="qbank-answer-text">${a.a}</div>
+            <div class="qbank-answer-bar"><div class="qbank-answer-fill" style="width:${Math.round(a.pts/topPts*100)}%"></div></div>
+            <div class="qbank-answer-pts">${a.pts}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+function setQBankTag(tag){qbankActiveTag=tag;renderQBank();}
+function toggleQExpand(id){
+  qbankExpandedId=qbankExpandedId===id?null:id;
+  renderQBank();
+  // Scroll expanded item into view
+  setTimeout(()=>{
+    const list=document.getElementById('qbank-list');
+    const items=list.querySelectorAll('.qbank-item');
+    const filtered=qbankActiveTag?QUESTION_BANK.filter(q=>q.tags.includes(qbankActiveTag)):QUESTION_BANK;
+    const idx=filtered.findIndex(q=>q.id===id);
+    if(idx>=0&&items[idx])items[idx].scrollIntoView({behavior:'smooth',block:'nearest'});
+  },50);
+}
+function toggleQuestion(id){
+  if(pfSelectedQuestions.includes(id)){pfSelectedQuestions=pfSelectedQuestions.filter(q=>q!==id);}
+  else{pfSelectedQuestions.push(id);}
+  renderQBank();
+}
+
+function renderTeams(){
+  const c=document.getElementById('teams-container');
+  if(!editorTeams.length){c.innerHTML='<p class="text-muted" style="margin-bottom:12px">No teams yet.</p>';return;}
+  c.innerHTML=editorTeams.map((t,i)=>`
+    <div class="team-row">
+      <div class="team-swatch ${t.color==='CAMO'?'camo-swatch':''}" style="${swatchStyle(t.color)}"></div>
+      <span style="flex:1;font-size:13px;font-weight:600">${t.name}</span>
+      <button class="btn btn-ghost" onclick="openEditTeam(${i})">Edit</button>
+      <button class="btn btn-danger" onclick="removeTeam(${i})">✕</button>
+    </div>`).join('');
+}
+function addTeam(){
+  const name=document.getElementById('new-team-name').value.trim();
+  if(!name){toast('Enter a team name',true);return;}
+  editorTeams.push({id:null,name,color:newTeamColor});
+  document.getElementById('new-team-name').value='';
+  renderTeams();autoGenerateSchedule();
+}
+function removeTeam(i){editorTeams.splice(i,1);renderTeams();autoGenerateSchedule();}
+function openEditTeam(i){
+  editingTeamIdx=i;editTeamColor=editorTeams[i].color;
+  document.getElementById('edit-team-name').value=editorTeams[i].name;
+  renderPalette('edit-team-palette',editTeamColor,'selectEditTeamColor');
+  openModal('edit-team-modal');
+}
+function saveTeamEdit(){
+  const name=document.getElementById('edit-team-name').value.trim();
+  if(!name||editingTeamIdx===null){toast('Enter a name',true);return;}
+  editorTeams[editingTeamIdx].name=name;editorTeams[editingTeamIdx].color=editTeamColor;
+  closeModal('edit-team-modal');renderTeams();autoGenerateSchedule();toast('✓ Team updated');
+}
+
+// ══════════════════════════════════════════════════════════
+// GAMES
+// ══════════════════════════════════════════════════════════
+function setNewGameType(type){
+  newGameType=type;
+  document.getElementById('type-h2h-btn').classList.toggle('active',type==='h2h');
+  document.getElementById('type-all-btn').classList.toggle('active',type==='allteams');
+}
+function renderGames(){
+  const c=document.getElementById('games-container');
+  if(!editorGames.length){c.innerHTML='<p class="text-muted" style="margin-bottom:10px">No games yet.</p>';return;}
+  c.innerHTML=editorGames.map((g,i)=>`
+    <div class="game-item" style="flex-wrap:wrap;gap:8px">
+      <span style="flex:1;font-size:13px;font-weight:600;min-width:100px">${g.name||'(unnamed)'}</span>
+      <span class="game-badge ${g.type==='allteams'?'allteams':'h2h'}">${g.type==='allteams'?'All Teams':'1v1'}</span>
+      ${g.type!=='allteams'?`<select onchange="editorGames[${i}].scorecardType=this.value" style="margin-bottom:0;padding:4px 8px;font-size:11px;font-weight:700;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;max-width:130px">
+        <option value="none" ${(g.scorecardType||'none')==='none'?'selected':''}>No Scorecard</option>
+        <option value="tally" ${g.scorecardType==='tally'?'selected':''}>Simple Tally</option>
+        <option value="pongfeud" ${g.scorecardType==='pongfeud'?'selected':''}>Pong Feud</option>
+      </select>`:''}
+      <button class="btn btn-ghost" onclick="openEditGame(${i})">Edit</button>
+      <button class="btn btn-danger" onclick="removeGame(${i})">✕</button>
+    </div>`).join('');
+}
+function addGame(){
+  const name=document.getElementById('new-game-name').value.trim();
+  if(!name){toast('Enter a game name',true);return;}
+  // Multiple All Teams games allowed
+  editorGames.push({id:null,name,type:newGameType,coaches:'',scorecardType:'none',pfSplit:'none',pfQuestions:[]});
+  document.getElementById('new-game-name').value='';
+  renderGames();autoGenerateSchedule();
+}
+function removeGame(i){editorGames.splice(i,1);renderGames();autoGenerateSchedule();}
+function openEditGame(i){
+  editingGameIdx=i;
+  const g=editorGames[i];
+  document.getElementById('edit-game-name').value=g.name;
+  document.getElementById('edit-game-scorecard').value=g.scorecardType||'none';
+  pfEditSplit=g.pfSplit||'none';
+  pfSelectedQuestions=[...(g.pfQuestions||[])];
+  qbankActiveTag=null;
+  ['none','2','3'].forEach(v=>document.getElementById(`split-btn-${v}`).classList.toggle('active',v===pfEditSplit));
+  document.getElementById('pongfeud-settings').style.display=g.scorecardType==='pongfeud'?'block':'none';
+  if(g.scorecardType==='pongfeud')renderQBank();
+  openModal('edit-game-modal');
+}
+function saveGameEdit(){
+  const name=document.getElementById('edit-game-name').value.trim();
+  if(!name||editingGameIdx===null){toast('Enter a name',true);return;}
+  const g=editorGames[editingGameIdx];
+  g.name=name;
+  g.scorecardType=document.getElementById('edit-game-scorecard').value;
+  if(g.scorecardType==='pongfeud'){
+    g.pfSplit=pfEditSplit;
+    g.pfQuestions=[...pfSelectedQuestions];
+  }
+  closeModal('edit-game-modal');
+  renderGames();renderSchedule();toast('✓ Game updated');
+}
+
+// ══════════════════════════════════════════════════════════
+// SCHEDULE ALGORITHM
+// ══════════════════════════════════════════════════════════
+/*
+  numStations = floor(T/2)
+  h2hGames split evenly across sets (ceil half in set1, floor half in set2)
+  Each set has numStations station-slots
+  Each set has numStations rotations (teams rotate through all slots in set)
+  Round-robin generates matchups minimising repeat opponents
+*/
+// ── SCHEDULING ALGORITHM ──
+// Primary rule: every team plays every game exactly once.
+// Secondary rule: minimise repeat opponents (best-effort).
+//
+// Approach: build a team-visit matrix using a round-robin circle.
+// For each set of games, we generate numRotations rounds where:
+//   - Each round assigns every team to exactly one station
+//   - Each game (station slot) is visited by each team exactly once across all rotations in the set
+//
+// We treat it as: rotate teams through station slots.
+// Station slot assignment: in rotation r, team at position p plays station (p + r) % numStations.
+// Opponent pairing: pair team[i] with team[i + numStations] in the ordering for that rotation,
+// using round-robin to vary opponents.
+
+function buildRoundRobin(teamNames){
+  const arr=[...teamNames];
+  if(arr.length%2===1)arr.push(null); // bye for odd teams
+  const n=arr.length,rounds=[];
+  const circle=[...arr];
+  for(let r=0;r<n-1;r++){
+    const pairs=[];
+    for(let i=0;i<n/2;i++){const a=circle[i],b=circle[n-1-i];if(a&&b)pairs.push([a,b]);}
+    rounds.push(pairs);
+    circle.splice(1,0,circle.pop());
+  }
+  return rounds;
+}
+
+// Build rotations for one set — every team visits every station slot exactly once.
+function buildSetSchedule(teamNames, numStations){
+  return buildSetScheduleFallback(teamNames, numStations);
+}
+
+// Latin square approach — guaranteed every team plays every station exactly once.
+// In rotation r, station s is visited by teams at positions (s-r)%numStations and (s-r)%numStations+numStations.
+function buildSetScheduleFallback(teamNames, numStations){
+  const teams=[...teamNames];
+  if(teams.length%2===1)teams.push(null);
+  const rotations=[];
+  for(let r=0;r<numStations;r++){
+    const matchups=[];
+    for(let s=0;s<numStations;s++){
+      const pos1=((s-r)%numStations+numStations)%numStations;
+      const pos2=pos1+numStations;
+      matchups.push({team1:teams[pos1]||'',team2:teams[pos2]||''});
+    }
+    rotations.push({matchups});
+  }
+  return rotations;
+}
+
+// Returns valid set counts for the current team/game config
+// Only two options: 1 set (all games, all rotations) or 2 sets (split in half).
+// 2 sets only available when h2h game count is even.
+// Valid set counts: numGames / numSets must exactly equal numStations (Teams÷2).
+// So only 1 or 2 sets, and only when the math works out perfectly.
+function validSetCounts(){
+  const h2h=editorGames.filter(g=>g.type==='h2h');
+  const numStations=Math.floor(editorTeams.length/2);
+  if(h2h.length<1||numStations<1)return[];
+  const valid=[];
+  // 1 set: all games in one set — valid only if h2h.length === numStations
+  if(h2h.length===numStations) valid.push(1);
+  // 2 sets: split in half — valid only if h2h.length is even AND h2h.length/2 === numStations
+  if(h2h.length%2===0&&h2h.length/2===numStations) valid.push(2);
+  return valid;
+}
+
+function autoGenerateSchedule(savedRotations,savedStations){
+  const T=editorTeams.length;
+  const h2h=editorGames.filter(g=>g.type==='h2h');
+  const allGames=editorGames.filter(g=>g.type==='allteams');
+  if(T<2||h2h.length<1){schedule=[];renderSchedule();return;}
+
+  const numStations=Math.floor(T/2);
+  const valid=validSetCounts();
+  if(valid.length===0){schedule=[];renderSchedule();return;} // no valid config yet
+
+  // Pick numSets: use preferredNumSets if still valid, else default to 2 sets if available, else 1
+  let numSets;
+  if(preferredNumSets&&valid.includes(preferredNumSets)){
+    numSets=preferredNumSets;
+  } else {
+    numSets=valid.includes(2)?2:1;
+    preferredNumSets=numSets;
+  }
+
+  const newSchedule=[];
+  let gameIdx=0;
+
+  for(let si=0;si<numSets;si++){
+    // Assign games to station slots for this set
+    const gamesInSet=[];
+    for(let slot=0;slot<numStations;slot++){
+      gamesInSet.push(gameIdx<h2h.length?h2h[gameIdx++]:null);
+    }
+    const stations=gamesInSet.map(g=>({
+      gameIdx:g?editorGames.indexOf(g):-1,
+      coaches:g?.coaches||''
+    }));
+
+    // Generate rotations guaranteeing each team visits each game slot exactly once
+    const teamNames=editorTeams.map(t=>t.name);
+    const rotations=buildSetSchedule(teamNames,numStations);
+
+    newSchedule.push({type:'h2h',stations,rotations});
+  }
+
+  allGames.forEach(g=>{
+    newSchedule.push({type:'allteams',gameIdx:editorGames.indexOf(g),coaches:g.coaches||''});
+  });
+  schedule=newSchedule;
+  renderSchedule();
+  if(schedule.length)toast('✓ Schedule generated');
+}
+
+function changeNumSets(n){
+  preferredNumSets=parseInt(n);
+  autoGenerateSchedule();
+}
+
+// ══════════════════════════════════════════════════════════
+// SCHEDULE RENDERER
+// ══════════════════════════════════════════════════════════
+function renderSchedule(){
+  const c=document.getElementById('schedule-container');
+  const T=editorTeams.length;
+  const h2h=editorGames.filter(g=>g.type==='h2h');
+  const numStations=Math.floor(T/2);
+
+  if(!T||!h2h.length){
+    c.innerHTML='<p class="text-muted">Add teams and games — the schedule will generate automatically.</p>';return;
+  }
+
+  // Summary + set selector
+  const valid=validSetCounts();
+  const currentSets=schedule.filter(s=>s.type==='h2h').length||1;
+
+  // Info + validation
+  let validationMsg='';
+  if(valid.length===0){
+    // No valid config — explain what's needed
+    const need1=numStations;
+    const need2=numStations*2;
+    validationMsg=`<div class="info-box red" style="margin-bottom:14px">
+      ⚠ <strong>Game count doesn't match team count.</strong><br>
+      With ${T} teams you have <strong>${numStations} station${numStations!==1?'s':''}</strong> running simultaneously.<br>
+      You need exactly <strong>${need1} game${need1!==1?'s':''}</strong> for 1 set, or <strong>${need2} game${need2!==1?'s':''}</strong> for 2 sets.<br>
+      Currently you have ${h2h.length} head-to-head game${h2h.length!==1?'s':''} — add or remove games to match.
+    </div>`;
+  }
+
+  const gamesPerSet=valid.length>0?h2h.length/currentSets:numStations;
+  const setOptions=valid.map(n=>{
+    const gps=h2h.length/n;
+    return`<option value="${n}" ${n===currentSets?'selected':''}>${n} set${n!==1?'s':''} — ${gps} game${gps!==1?'s':''} per set, ${gps} rotation${gps!==1?'s':''} per set</option>`;
+  }).join('');
+
+  let html=`<div class="info-box" style="margin-bottom:${valid.length?'14px':'8px'}">
+    <strong>${T} teams · ${numStations} simultaneous station${numStations!==1?'s':''} · ${h2h.length} head-to-head game${h2h.length!==1?'s':''}</strong><br>
+    ${valid.length?`Every team plays every game once. Each set = ${gamesPerSet} game${gamesPerSet!==1?'s':''} × ${gamesPerSet} rotation${gamesPerSet!==1?'s':''}.`:'Add the right number of games to unlock a valid schedule.'}
+    ${T%2===1?'<br><span style="color:var(--red)">⚠ Odd number of teams — one team sits out each rotation.</span>':''}
+  </div>
+  ${validationMsg}
+  ${valid.length>0?`<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+    <label style="margin-bottom:0;white-space:nowrap">Number of Sets</label>
+    <select onchange="changeNumSets(this.value)" style="margin-bottom:0;flex:1;min-width:200px;font-size:13px;padding:8px 12px">
+      ${setOptions}
+    </select>
+  </div>`:''}`;
+
+  let absRotNum=0;
+  schedule.forEach((set,si)=>{
+    if(set.type==='allteams'){
+      const g=editorGames[set.gameIdx];
+      html+=`<div class="set-block allteams-set">
+        <div class="set-header">
+          <span class="set-title">🏆 Final Round — All Teams</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center">
+          <div style="font-size:14px;font-weight:700;color:var(--red)">${g?g.name:'All Teams Game'}</div>
+          <input class="slot-coach-input" value="${set.coaches||''}" onchange="schedule[${si}].coaches=this.value" placeholder="Coach name(s)">
+        </div>
+      </div>`;
+      return;
+    }
+
+    // h2h set
+    const setNum=schedule.slice(0,si).filter(s=>s.type==='h2h').length+1;
+    const totalH2hSets=schedule.filter(s=>s.type==='h2h').length;
+    html+=`<div class="set-block">
+      <div class="set-header">
+        <span class="set-title">Set ${setNum} of ${totalH2hSets}</span>
+        <span class="set-meta">${set.rotations.length} rotation${set.rotations.length!==1?'s':''} · ${set.stations.length} station${set.stations.length!==1?'s':''} simultaneously</span>
+      </div>
+
+      <!-- Station → Game assignments -->
+      <div class="set-rot-label" style="margin-bottom:8px">Station Assignments <span style="font-weight:500;color:var(--text-muted);font-size:10px">(change game at any station)</span></div>
+      ${set.stations.map((slot,slotIdx)=>`
+        <div class="slot-row">
+          <span class="slot-label">Stn ${slotIdx+1}</span>
+          <select class="slot-game-select" onchange="setSlotGame(${si},${slotIdx},parseInt(this.value))">
+            <option value="-1">— No game —</option>
+            ${editorGames.filter(g=>g.type==='h2h').map((g,gi)=>{
+              const realIdx=editorGames.indexOf(g);
+              return`<option value="${realIdx}" ${slot.gameIdx===realIdx?'selected':''}>${g.name}</option>`;
+            }).join('')}
+          </select>
+          <input class="slot-coach-input" value="${slot.coaches||''}" onchange="schedule[${si}].stations[${slotIdx}].coaches=this.value" placeholder="Coach">
+        </div>`).join('')}
+
+      <!-- Matchups per rotation -->
+      <div class="set-rotations">
+        <div class="set-rot-label">Matchups <span style="font-weight:500;color:var(--text-muted);font-size:10px">(adjust any head-to-head pairing)</span></div>
+        ${set.rotations.map((rot,ri)=>{
+          const rotLabel=absRotNum+ri+1;
+          return`<div style="margin-bottom:12px">
+            <div style="font-size:10px;font-weight:800;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">Rotation ${rotLabel}</div>
+            ${rot.matchups.map((m,mi)=>{
+              const slotGame=editorGames[set.stations[mi]?.gameIdx];
+              return`<div class="matchup-row">
+                <span class="slot-label" style="font-size:10px">${slotGame?slotGame.name.substring(0,10):'Stn '+(mi+1)}</span>
+                <select onchange="schedule[${si}].rotations[${ri}].matchups[${mi}].team1=this.value">
+                  <option value="">Team A</option>
+                  ${editorTeams.map(t=>`<option value="${t.name}" ${m.team1===t.name?'selected':''}>${t.name}</option>`).join('')}
+                </select>
+                <span class="vs-dot">VS</span>
+                <select onchange="schedule[${si}].rotations[${ri}].matchups[${mi}].team2=this.value">
+                  <option value="">Team B</option>
+                  ${editorTeams.map(t=>`<option value="${t.name}" ${m.team2===t.name?'selected':''}>${t.name}</option>`).join('')}
+                </select>
+              </div>`;
+            }).join('')}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+    absRotNum+=set.rotations.length;
+  });
+
+  html+=`<div style="display:flex;gap:8px;margin-top:4px">
+    <button class="btn btn-sm" onclick="autoGenerateSchedule()" style="flex:1;background:var(--blue);color:#fff;border-color:var(--blue)">↻ Re-Generate Schedule</button>
+  </div>
+  <p class="text-muted" style="margin-top:10px;font-size:11px">Change game assignments or matchups above, then Save Event.</p>`;
+
+  c.innerHTML=html;
+}
+
+function setSlotGame(setIdx,slotIdx,gameIdx){
+  schedule[setIdx].stations[slotIdx].gameIdx=gameIdx;
+  renderSchedule();
+}
+
+// ══════════════════════════════════════════════════════════
+// SAVE
+// ══════════════════════════════════════════════════════════
+async function saveEventConfig(){
+  if(!currentEventId)return;
+  try{
+    // Teams
+    await db('DELETE','teams',`?event_id=eq.${currentEventId}`);
+    if(editorTeams.length)await db('POST','teams','',editorTeams.map(t=>({event_id:currentEventId,name:t.name,color:t.color})));
+
+    // Build flat station list from schedule
+    // Each station slot in each set becomes a row. Station number = sequential across all sets.
+    await db('DELETE','stations',`?event_id=eq.${currentEventId}`);
+    await db('DELETE','rotations',`?event_id=eq.${currentEventId}`);
+
+    const stationRows=[];
+    // h2h sets: each slot becomes a station (permanent for the event, coach stays there)
+    // We'll number stations 1..N across all sets
+    // Station games field: game name for that slot
+    // We also need to encode which set it belongs to so the coach view shows correct rotations
+
+    let stationNum=1;
+    const stationMeta=[]; // {setIdx, slotIdx, stationNum}
+
+    schedule.forEach((set,si)=>{
+      if(set.type==='allteams'){
+        const g=editorGames[set.gameIdx];
+        stationRows.push({event_id:currentEventId,number:stationNum,games:`${g?g.name:'All Teams'}|ALLTEAMS`,coaches:set.coaches||''});
+        stationMeta.push({setIdx:si,slotIdx:0,stationNum,type:'allteams'});
+        stationNum++;
+      } else {
+        set.stations.forEach((slot,slotIdx)=>{
+          const g=slot.gameIdx>=0?editorGames[slot.gameIdx]:null;
+          const sct=g?.scorecardType||'none';
+          let gamesField=g?g.name:'TBD';
+          if(sct==='tally')gamesField+=`|TALLY`;
+          else if(sct==='pongfeud'){
+            gamesField+=`|PONGFEUD|SPLIT:${g.pfSplit||'none'}`;
+            if(g.pfQuestions&&g.pfQuestions.length)gamesField+=`|QS:${g.pfQuestions.join(',')}`;
+          }
+          stationRows.push({event_id:currentEventId,number:stationNum,games:gamesField,coaches:slot.coaches||''});
+          stationMeta.push({setIdx:si,slotIdx,stationNum,type:'h2h'});
+          stationNum++;
+        });
+      }
+    });
+
+    const savedStations=stationRows.length?await db('POST','stations','',stationRows):[];
+
+    // Build rotation rows
+    // rotation_number: globally unique across all rotations
+    // For h2h: encode as (setIdx * 10000) + rotWithinSet so we can decode on load
+    // Actually simpler: just sequential, but we need station_id for each matchup
+    const rotRows=[];
+    let globalRot=0;
+
+    // Build stationId lookup: stationMeta[i] -> savedStations[i].id
+    const stationIdByMeta=(si,slotIdx)=>{
+      const m=stationMeta.find(m=>m.setIdx===si&&m.slotIdx===slotIdx);
+      if(!m)return null;
+      const idx=stationMeta.indexOf(m);
+      return savedStations[idx]?.id;
+    };
+
+    schedule.forEach((set,si)=>{
+      if(set.type==='allteams'){
+        const sid=stationIdByMeta(si,0);
+        if(sid)rotRows.push({event_id:currentEventId,station_id:sid,rotation_number:globalRot+1,team1:'ALL',team2:''});
+        globalRot++;
+      } else {
+        set.rotations.forEach((rot,ri)=>{
+          globalRot++;
+          rot.matchups.forEach((m,mi)=>{
+            const sid=stationIdByMeta(si,mi);
+            if(sid&&(m.team1||m.team2)){
+              rotRows.push({event_id:currentEventId,station_id:sid,rotation_number:globalRot,team1:m.team1||'',team2:m.team2||''});
+            }
+          });
+        });
+      }
+    });
+
+    if(rotRows.length)await db('POST','rotations','',rotRows);
+    toast('✓ Event saved!');
+  }catch(err){toast(err.message,true);}
+}
+
+// ══════════════════════════════════════════════════════════
+// DELETE
+// ══════════════════════════════════════════════════════════
+function openDeleteModal(id,name){
+  deleteEventId=id;document.getElementById('delete-event-label').textContent=name;
+  document.getElementById('delete-confirm-input').value='';
+  const btn=document.getElementById('delete-confirm-btn');
+  btn.disabled=true;btn.style.background='var(--border-dark)';btn.style.color='var(--text-muted)';btn.style.cursor='not-allowed';
+  openModal('delete-event-modal');setTimeout(()=>document.getElementById('delete-confirm-input').focus(),300);
+}
+function checkDeleteConfirm(){
+  const valid=document.getElementById('delete-confirm-input').value.trim().toUpperCase()==='DELETE';
+  const btn=document.getElementById('delete-confirm-btn');
+  btn.disabled=!valid;btn.style.background=valid?'var(--red)':'var(--border-dark)';
+  btn.style.color=valid?'#fff':'var(--text-muted)';btn.style.cursor=valid?'pointer':'not-allowed';
+}
+async function confirmDeleteEvent(){
+  if(!deleteEventId)return;
+  try{
+    await db('DELETE','scores',`?event_id=eq.${deleteEventId}`);
+    await db('DELETE','rotations',`?event_id=eq.${deleteEventId}`);
+    await db('DELETE','stations',`?event_id=eq.${deleteEventId}`);
+    await db('DELETE','teams',`?event_id=eq.${deleteEventId}`);
+    await db('DELETE','events',`?id=eq.${deleteEventId}`);
+    closeModal('delete-event-modal');deleteEventId=null;toast('Event deleted');loadAdminEventList();
+  }catch(err){toast('Delete failed: '+err.message,true);}
+}
+
+// ══════════════════════════════════════════════════════════
+// COACH
+// ══════════════════════════════════════════════════════════
+async function loadCoachPage(){
+  const inner=document.getElementById('coach-inner');
+  inner.innerHTML='<div class="loading-state"><div class="spinner"></div></div>';
+  coachSelectedStation=null;coachCurrentRotation=0;coachScores={};coachRotationData=[];coachEventData=null;
+  try{
+    const events=await db('GET','events','?status=eq.active&limit=1');
+    if(!events.length){
+      inner.innerHTML=`<div class="no-event-msg"><div style="font-size:48px;margin-bottom:16px">🏟️</div><div>No active event.</div><div class="text-muted" style="margin-top:8px">Ask your admin to set an event to Active.</div></div>`;return;
+    }
+    const ev=events[0];
+    const [stations,rotations,teams]=await Promise.all([
+      db('GET','stations',`?event_id=eq.${ev.id}&order=number`),
+      db('GET','rotations',`?event_id=eq.${ev.id}&order=rotation_number`),
+      db('GET','teams',`?event_id=eq.${ev.id}`)
+    ]);
+    teams.forEach(t=>{teamColorCache[t.name]=t.color;});
+    coachEventData={event:ev,stations,rotations};
+    renderCoachStationSelect();
+  }catch(err){inner.innerHTML=`<p class="text-muted" style="text-align:center;padding:40px">Error: ${err.message}</p>`;}
+}
+
+// Returns a readable text color for a given hex background/team color
+// If the color is too light (high luminance), use a dark version instead
+function readableTeamColor(hex){
+  if(!hex||hex==='CAMO')return'#5a6e4a';
+  const r=parseInt(hex.slice(1,3),16);
+  const g=parseInt(hex.slice(3,5),16);
+  const b=parseInt(hex.slice(5,7),16);
+  // Relative luminance (0=black, 1=white)
+  const lum=(0.299*r+0.587*g+0.114*b)/255;
+  // If very light (e.g. white #f0f0f0, silver, yellow), darken it significantly
+  if(lum>0.75){
+    // Return a darkened version: multiply each channel by 0.35
+    const dr=Math.round(r*0.35).toString(16).padStart(2,'0');
+    const dg=Math.round(g*0.35).toString(16).padStart(2,'0');
+    const db=Math.round(b*0.35).toString(16).padStart(2,'0');
+    return'#'+dr+dg+db;
+  }
+  return hex;
+}
+
+function isAllTeamsStn(s){return(s.games||'').includes('ALLTEAMS');}
+function getGameName(s){
+  const raw=s.games||'';
+  // Strip all encoded metadata segments — keep only the first pipe-segment (the actual name)
+  const parts=raw.split('|');
+  const name=parts[0].replace('ALLTEAMS','').trim();
+  return name;
+}
+
+function renderCoachStationSelect(){
+  const {event,stations,rotations}=coachEventData;
+  document.getElementById('coach-inner').innerHTML=`
+    <div class="event-header">
+      <div class="event-title-lg">${event.name}</div>
+      <div class="event-meta">${event.date||''} · Select your station</div>
+    </div>
+    ${(()=>{
+      // Group stations into sets: stations sharing rotation numbers are in the same set
+      // All-teams station is its own group at the end
+      const h2hStations=stations.filter(s=>!isAllTeamsStn(s));
+      const allTeamsStation=stations.find(s=>isAllTeamsStn(s));
+      // Determine set size: number of stations with rotation_number=1
+      const rot1StationIds=new Set(rotations.filter(r=>r.rotation_number===1).map(r=>r.station_id));
+      const setSize=rot1StationIds.size||h2hStations.length;
+      // Split h2h stations into sets
+      const sets=[];
+      for(let i=0;i<h2hStations.length;i+=setSize){
+        sets.push(h2hStations.slice(i,i+setSize));
+      }
+      const renderBtn=(s)=>{
+        const isAll=isAllTeamsStn(s);
+        const active=coachSelectedStation?.id===s.id?'active':'';
+        return'<div class="station-btn '+(isAll?'allteams-stn ':'')+active+'" onclick="selectCoachStation(\''+s.id+'\')">'  
+          +'<div class="stn-num">'+s.number+'</div>'
+          +'<div class="stn-game">'+getGameName(s)+'</div>'
+          +(s.coaches?'<div style="font-size:9px;font-weight:600;color:var(--text-muted);margin-top:3px">'+s.coaches+'</div>':'')
+          +'</div>';
+      };
+      let html='';
+      sets.forEach((set,si)=>{
+        html+='<div style="margin-bottom:10px">'
+          +(sets.length>1?'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px">Set '+(si+1)+'</div>':'')
+          +'<div class="station-selector" style="margin-bottom:0">'
+          +set.map(renderBtn).join('')
+          +'</div></div>';
+      });
+      if(allTeamsStation){
+        html+='<div style="margin-bottom:10px">'
+          +'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px">Final Round</div>'
+          +'<div class="station-selector" style="margin-bottom:0">'+renderBtn(allTeamsStation)+'</div>'
+          +'</div>';
+      }
+      return html;
+    })()}
+    <div id="coach-scorecard"></div>`;
+}
+
+async function selectCoachStation(stationId){
+  const {stations,rotations,event}=coachEventData;
+  coachSelectedStation=stations.find(s=>s.id===stationId);
+  coachCurrentRotation=0;coachScores={};tallyScores={};pfRoundScores={};pfUsedAnswers={};pfActiveGroup=null;pfCurrentQOffset={};pfShotOrder={};pfSplit='none';
+  coachRotationData=rotations.filter(r=>r.station_id===stationId).sort((a,b)=>a.rotation_number-b.rotation_number);
+  const existing=await db('GET','scores',`?event_id=eq.${event.id}&station_id=eq.${stationId}`);
+  existing.forEach(s=>{coachScores[s.rotation_number]=s.winning_team;});
+  const firstUnscore=coachRotationData.findIndex(r=>!coachScores[r.rotation_number]);
+  coachCurrentRotation=firstUnscore>=0?firstUnscore:Math.max(0,coachRotationData.length-1);
+  document.querySelectorAll('.station-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick').includes(stationId)));
+  renderCoachScorecard();
+}
+
+function renderCoachScorecard(){
+  const el=document.getElementById('coach-scorecard');
+  if(!coachRotationData.length){el.innerHTML='<p class="text-muted" style="text-align:center;padding:20px">No rotations for this station.</p>';return;}
+  const total=coachRotationData.length;
+  if(coachCurrentRotation>=total){
+    el.innerHTML=`<div class="card"><div class="all-done-card"><div class="all-done-icon">🏆</div><div class="all-done-title">Station Complete!</div><p class="text-muted" style="margin-top:8px">All ${total} rotation${total>1?'s':''} scored.</p></div></div>`;return;
+  }
+  const rot=coachRotationData[coachCurrentRotation];
+  const scored=coachScores[rot.rotation_number];
+  const gameName=getGameName(coachSelectedStation);
+  const isAll=isAllTeamsStn(coachSelectedStation)||rot.team1==='ALL';
+  const pips=`<div class="rotation-indicator">
+    <div class="rotation-pips">${coachRotationData.map((_,i)=>`<div class="pip ${i<coachCurrentRotation?'done':i===coachCurrentRotation?'current':''}" title="Jump to Rotation ${i+1}" onclick="jumpToRotation(${i})" style="cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='scaleY(1.8)'" onmouseout="this.style.transform='scaleY(1)'"></div>`).join('')}</div>
+    <span class="rotation-label">Round ${coachCurrentRotation+1} / ${total}</span>
+  </div>
+  <div class="rot-nav-row">
+    <button class="rot-nav-btn" onclick="jumpToRotation(${coachCurrentRotation-1})" ${coachCurrentRotation===0?'disabled':''}>← Prev</button>
+    <button class="rot-nav-btn" style="flex:2;font-size:10px;color:var(--text-muted)" onclick="showRotationJumper(${total})">Jump to Round</button>
+    <button class="rot-nav-btn" onclick="jumpToRotation(${coachCurrentRotation+1})" ${coachCurrentRotation>=total-1?'disabled':''}>Next →</button>
+  </div>`;
+  const gameLabel=`<div class="game-label-sm">${gameName}${coachSelectedStation.coaches?' · '+coachSelectedStation.coaches:''}</div>`;
+
+  if(isAll){
+    const allTeams=Object.keys(teamColorCache);
+    el.innerHTML=`<div class="scorecard-wrap">
+      ${pips}${gameLabel}
+      <div class="dual-notice" style="margin-bottom:14px"><span class="dual-badge" style="background:rgba(251,54,64,.08);border-color:rgba(251,54,64,.3);color:var(--red)">🏆 All Teams Competing</span></div>
+      <p class="text-muted" style="text-align:center;font-size:12px;margin-bottom:14px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Tap the winning team</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+        ${allTeams.map(name=>{
+          const hex=teamColorCache[name]||'#0673c1';
+          const win=scored===name;
+          const border=hex==='CAMO'?'#5a6e4a':hex;
+          return`<div class="team-score-btn ${win?'winner':''}" style="${win?`border-color:${border}`:''};min-height:80px;padding:14px 8px" onclick="scoreWinner('${name}',${rot.rotation_number})">
+            <div style="display:flex;justify-content:center;margin-bottom:4px">${colorDot(hex,18)}</div>
+            <div class="team-name-lg" style="font-size:13px">${name}</div>
+            <div class="tap-hint">Tap</div><div class="winner-badge">✓ Win</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <button class="next-btn" onclick="nextRotation()" ${!scored?'disabled':''}>${coachCurrentRotation+1<total?'Next Round →':'Finish ✓'}</button>
+      ${scored?`<button class="undo-btn" onclick="undoScore(${rot.rotation_number})">↩ Undo</button>`:''}
+    </div>`;
+    return;
+  }
+
+  const t1hex=teamColorCache[rot.team1]||'#0673c1';
+  const t2hex=teamColorCache[rot.team2]||'#e02020';
+  const t1b=readableTeamColor(t1hex==='CAMO'?'#5a6e4a':t1hex);
+  const t2b=readableTeamColor(t2hex==='CAMO'?'#5a6e4a':t2hex);
+  const totals={};Object.values(coachScores).forEach(w=>{totals[w]=(totals[w]||0)+1;});
+  const gamesRaw=coachSelectedStation.games||'';
+  const scorecardType=gamesRaw.includes('|TALLY')?'tally':gamesRaw.includes('|PONGFEUD')?'pongfeud':'none';
+  // Parse Pong Feud settings from games field
+  const grawParts=gamesRaw.split('|');
+  const grawSplitPart=grawParts.find(p=>p.startsWith('SPLIT:'));
+  const grawQsPart=grawParts.find(p=>p.startsWith('QS:'));
+  const stationPfSplit=grawSplitPart?grawSplitPart.replace('SPLIT:',''):(pfSplit||'none');
+  const stationPfQIds=grawQsPart?grawQsPart.replace('QS:','').split(',').map(Number):[];
+  const stationPfQuestions=stationPfQIds.map(id=>QUESTION_BANK.find(q=>q.id===id)).filter(Boolean);
+
+  // ── SIMPLE TALLY SCORECARD ──
+  if(scorecardType==='tally'){
+    resetTally(rot.rotation_number);
+    const t=tallyScores[rot.rotation_number];
+    const t1wins=t.t1,t2wins=t.t2;
+    const tied=t1wins===t2wins;
+    const t1leading=t1wins>t2wins;
+    const t2leading=t2wins>t1wins;
+    const anyRoundsPlayed=t1wins>0||t2wins>0;
+
+
+    const rotNum4edit=rot.rotation_number;
+    let tallyEditPanel='';
+    if(tallyEditMode){
+      tallyEditPanel='<div class="score-edit-wrap" style="margin-bottom:14px">'
+        +'<div class="score-edit-title">Edit Round Counts</div>'
+        +'<div class="score-edit-row"><div class="score-edit-label" style="color:'+t1b+'">'+rot.team1+'</div>'
+        +'<input class="score-edit-input" type="number" min="0" id="tallyedit_t1" value="'+t1wins+'"></div>'
+        +'<div class="score-edit-row"><div class="score-edit-label" style="color:'+t2b+'">'+rot.team2+'</div>'
+        +'<input class="score-edit-input" type="number" min="0" id="tallyedit_t2" value="'+t2wins+'"></div>'
+        +'<div style="display:flex;gap:8px;margin-top:4px">'
+        +'<button class="score-edit-btn" onclick="tallyEditMode=false;renderCoachScorecard()">Cancel</button>'
+        +'<button class="score-edit-btn save" onclick="tallySaveEdits('+rotNum4edit+')">Save</button>'
+        +'</div></div>';
+    }
+
+
+    el.innerHTML=`<div class="scorecard-wrap">
+      ${pips}${gameLabel}
+      ${tallyEditPanel}
+      <div class="tally-wrap" style="position:relative">
+        <button onclick="tallyEditMode=!tallyEditMode;renderCoachScorecard()" style="position:absolute;top:0;right:0;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 8px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;font-family:Montserrat,sans-serif;color:var(--text-muted)">✏ Edit</button>
+        <div class="tally-teams">
+          <div class="tally-side">
+            <div style="display:flex;justify-content:center;margin-bottom:4px">${colorDot(t1hex,20)}</div>
+            <div class="tally-team-name" style="color:${t1b}">${rot.team1||'—'}</div>
+            <div class="tally-score" style="color:${t1b}">${t1wins}</div>
+            <div class="tally-btns">
+              <button class="tally-btn tally-btn-minus" onclick="tallyAdjust(${rot.rotation_number},'t1',-1)" ${t1wins===0?'disabled':''}>−</button>
+              <button class="tally-btn tally-btn-plus" style="background:${t1b};box-shadow:0 3px 8px ${t1b}55" onclick="tallyAdjust(${rot.rotation_number},'t1',1)">+</button>
+            </div>
+          </div>
+          <div class="tally-vs">rounds</div>
+          <div class="tally-side">
+            <div style="display:flex;justify-content:center;margin-bottom:4px">${colorDot(t2hex,20)}</div>
+            <div class="tally-team-name" style="color:${t2b}">${rot.team2||'—'}</div>
+            <div class="tally-score" style="color:${t2b}">${t2wins}</div>
+            <div class="tally-btns">
+              <button class="tally-btn tally-btn-plus" style="background:${t2b};box-shadow:0 3px 8px ${t2b}55" onclick="tallyAdjust(${rot.rotation_number},'t2',1)">+</button>
+              <button class="tally-btn tally-btn-minus" onclick="tallyAdjust(${rot.rotation_number},'t2',-1)" ${t2wins===0?'disabled':''}>−</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="tally-note">${scored?`✓ Point awarded to ${scored}`:(anyRoundsPlayed?(tied?'Tied — play another round':'Tap below to award the point to the leader'):'Tap + to tally rounds as they finish')}</p>
+      <div class="tally-award-row" style="margin-top:10px;margin-bottom:10px;grid-template-columns:1fr 1fr 1fr">
+        <button class="tally-award-btn ${scored===rot.team1?'leading':t1leading?'leading':''}"
+          onclick="scoreWinner('${rot.team1}',${rot.rotation_number})"
+          ${(!anyRoundsPlayed||tied)&&scored!==rot.team1?'disabled':''}>
+          ${scored===rot.team1?'✓ Point Awarded':'Award Point to'}<br><strong>${rot.team1}</strong>
+        </button>
+        <button class="tally-award-btn ${scored==='TIE'?'leading':''}"
+          onclick="scoreWinner('TIE',${rot.rotation_number})"
+          style="${scored==='TIE'?'border-color:var(--text-muted);background:var(--text-muted);color:#fff':''}">
+          ${scored==='TIE'?'✓ Tied':'Declare'}<br><strong>Tie</strong>
+        </button>
+        <button class="tally-award-btn ${scored===rot.team2?'leading':t2leading?'leading':''}"
+          onclick="scoreWinner('${rot.team2}',${rot.rotation_number})"
+          ${(!anyRoundsPlayed||tied)&&scored!==rot.team2?'disabled':''}>
+          ${scored===rot.team2?'✓ Point Awarded':'Award Point to'}<br><strong>${rot.team2}</strong>
+        </button>
+      </div>
+      <button class="next-btn" onclick="nextRotation()" ${!scored?'disabled':''}>${coachCurrentRotation+1<total?'Next Rotation →':'Finish Station ✓'}</button>
+      ${scored?`<button class="undo-btn" onclick="undoScore(${rot.rotation_number})">↩ Undo Point</button>`:''}
+    </div>`;
+    return;
+  }
+
+  // ── PONG FEUD SCORECARD ──
+  if(scorecardType==='pongfeud'){
+    if(!pfRoundScores[rot.rotation_number])pfRoundScores[rot.rotation_number]={};
+    if(!pfUsedAnswers[rot.rotation_number])pfUsedAnswers[rot.rotation_number]={};
+    const roundScores=pfRoundScores[rot.rotation_number];
+    const usedAnswers=pfUsedAnswers[rot.rotation_number];
+
+    // Determine groups: for each team (t1, t2), split into subgroups based on stationPfSplit
+    const activePfSplit=pfSplit!=='none'?pfSplit:stationPfSplit;
+    const numGroups=activePfSplit==='2'?2:activePfSplit==='3'?3:1;
+    const teams=[{name:rot.team1,hex:t1hex,border:t1b},{name:rot.team2,hex:t2hex,border:t2b}];
+
+    // Build group keys e.g. t1g1, t1g2, t2g1, t2g2
+    const groups=[];
+    teams.forEach((team,ti)=>{
+      for(let gi=0;gi<numGroups;gi++){
+        const key=`t${ti+1}g${gi+1}`;
+        if(!roundScores[key])roundScores[key]=0;
+        groups.push({key,team,gi,label:numGroups>1?`${team.name} ${gi+1}`:team.name});
+      }
+    });
+
+    // Team totals = sum of all their groups
+    const teamTotals=teams.map((team,ti)=>{
+      let total=0;
+      for(let gi=0;gi<numGroups;gi++)total+=roundScores[`t${ti+1}g${gi+1}`]||0;
+      return total;
+    });
+
+    // Current question — cycle through selected questions by rotation index
+    const qList=stationPfQuestions;
+    const baseOffset=pfCurrentQOffset[rot.rotation_number]||0;
+    const qIdx=(coachCurrentRotation+baseOffset)%Math.max(qList.length,1);
+    const currentQ=qList[qIdx]||null;
+
+
+    // Build groups display + edit mode
+    let groupsEditHtml='';
+    if(pfEditMode){
+      let editRows='';
+      groups.forEach(g=>{
+        editRows+='<div class="score-edit-row">'
+          +'<div class="score-edit-label" style="color:'+g.team.border+'">'+g.label+'</div>'
+          +'<input class="score-edit-input" type="number" min="0" id="pfedit_'+g.key+'" value="'+(roundScores[g.key]||0)+'">'
+          +'</div>';
+      });
+      groupsEditHtml='<div class="score-edit-wrap">'
+        +'<div class="score-edit-title">Edit Round Scores</div>'
+        +editRows
+        +'<div style="display:flex;gap:8px;margin-top:4px">'
+        +'<button class="score-edit-btn" onclick="pfEditMode=false;renderCoachScorecard()">Cancel</button>'
+        +'<button class="score-edit-btn save" onclick="pfSaveEdits('+rot.rotation_number+','+JSON.stringify(groups.map(g=>g.key))+')">Save</button>'
+        +'</div></div>';
+    }
+    const groupsHtml='<div style="position:relative">'
+      +'<div class="pf-groups split-'+( numGroups===1?1:numGroups )+'">'
+      +groups.map(g=>'<div class="pf-group" style="border-color:'+g.team.border+'20">'
+        +'<div class="pf-group-name" style="color:'+g.team.border+'">'+g.label+'</div>'
+        +'<div class="pf-group-score" style="color:'+g.team.border+'">'+(roundScores[g.key]||0)+'</div>'
+        +'</div>').join('')
+      +'</div>'
+      +'<button onclick="pfEditMode=!pfEditMode;renderCoachScorecard()" style="position:absolute;top:0;right:0;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 8px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;font-family:Montserrat,sans-serif;color:var(--text-muted)">✏ Edit</button>'
+      +groupsEditHtml
+      +'</div>';
+
+    // Team totals bar
+    const t1Total=teamTotals[0],t2Total=teamTotals[1];
+    const totalPtsHtml=`<div class="pf-team-totals">
+      <div class="pf-team-total-side">
+        <div class="pf-team-total-name" style="color:${t1b}">${rot.team1}</div>
+        <div class="pf-team-total-pts" style="color:${t1b}">${t1Total}</div>
+      </div>
+      <div style="font-size:10px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">Total Pts</div>
+      <div class="pf-team-total-side">
+        <div class="pf-team-total-name" style="color:${t2b}">${rot.team2}</div>
+        <div class="pf-team-total-pts" style="color:${t2b}">${t2Total}</div>
+      </div>
+    </div>`;
+
+    // Shot order for this rotation
+    if(!pfShotOrder[rot.rotation_number])pfShotOrder[rot.rotation_number]=[];
+    const shotOrder=pfShotOrder[rot.rotation_number];
+    // Auto-derive active group from shot order — only when pfActiveGroup is null (not manually set)
+    if(shotOrder.length>0&&pfActiveGroup===null){
+      const answeredGroups=new Set(Object.values(pfUsedAnswers[rot.rotation_number]||{}));
+      const nextInOrder=shotOrder.find(k=>!answeredGroups.has(k));
+      pfActiveGroup=nextInOrder||shotOrder[shotOrder.length-1];
+    }
+
+    // Build shot order HTML using string concat (no nested template literals)
+    let shotBtnsHtml='';
+    groups.forEach(g=>{
+      const pos=shotOrder.indexOf(g.key);
+      const made=pos>=0;
+      const borderStyle=made?'border-color:'+g.team.hex+';background:'+g.team.hex+';color:#fff'
+        :(g.key===pfActiveGroup?'border-color:'+g.team.hex+';color:'+g.team.hex:'');
+      const posLabel=made?'<span style="font-size:11px;opacity:.8">'+(pos+1)+'.</span> ':'';
+      shotBtnsHtml+='<button class="shot-btn '+(made?'shot-made':'')+'" style="'+borderStyle+'" onclick="pfRecordShot('+rot.rotation_number+',\''+g.key+'\')">'+ posLabel+g.label+'</button>';
+    });
+    let shotOrderBadges='';
+    shotOrder.forEach((k,i)=>{
+      const g=groups.find(x=>x.key===k);
+      if(g)shotOrderBadges+='<span class="shot-order-badge" style="background:'+g.team.hex+'"><span class="shot-pos">'+(i+1)+'.</span> '+g.label+'</span>';
+    });
+    const shotOrderHtml='<div class="shot-order-wrap">'
+      +'<div class="shot-order-title">🏓 Shot Order</div>'
+      +'<div class="shot-order-subtitle">Tap each group as they make their shot — sets the answer order</div>'
+      +'<div class="shot-order-groups">'+shotBtnsHtml+'</div>'
+      +(shotOrder.length>0
+        ?'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase">Order: </span>'+shotOrderBadges+'<button class="shot-order-clear" onclick="pfClearShots('+rot.rotation_number+')">Reset</button></div>'
+        :'')
+      +'</div>';
+
+    // Group selector (which group is answering)
+    let groupSelInner='';
+    groups.forEach(g=>{
+      const isActive=pfActiveGroup===g.key;
+      const activeStyle=isActive?'background:'+g.team.hex+';border-color:'+g.team.hex:'';
+      groupSelInner+='<button class="pf-group-sel-btn '+(isActive?'active':'')+'" style="'+activeStyle+'" onclick="setPfActiveGroup(\''+g.key+'\')">'+ g.label+'</button>';
+    });
+    const groupSelHtml='<div class="pf-selecting-lbl">Awarding points to:</div><div class="pf-group-selector">'+groupSelInner+'</div>';
+
+    // Answers list
+    const answersHtml=currentQ?currentQ.answers.map((ans,ai)=>{
+      const usedBy=usedAnswers[ai];
+      const usedGroup=usedBy?groups.find(g=>g.key===usedBy):null;
+      const usedClass=usedBy?`used used-by-${usedBy.startsWith('t1')?'t1':'t2'}`:'';
+      return`<div class="pf-answer ${usedClass}" onclick="${usedBy?'':`pfAwardAnswer(${rot.rotation_number},${ai},${currentQ.answers[ai].pts})`}">
+        <div class="pf-answer-pts">${ans.pts}</div>
+        <div>
+          <div class="pf-answer-text">${ans.a}</div>
+          ${usedGroup?`<div class="pf-award-for">→ ${usedGroup.label}</div>`:''}
+        </div>
+      </div>`;
+    }).join(''):'<p class="text-muted" style="text-align:center;padding:20px">No questions selected for this game. Edit the game in Admin to add questions.</p>';
+
+    // Award / next controls
+    const anyScored=Object.keys(usedAnswers).length>0||Object.values(roundScores).some(v=>v>0);
+    const winner=t1Total>t2Total?rot.team1:t2Total>t1Total?rot.team2:null;
+
+    el.innerHTML=`<div class="scorecard-wrap">
+      ${pips}${gameLabel}
+      ${totalPtsHtml}
+      ${groupsHtml}
+      ${shotOrderHtml}
+      ${groupSelHtml}
+      ${currentQ?`<div class="pf-question">Q${qIdx+1} of ${qList.length}: ${currentQ.q}</div>`:''}
+      <div class="pf-answers">${answersHtml}</div>
+      <button class="pf-no-answer" onclick="pfNoAnswer(${rot.rotation_number})">✕ Not on the board — 0 points this round</button>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="btn btn-sm" style="flex:1" onclick="pfPrevQuestion(${rot.rotation_number})">← Prev Q</button>
+        <button class="btn btn-sm" style="flex:1" onclick="pfNextQuestion(${rot.rotation_number})">Next Q →</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="next-btn" onclick="pfFinishRound(${rot.rotation_number})" ${!anyScored&&!scored?'disabled':''} style="flex:1">
+          ${scored?'✓ Next Rotation →':coachCurrentRotation+1<total?'End Round':'Finish Station'}
+        </button>
+        <button class="btn btn-sm" onclick="scoreWinner('TIE',${rot.rotation_number})" style="${scored==='TIE'?'border-color:var(--text-muted);background:var(--text-muted);color:#fff':''}">
+          ${scored==='TIE'?'✓ Tie':'Tie'}
+        </button>
+      </div>
+      ${scored?`<div style="text-align:center;margin-top:4px;font-size:12px;font-weight:700;color:${scored==='TIE'?'var(--text-muted)':'var(--blue)'}">✓ ${scored==='TIE'?'Tied':'Point awarded to '+scored}</div>`:''}
+      ${scored?`<button class="undo-btn" onclick="undoScore(${rot.rotation_number})">↩ Undo</button>`:''}
+    </div>`;
+    return;
+  }
+
+  // ── NO SCORECARD — simple tap to award ──
+  el.innerHTML=`<div class="scorecard-wrap">
+    ${pips}${gameLabel}
+    <div class="matchup">
+      <div class="team-score-btn ${scored===rot.team1?'winner':''}" style="${scored===rot.team1?`border-color:${t1b}`:''}" onclick="scoreWinner('${rot.team1}',${rot.rotation_number})">
+        <div>${colorDot(t1hex,24)}</div>
+        <div class="team-name-lg">${rot.team1||'—'}</div>
+        <div class="tap-hint">Tap to Award</div><div class="winner-badge">✓ Point</div>
+      </div>
+      <div class="vs-center">VS</div>
+      <div class="team-score-btn ${scored===rot.team2?'winner':''}" style="${scored===rot.team2?`border-color:${t2b}`:''}" onclick="scoreWinner('${rot.team2}',${rot.rotation_number})">
+        <div>${colorDot(t2hex,24)}</div>
+        <div class="team-name-lg">${rot.team2||'—'}</div>
+        <div class="tap-hint">Tap to Award</div><div class="winner-badge">✓ Point</div>
+      </div>
+    </div>
+    <div class="score-summary">
+      <div><div class="score-lbl">${rot.team1}</div><div class="score-tally" style="color:${t1b}">${totals[rot.team1]||0}</div></div>
+      <div class="score-divider-v"></div>
+      <div style="text-align:center"><div class="score-lbl">Station Points</div></div>
+      <div class="score-divider-v"></div>
+      <div style="text-align:right"><div class="score-lbl">${rot.team2}</div><div class="score-tally" style="color:${t2b}">${totals[rot.team2]||0}</div></div>
+    </div>
+    <button class="btn btn-sm" onclick="scoreWinner('TIE',${rot.rotation_number})" style="width:100%;margin-bottom:10px;${scored==='TIE'?'border-color:var(--text-muted);background:var(--text-muted);color:#fff':''}">
+      ${scored==='TIE'?'✓ Tied':'Declare Tie'}
+    </button>
+    <button class="next-btn" onclick="nextRotation()" ${!scored?'disabled':''}>${coachCurrentRotation+1<total?'Next Rotation →':'Finish Station ✓'}</button>
+    ${scored?`<button class="undo-btn" onclick="undoScore(${rot.rotation_number})">↩ Undo Last Point</button>`:''}
+  </div>`;
+}
+
+// Pong Feud coach state
+let pfActiveGroup=null;
+let pfCurrentQOffset={}; // rotNum -> question offset within rotation
+let pfEditMode=false; // whether score edit inputs are showing
+let pfShotOrder={}; // rotNum -> [groupKey, groupKey, ...] in order of shot made
+
+function setPfActiveGroup(key){pfActiveGroup=key;renderCoachScorecard();}
+
+function pfSaveEdits(rotNum,groupKeys){
+  if(!pfRoundScores[rotNum])pfRoundScores[rotNum]={};
+  groupKeys.forEach(key=>{
+    const el=document.getElementById('pfedit_'+key);
+    if(el){
+      const val=parseInt(el.value)||0;
+      pfRoundScores[rotNum][key]=Math.max(0,val);
+    }
+  });
+  pfEditMode=false;
+  renderCoachScorecard();
+}
+
+function pfRecordShot(rotNum,groupKey){
+  if(!pfShotOrder[rotNum])pfShotOrder[rotNum]=[];
+  const order=pfShotOrder[rotNum];
+  if(order.includes(groupKey)){
+    pfShotOrder[rotNum]=order.filter(k=>k!==groupKey);
+  } else {
+    pfShotOrder[rotNum]=[...order,groupKey];
+  }
+  // Always reset to null so render auto-derives from shot order
+  pfActiveGroup=null;
+  renderCoachScorecard();
+}
+
+function pfClearShots(rotNum){
+  pfShotOrder[rotNum]=[];
+  pfActiveGroup=null;
+  renderCoachScorecard();
+}
+
+function pfAwardAnswer(rotNum,ansIdx,pts){
+  if(!pfActiveGroup)return;
+  if(!pfRoundScores[rotNum])pfRoundScores[rotNum]={};
+  if(!pfUsedAnswers[rotNum])pfUsedAnswers[rotNum]={};
+  pfUsedAnswers[rotNum][ansIdx]=pfActiveGroup;
+  pfRoundScores[rotNum][pfActiveGroup]=(pfRoundScores[rotNum][pfActiveGroup]||0)+pts;
+  // Auto-advance: set to null so render auto-derives next from shot order
+  pfActiveGroup=null;
+  renderCoachScorecard();
+}
+
+function pfNoAnswer(rotNum){
+  // Award 0 points to the active group — answer not on the board
+  if(!pfActiveGroup)return;
+  if(!pfRoundScores[rotNum])pfRoundScores[rotNum]={};
+  if(!pfUsedAnswers[rotNum])pfUsedAnswers[rotNum]={};
+  // Record as answered with a special 'none' answer index (-1) so auto-advance works
+  pfUsedAnswers[rotNum]['none_'+pfActiveGroup]=pfActiveGroup;
+  pfRoundScores[rotNum][pfActiveGroup]=(pfRoundScores[rotNum][pfActiveGroup]||0)+0;
+  // Auto-advance: set to null so render auto-derives next from shot order
+  pfActiveGroup=null;
+  renderCoachScorecard();
+}
+
+function pfNextQuestion(rotNum){
+  if(!pfCurrentQOffset[rotNum])pfCurrentQOffset[rotNum]=0;
+  pfCurrentQOffset[rotNum]++;
+  // Reset used answers and shot order for new question
+  pfUsedAnswers[rotNum]={};
+  pfShotOrder[rotNum]=[];
+  pfActiveGroup=null;
+  renderCoachScorecard();
+}
+
+function pfPrevQuestion(rotNum){
+  if(!pfCurrentQOffset[rotNum])pfCurrentQOffset[rotNum]=0;
+  pfCurrentQOffset[rotNum]=Math.max(0,pfCurrentQOffset[rotNum]-1);
+  // Reset used answers and shot order for new question
+  pfUsedAnswers[rotNum]={};
+  pfShotOrder[rotNum]=[];
+  pfActiveGroup=null;
+  renderCoachScorecard();
+}
+
+function pfChangeSplit(){
+  const opts=['none','2','3'];
+  const cur=pfSplit;
+  const next=opts[(opts.indexOf(cur)+1)%opts.length];
+  pfSplit=next;
+  // Reset group scores for current rotation when split changes
+  const rot=coachRotationData[coachCurrentRotation];
+  if(rot){pfRoundScores[rot.rotation_number]={};pfUsedAnswers[rot.rotation_number]={};}
+  pfActiveGroup=null;
+  renderCoachScorecard();
+}
+
+async function pfFinishRound(rotNum){
+  // Determine winner by team totals
+  const rot=coachRotationData[coachCurrentRotation];
+  const gamesRaw=coachSelectedStation.games||'';
+  const finishParts=gamesRaw.split('|');
+  const finishSplitPart=finishParts.find(p=>p.startsWith('SPLIT:'));
+  const activeSplit=finishSplitPart?finishSplitPart.replace('SPLIT:',''):(pfSplit||'none');
+  const numGroups=activeSplit==='2'?2:activeSplit==='3'?3:1;
+  const scores=pfRoundScores[rotNum]||{};
+  let t1=0,t2=0;
+  for(let gi=1;gi<=numGroups;gi++){t1+=scores[`t1g${gi}`]||0;t2+=scores[`t2g${gi}`]||0;}
+  const winner=t1>t2?rot.team1:t2>t1?rot.team2:null;
+  if(winner){await scoreWinner(winner,rotNum);}
+  else{
+    // Tied — just advance
+    jumpToRotation(coachCurrentRotation+1);
+  }
+}
+
+async function scoreWinner(team,rotNum){
+  if(!team||!coachSelectedStation||!coachEventData)return;
+  coachScores[rotNum]=team;renderCoachScorecard();
+  try{
+    await db('DELETE','scores',`?event_id=eq.${coachEventData.event.id}&station_id=eq.${coachSelectedStation.id}&rotation_number=eq.${rotNum}`);
+    await db('POST','scores','',{event_id:coachEventData.event.id,station_id:coachSelectedStation.id,rotation_number:rotNum,winning_team:team});
+  }catch(err){toast('Sync error: '+err.message,true);}
+}
+async function undoScore(rotNum){
+  delete coachScores[rotNum];renderCoachScorecard();
+  try{await db('DELETE','scores',`?event_id=eq.${coachEventData.event.id}&station_id=eq.${coachSelectedStation.id}&rotation_number=eq.${rotNum}`);}
+  catch(err){toast('Sync error: '+err.message,true);}
+}
+function jumpToRotation(idx){
+  pfEditMode=false;tallyEditMode=false;
+  const total=coachRotationData.length;
+  if(idx<0||idx>=total)return;
+  coachCurrentRotation=idx;
+  // Reset Pong Feud active group for new rotation (keep scores)
+  pfActiveGroup=null;
+  renderCoachScorecard();
+}
+
+function showRotationJumper(total){
+  const el=document.getElementById('coach-scorecard');
+  let btns='';
+  coachRotationData.forEach((rot,i)=>{
+    const sc=coachScores[rot.rotation_number];
+    const isCur=i===coachCurrentRotation;
+    const border=isCur?'var(--blue)':sc?'var(--border-dark)':'var(--border)';
+    const bg=isCur?'var(--blue)':sc?'#eef4ee':'var(--bg)';
+    const col=isCur?'#fff':sc?'var(--text-mid)':'var(--text-muted)';
+    btns+='<button onclick="jumpToRotation('+i+')" style="padding:8px 14px;border-radius:8px;border:1.5px solid '+border+';background:'+bg+';color:'+col+';font-family:Montserrat,sans-serif;font-size:12px;font-weight:800;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px">'
+      +'<span>R'+(i+1)+'</span>'
+      +(sc?'<span style="font-size:9px;font-weight:700;opacity:.7">✓</span>':'')
+      +'</button>';
+  });
+  const jumperHtml='<div id="rotation-jumper" style="background:var(--card);border:1.5px solid var(--blue);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow-md)">'
+    +'<div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px">Jump to Rotation</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">'+btns+'</div>'
+    +'<button onclick="renderCoachScorecard()" style="width:100%;padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;cursor:pointer;color:var(--text-muted)">Cancel</button>'
+    +'</div>';
+  // Remove existing jumper if present, then prepend
+  const existing=document.getElementById('rotation-jumper');
+  if(existing)existing.remove();
+  el.insertAdjacentHTML('afterbegin',jumperHtml);
+}
+
+function nextRotation(){coachCurrentRotation++;pfActiveGroup=null;renderCoachScorecard();}
+
+// ══════════════════════════════════════════════════════════
+// LEADERBOARD
+// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// SCHEDULE TAB
+// ══════════════════════════════════════════════════════
+async function loadSchedulePage(){
+  const inner=document.getElementById('schedule-inner');
+  inner.innerHTML='<div class="loading-state"><div class="spinner"></div></div>';
+  try{
+    let events=await db('GET','events','?status=eq.active&limit=1');
+    if(!events.length)events=await db('GET','events','?status=eq.completed&order=created_at.desc&limit=1');
+    if(!events.length){inner.innerHTML='<div class="no-event-msg">No active event.</div>';return;}
+    const ev=events[0];
+    const [stations,rotations,teams]=await Promise.all([
+      db('GET','stations',`?event_id=eq.${ev.id}&order=number`),
+      db('GET','rotations',`?event_id=eq.${ev.id}`),
+      db('GET','teams',`?event_id=eq.${ev.id}`)
+    ]);
+    teams.forEach(t=>{teamColorCache[t.name]=t.color||'#0673c1';});
+    const h2h=stations.filter(s=>!s.games.includes('ALLTEAMS'));
+    const allT=stations.filter(s=>s.games.includes('ALLTEAMS'));
+    const rot1Ids=new Set(rotations.filter(r=>r.rotation_number===1).map(r=>r.station_id));
+    const setSize=rot1Ids.size||h2h.length;
+    const sets=[];
+    for(let i=0;i<h2h.length;i+=setSize)sets.push(h2h.slice(i,i+setSize));
+    let html='<div class="event-header"><div class="event-title-lg">'+ev.name+'</div>'
+      +'<div class="event-meta">'+(ev.date||'')+' · Rotation Schedule</div></div>';
+    sets.forEach((stns,si)=>{
+      const setRots=rotations.filter(r=>r.station_id===stns[0].id).sort((a,b)=>a.rotation_number-b.rotation_number);
+      let thead='<tr><th>Round</th>';
+      stns.forEach(s=>{
+        const coach=s.coaches?' <span style="font-weight:500;opacity:.7">· '+s.coaches+'</span>':'';
+        thead+='<th>Stn '+s.number+': '+getGameName(s)+coach+'</th>';
+      });
+      thead+='</tr>';
+      let tbody='';
+      setRots.forEach((rot,ri)=>{
+        tbody+='<tr><td class="it-rot-num">R'+(ri+1)+'</td>';
+        stns.forEach(stn=>{
+          const r=rotations.find(x=>x.station_id===stn.id&&x.rotation_number===rot.rotation_number);
+          if(r&&r.team1&&r.team2){
+            const c1=teamColorCache[r.team1]||'#0673c1';
+            const c2=teamColorCache[r.team2]||'#e02020';
+            const rd1=readableTeamColor(c1==='CAMO'?'#5a6e4a':c1);
+            const rd2=readableTeamColor(c2==='CAMO'?'#5a6e4a':c2);
+            tbody+='<td><div class="it-matchup">'
+              +'<span class="it-team" style="color:'+rd1+'">'+r.team1+'</span>'
+              +'<span class="it-vs">vs</span>'
+              +'<span class="it-team" style="color:'+rd2+'">'+r.team2+'</span>'
+              +'</div></td>';
+          } else tbody+='<td style="color:var(--text-muted)">—</td>';
+        });
+        tbody+='</tr>';
+      });
+      html+='<div class="card" style="margin-bottom:16px;padding:0;overflow:hidden">'
+        +(sets.length>1?'<div style="padding:12px 16px 8px;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);border-bottom:1px solid var(--border)">Set '+(si+1)+'</div>':'')
+        +'<div style="overflow-x:auto"><table class="itinerary-table"><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table></div>'
+        +'</div>';
+    });
+    if(allT.length){
+      html+='<div class="card" style="margin-bottom:16px"><div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:10px">Final Round</div>';
+      allT.forEach(stn=>{
+        const coach=stn.coaches?' · '+stn.coaches:'';
+        html+='<div style="font-size:14px;font-weight:700;margin-bottom:2px">'+getGameName(stn)
+          +'<span style="font-size:12px;font-weight:500;color:var(--text-muted)">'+coach+'</span></div>'
+          +'<div style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:8px">All teams compete together.</div>';
+      });
+      html+='</div>';
+    }
+    if(!stations.length)html+='<p class="text-muted" style="text-align:center;padding:40px;font-size:13px">No schedule generated yet.</p>';
+    inner.innerHTML=html;
+  }catch(err){inner.innerHTML='<p class="text-muted" style="text-align:center;padding:40px">Error: '+err.message+'</p>';}
+}
+
+let lbExpandedTeam=null;
+let itineraryOpen=false;
+
+async function loadLeaderboard(){
+  const inner=document.getElementById('lb-inner');
+  inner.innerHTML='<div class="loading-state"><div class="spinner"></div></div>';
+  try{
+    let events=await db('GET','events','?status=eq.active&limit=1');
+    if(!events.length)events=await db('GET','events','?status=eq.completed&order=created_at.desc&limit=1');
+    if(!events.length){inner.innerHTML='<div class="no-event-msg">No events yet.</div>';return;}
+    const ev=events[0];
+    const [teams,scores,stations,rotations]=await Promise.all([
+      db('GET','teams',`?event_id=eq.${ev.id}`),
+      db('GET','scores',`?event_id=eq.${ev.id}`),
+      db('GET','stations',`?event_id=eq.${ev.id}&order=number`),
+      db('GET','rotations',`?event_id=eq.${ev.id}`)
+    ]);
+    const totals={};
+    teams.forEach(t=>{totals[t.name]={points:0,color:t.color||'#0673c1'};});
+    scores.forEach(s=>{
+      if(s.winning_team==='ALL')return;
+      if(s.winning_team==='TIE'){
+        const rot=rotations.find(r=>r.station_id===s.station_id&&r.rotation_number===s.rotation_number);
+        if(rot){
+          if(totals[rot.team1])totals[rot.team1].points+=0.5;
+          if(totals[rot.team2])totals[rot.team2].points+=0.5;
+        }
+        return;
+      }
+      if(totals[s.winning_team])totals[s.winning_team].points++;
+      else totals[s.winning_team]={points:1,color:'#0673c1'};
+    });
+    const sorted=Object.entries(totals).sort((a,b)=>b[1].points-a[1].points);
+    const maxPts=sorted[0]?.[1]?.points||1;
+    const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    // Per-team game breakdown
+    const teamBreakdown={};
+    teams.forEach(t=>{teamBreakdown[t.name]=[];});
+    stations.filter(s=>!s.games.includes('ALLTEAMS')).forEach(station=>{
+      const gameName=station.games.split('|')[0];
+      rotations.filter(r=>r.station_id===station.id).forEach(rot=>{
+        if(!rot.team1||!rot.team2)return;
+        const score=scores.find(s=>s.station_id===station.id&&s.rotation_number===rot.rotation_number);
+        const result=score?score.winning_team:null;
+        [rot.team1,rot.team2].forEach(team=>{
+          if(!teamBreakdown[team])return;
+          let res,resClass;
+          if(!result){res='Not played yet';resClass='pending';}
+          else if(result==='TIE'){res='Tie (+0.5)';resClass='tie';}
+          else if(result===team){res='Win (+1)';resClass='win';}
+          else{res='Loss';resClass='loss';}
+          teamBreakdown[team].push({game:gameName,res,resClass,opponent:team===rot.team1?rot.team2:rot.team1});
+        });
+      });
+    });
+    // Build HTML
+    let rowsHtml='';
+    sorted.forEach(([name,data],i)=>{
+      const isExp=lbExpandedTeam===name;
+      const breakdown=teamBreakdown[name]||[];
+      let detailHtml='';
+      if(isExp){
+        let gameRows=breakdown.length===0?'<p class="text-muted" style="font-size:12px">No games recorded yet.</p>':'';
+        breakdown.forEach(b=>{
+          gameRows+='<div class="lb-game-row">'
+            +'<div class="lb-game-name">'+b.game+'<span style="font-size:10px;color:var(--text-muted);font-weight:500"> vs '+b.opponent+'</span></div>'
+            +'<div class="lb-game-result '+b.resClass+'">'+b.res+'</div>'
+            +'</div>';
+        });
+        detailHtml='<div class="lb-detail open"><div class="lb-detail-title">'+name+' — Game Breakdown</div>'+gameRows+'</div>';
+      }
+      const safeName=name.replace(/'/g,"\'");
+      rowsHtml+='<div class="lb-row '+(i===0&&data.points>0?'first':'')+'" onclick="lbExpandedTeam=lbExpandedTeam===\''+safeName+'\'?null:\''+safeName+'\';loadLeaderboard()">'
+        +'<div class="lb-rank">'+(i+1)+'</div>'
+        +colorDot(data.color,14)
+        +'<div class="lb-team-name">'+name+'</div>'
+        +'<div class="lb-bar-wrap"><div class="lb-bar" style="width:'+(maxPts>0?data.points/maxPts*100:0)+'%"></div></div>'
+        +'<div class="lb-points">'+(data.points%1===0?data.points:data.points.toFixed(1))+'</div>'
+        +'<div style="font-size:14px;color:var(--text-muted)">'+(isExp?'▲':'▼')+'</div>'
+        +'</div>'+detailHtml;
+    });
+    inner.innerHTML=`
+      <div class="lb-header">
+        <div class="lb-event-name">${ev.name}</div>
+        <div class="lb-subtitle">${ev.date||''} · <span class="badge badge-${ev.status}">${ev.status}</span></div>
+      </div>
+      <div class="lb-refresh-row">
+        <span class="lb-last-updated">Updated ${now} · Tap team for details</span>
+        <button class="btn btn-sm" onclick="loadLeaderboard()">↻ Refresh</button>
+      </div>
+      ${rowsHtml}
+      ${scores.length===0?'<p class="text-muted" style="text-align:center;margin-top:20px;font-size:13px;font-weight:600">No scores recorded yet.</p>':''}`;
+  }catch(err){inner.innerHTML=`<p class="text-muted" style="text-align:center;padding:40px">Error: ${err.message}</p>`;}
+}
+
+
+window.addEventListener('load',loadAdminEventList);
+</script>
+</body>
+</html>
