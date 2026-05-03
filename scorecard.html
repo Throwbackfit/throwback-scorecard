@@ -23,8 +23,9 @@
   .nav-logo-mark{width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;}
   .nav-logo-text{font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff;line-height:1.2;}
   .nav-logo-sub{font-size:9px;font-weight:600;letter-spacing:2.5px;color:rgba(255,255,255,0.65);text-transform:uppercase;}
-  .nav-tabs{display:flex;gap:4px;}
-  .nav-tab{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);padding:6px 10px;border-radius:6px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+  .nav-tabs{display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap;padding-bottom:2px;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .nav-tab{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);padding:6px 10px;border-radius:6px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
   .nav-tab.active{background:#fff;border-color:#fff;color:var(--blue);}
   .nav-tab:hover:not(.active){background:rgba(255,255,255,0.2);}
 
@@ -326,6 +327,24 @@
   .it-vs{font-size:9px;color:var(--text-muted);font-weight:600;}
   .it-team{font-size:11px;font-weight:800;}
 
+  /* RESULTS PAGE SECTIONS */
+  .results-section{background:var(--card);border:1.5px solid var(--border);border-radius:14px;margin-bottom:14px;overflow:hidden;box-shadow:var(--shadow);}
+  .results-section-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;}
+  .results-section-header:active{opacity:.8;}
+  .results-section-title{font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
+  .results-section-chevron{font-size:14px;color:var(--text-muted);transition:transform .2s;}
+  .results-section-chevron.open{transform:rotate(180deg);}
+  .results-section-body{border-top:1px solid var(--border);}
+
+  /* STATION PILL */
+  .stn-pill{display:flex;align-items:center;justify-content:space-between;background:#fff5f5;border:2px solid var(--red);border-radius:12px;padding:12px 16px;cursor:pointer;margin-bottom:12px;-webkit-tap-highlight-color:transparent;}
+  .stn-pill:active{opacity:.85;}
+  .stn-pill-name{font-size:15px;font-weight:900;color:var(--red);letter-spacing:-.3px;}
+  .stn-pill-sub{font-size:11px;font-weight:600;color:var(--red);opacity:.7;margin-top:2px;}
+  .stn-pill-chevron{font-size:16px;color:var(--red);transition:transform .2s;flex-shrink:0;}
+  .stn-pill-chevron.open{transform:rotate(180deg);}
+  .stn-select-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
+
   /* ── MOBILE OVERRIDES ── */
   @media(max-width:400px){
     nav{padding:0 12px;}
@@ -386,10 +405,9 @@
     </div>
   </div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('admin',this)">Admin</button>
+    <button class="nav-tab active" onclick="requireAdminPin(this)">Admin</button>
     <button class="nav-tab" onclick="showPage('coach',this)">Coach</button>
-    <button class="nav-tab" onclick="showPage('schedule',this)">Schedule</button>
-    <button class="nav-tab" onclick="showPage('leaderboard',this)">Scores</button>
+    <button class="nav-tab" onclick="showPage('results',this)">Schedule & Results</button>
   </div>
 </nav>
 
@@ -453,13 +471,8 @@
 </div>
 
 <!-- ══ SCHEDULE ══ -->
-<div class="page" id="schedule-page">
-  <div id="schedule-inner"><div class="loading-state"><div class="spinner"></div></div></div>
-</div>
-
-<!-- ══ LEADERBOARD ══ -->
-<div class="page" id="leaderboard-page">
-  <div id="lb-inner"><div class="loading-state"><div class="spinner"></div></div></div>
+<div class="page" id="results-page">
+  <div id="results-inner"><div class="loading-state"><div class="spinner"></div></div></div>
 </div>
 
 <!-- NEW EVENT MODAL -->
@@ -683,14 +696,39 @@ function tallyAdjust(rotNum,side,delta){
 // ══════════════════════════════════════════════════════════
 // UTILS
 // ══════════════════════════════════════════════════════════
+const ADMIN_PIN='0422';
+let adminUnlocked=false;
+let pendingAdminBtn=null;
+
+function requireAdminPin(btn){
+  if(adminUnlocked){showPage('admin',btn);return;}
+  pendingAdminBtn=btn;
+  document.getElementById('admin-pin-input').value='';
+  document.getElementById('admin-pin-error').textContent='';
+  openModal('admin-pin-modal');
+  setTimeout(()=>document.getElementById('admin-pin-input').focus(),100);
+}
+
+function submitAdminPin(){
+  const val=document.getElementById('admin-pin-input').value;
+  if(val===ADMIN_PIN){
+    adminUnlocked=true;
+    closeModal('admin-pin-modal');
+    showPage('admin',pendingAdminBtn);
+  } else {
+    document.getElementById('admin-pin-error').textContent='Incorrect PIN — try again';
+    document.getElementById('admin-pin-input').value='';
+    document.getElementById('admin-pin-input').focus();
+  }
+}
+
 function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(`${name}-page`).classList.add('active');btn.classList.add('active');
   if(name==='admin')loadAdminEventList();
   if(name==='coach')loadCoachPage();
-  if(name==='leaderboard')loadLeaderboard();
-  if(name==='schedule')loadSchedulePage();
+  if(name==='results')loadResultsPage();
 }
 function toast(msg,err=false){
   const t=document.getElementById('toast');t.textContent=msg;
@@ -1409,53 +1447,59 @@ function getGameName(s){
 
 function renderCoachStationSelect(){
   const {event,stations,rotations}=coachEventData;
-  document.getElementById('coach-inner').innerHTML=`
-    <div class="event-header">
-      <div class="event-title-lg">${event.name}</div>
-      <div class="event-meta">${event.date||''} · Select your station</div>
-    </div>
-    ${(()=>{
-      // Group stations into sets: stations sharing rotation numbers are in the same set
-      // All-teams station is its own group at the end
-      const h2hStations=stations.filter(s=>!isAllTeamsStn(s));
-      const allTeamsStation=stations.find(s=>isAllTeamsStn(s));
-      // Determine set size: number of stations with rotation_number=1
-      const rot1StationIds=new Set(rotations.filter(r=>r.rotation_number===1).map(r=>r.station_id));
-      const setSize=rot1StationIds.size||h2hStations.length;
-      // Split h2h stations into sets
-      const sets=[];
-      for(let i=0;i<h2hStations.length;i+=setSize){
-        sets.push(h2hStations.slice(i,i+setSize));
-      }
-      const renderBtn=(s)=>{
-        const isAll=isAllTeamsStn(s);
-        const active=coachSelectedStation?.id===s.id?'active':'';
-        return'<div class="station-btn '+(isAll?'allteams-stn ':'')+active+'" onclick="selectCoachStation(\''+s.id+'\')">'  
-          +'<div class="stn-num">'+s.number+'</div>'
-          +'<div class="stn-game">'+getGameName(s)+'</div>'
-          +(s.coaches?'<div style="font-size:9px;font-weight:600;color:var(--text-muted);margin-top:3px">'+s.coaches+'</div>':'')
-          +'</div>';
-      };
-      let html='';
-      sets.forEach((set,si)=>{
-        html+='<div style="margin-bottom:10px">'
-          +(sets.length>1?'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px">Set '+(si+1)+'</div>':'')
-          +'<div class="station-selector" style="margin-bottom:0">'
-          +set.map(renderBtn).join('')
-          +'</div></div>';
-      });
-      if(allTeamsStation){
-        html+='<div style="margin-bottom:10px">'
-          +'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px">Final Round</div>'
-          +'<div class="station-selector" style="margin-bottom:0">'+renderBtn(allTeamsStation)+'</div>'
-          +'</div>';
-      }
-      return html;
-    })()}
-    <div id="coach-scorecard"></div>`;
+  const h2hStations=stations.filter(s=>!isAllTeamsStn(s));
+  const allTeamsStations=stations.filter(s=>isAllTeamsStn(s));
+  const rot1StationIds=new Set(rotations.filter(r=>r.rotation_number===1).map(r=>r.station_id));
+  const setSize=rot1StationIds.size||h2hStations.length;
+  const sets=[];
+  for(let i=0;i<h2hStations.length;i+=setSize)sets.push(h2hStations.slice(i,i+setSize));
+
+  const renderBtn=(s)=>{
+    const isAll=isAllTeamsStn(s);
+    const active=coachSelectedStation?.id===s.id?'active':'';
+    return'<div class="station-btn '+(isAll?'allteams-stn ':'')+active+'" onclick="selectCoachStation(\''+s.id+'\')">'
+      +'<div class="stn-num">'+s.number+'</div>'
+      +'<div class="stn-game">'+getGameName(s)+'</div>'
+      +(s.coaches?'<div style="font-size:9px;font-weight:600;color:var(--text-muted);margin-top:3px">'+s.coaches+'</div>':'')
+      +'</div>';
+  };
+
+  let gridHtml='<div class="stn-select-label">Select your station</div>';
+  sets.forEach((set,si)=>{
+    gridHtml+='<div class="stn-set-row" style="margin-bottom:10px">'
+      +(sets.length>1?'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px">Set '+(si+1)+'</div>':'')
+      +'<div class="station-selector" style="margin-bottom:0">'+set.map(renderBtn).join('')+'</div>'
+      +'</div>';
+  });
+  if(allTeamsStations.length){
+    gridHtml+='<div class="stn-set-row" style="margin-bottom:10px">'
+      +'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px">Final Round</div>'
+      +'<div class="station-selector" style="margin-bottom:0">'+allTeamsStations.map(renderBtn).join('')+'</div>'
+      +'</div>';
+  }
+
+  const pillHtml=coachSelectedStation
+    ?'<div class="stn-pill" onclick="stnSelectorOpen=!stnSelectorOpen;renderCoachStationSelect()">'  
+      +'<div><div class="stn-pill-name">Stn '+coachSelectedStation.number+' · '+getGameName(coachSelectedStation)+'</div>'
+      +'<div class="stn-pill-sub">'+(coachSelectedStation.coaches?coachSelectedStation.coaches+' · ':'')+' Tap to change</div>'
+      +'</div>'
+      +'<span class="stn-pill-chevron '+(stnSelectorOpen?'open':'')+'">&#9660;</span>'
+      +'</div>'
+    :'';
+  const showGrid=!coachSelectedStation||stnSelectorOpen;
+  document.getElementById('coach-inner').innerHTML=
+    '<div class="event-header">'
+    +'<div class="event-title-lg">'+event.name+'</div>'
+    +(coachSelectedStation?'':'<div class="event-meta">'+(event.date||'')+'</div>')
+    +'</div>'
+    +pillHtml
+    +(showGrid?'<div style="margin-bottom:8px">'+gridHtml+'</div>':'')
+    +'<div id="coach-scorecard"></div>';
 }
 
+
 async function selectCoachStation(stationId){
+  stnSelectorOpen=false; // collapse after selection
   const {stations,rotations,event}=coachEventData;
   coachSelectedStation=stations.find(s=>s.id===stationId);
   coachCurrentRotation=0;coachScores={};tallyScores={};pfRoundScores={};pfUsedAnswers={};pfActiveGroup=null;pfCurrentQOffset={};pfShotOrder={};pfSplit='none';
@@ -1464,8 +1508,8 @@ async function selectCoachStation(stationId){
   existing.forEach(s=>{coachScores[s.rotation_number]=s.winning_team;});
   const firstUnscore=coachRotationData.findIndex(r=>!coachScores[r.rotation_number]);
   coachCurrentRotation=firstUnscore>=0?firstUnscore:Math.max(0,coachRotationData.length-1);
-  document.querySelectorAll('.station-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick').includes(stationId)));
-  renderCoachScorecard();
+  renderCoachStationSelect(); // re-renders with collapsed pill
+  renderCoachScorecard();     // fills scorecard div
 }
 
 function renderCoachScorecard(){
@@ -1807,6 +1851,7 @@ function renderCoachScorecard(){
 
 // Pong Feud coach state
 let pfActiveGroup=null;
+let stnSelectorOpen=true; // collapses after station selection
 let pfCurrentQOffset={}; // rotNum -> question offset within rotation
 let pfEditMode=false; // whether score edit inputs are showing
 let pfShotOrder={}; // rotNum -> [groupKey, groupKey, ...] in order of shot made
@@ -1976,172 +2021,345 @@ function nextRotation(){coachCurrentRotation++;pfActiveGroup=null;renderCoachSco
 // ══════════════════════════════════════════════════════
 // SCHEDULE TAB
 // ══════════════════════════════════════════════════════
-async function loadSchedulePage(){
-  const inner=document.getElementById('schedule-inner');
-  inner.innerHTML='<div class="loading-state"><div class="spinner"></div></div>';
-  try{
-    let events=await db('GET','events','?status=eq.active&limit=1');
-    if(!events.length)events=await db('GET','events','?status=eq.completed&order=created_at.desc&limit=1');
-    if(!events.length){inner.innerHTML='<div class="no-event-msg">No active event.</div>';return;}
-    const ev=events[0];
-    const [stations,rotations,teams]=await Promise.all([
-      db('GET','stations',`?event_id=eq.${ev.id}&order=number`),
-      db('GET','rotations',`?event_id=eq.${ev.id}`),
-      db('GET','teams',`?event_id=eq.${ev.id}`)
-    ]);
-    teams.forEach(t=>{teamColorCache[t.name]=t.color||'#0673c1';});
-    const h2h=stations.filter(s=>!s.games.includes('ALLTEAMS'));
-    const allT=stations.filter(s=>s.games.includes('ALLTEAMS'));
-    const rot1Ids=new Set(rotations.filter(r=>r.rotation_number===1).map(r=>r.station_id));
-    const setSize=rot1Ids.size||h2h.length;
-    const sets=[];
-    for(let i=0;i<h2h.length;i+=setSize)sets.push(h2h.slice(i,i+setSize));
-    let html='<div class="event-header"><div class="event-title-lg">'+ev.name+'</div>'
-      +'<div class="event-meta">'+(ev.date||'')+' · Rotation Schedule</div></div>';
-    sets.forEach((stns,si)=>{
-      const setRots=rotations.filter(r=>r.station_id===stns[0].id).sort((a,b)=>a.rotation_number-b.rotation_number);
-      let thead='<tr><th>Round</th>';
-      stns.forEach(s=>{
-        const coach=s.coaches?' <span style="font-weight:500;opacity:.7">· '+s.coaches+'</span>':'';
-        thead+='<th>Stn '+s.number+': '+getGameName(s)+coach+'</th>';
-      });
-      thead+='</tr>';
-      let tbody='';
-      setRots.forEach((rot,ri)=>{
-        tbody+='<tr><td class="it-rot-num">R'+(ri+1)+'</td>';
-        stns.forEach(stn=>{
-          const r=rotations.find(x=>x.station_id===stn.id&&x.rotation_number===rot.rotation_number);
-          if(r&&r.team1&&r.team2){
-            const c1=teamColorCache[r.team1]||'#0673c1';
-            const c2=teamColorCache[r.team2]||'#e02020';
-            const rd1=readableTeamColor(c1==='CAMO'?'#5a6e4a':c1);
-            const rd2=readableTeamColor(c2==='CAMO'?'#5a6e4a':c2);
-            tbody+='<td><div class="it-matchup">'
-              +'<span class="it-team" style="color:'+rd1+'">'+r.team1+'</span>'
-              +'<span class="it-vs">vs</span>'
-              +'<span class="it-team" style="color:'+rd2+'">'+r.team2+'</span>'
-              +'</div></td>';
-          } else tbody+='<td style="color:var(--text-muted)">—</td>';
-        });
-        tbody+='</tr>';
-      });
-      html+='<div class="card" style="margin-bottom:16px;padding:0;overflow:hidden">'
-        +(sets.length>1?'<div style="padding:12px 16px 8px;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);border-bottom:1px solid var(--border)">Set '+(si+1)+'</div>':'')
-        +'<div style="overflow-x:auto"><table class="itinerary-table"><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table></div>'
-        +'</div>';
-    });
-    if(allT.length){
-      html+='<div class="card" style="margin-bottom:16px"><div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:10px">Final Round</div>';
-      allT.forEach(stn=>{
-        const coach=stn.coaches?' · '+stn.coaches:'';
-        html+='<div style="font-size:14px;font-weight:700;margin-bottom:2px">'+getGameName(stn)
-          +'<span style="font-size:12px;font-weight:500;color:var(--text-muted)">'+coach+'</span></div>'
-          +'<div style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:8px">All teams compete together.</div>';
-      });
-      html+='</div>';
-    }
-    if(!stations.length)html+='<p class="text-muted" style="text-align:center;padding:40px;font-size:13px">No schedule generated yet.</p>';
-    inner.innerHTML=html;
-  }catch(err){inner.innerHTML='<p class="text-muted" style="text-align:center;padding:40px">Error: '+err.message+'</p>';}
-}
+let resultsScheduleOpen=true;
 
+let resultsScoresOpen=false;
 let lbExpandedTeam=null;
-let itineraryOpen=false;
 
-async function loadLeaderboard(){
-  const inner=document.getElementById('lb-inner');
+
+
+async function loadResultsPage(){
+
+  const inner=document.getElementById('results-inner');
+
   inner.innerHTML='<div class="loading-state"><div class="spinner"></div></div>';
+
   try{
+
     let events=await db('GET','events','?status=eq.active&limit=1');
+
     if(!events.length)events=await db('GET','events','?status=eq.completed&order=created_at.desc&limit=1');
-    if(!events.length){inner.innerHTML='<div class="no-event-msg">No events yet.</div>';return;}
+
+    if(!events.length){inner.innerHTML='<div class="no-event-msg">No active event.</div>';return;}
+
     const ev=events[0];
-    const [teams,scores,stations,rotations]=await Promise.all([
-      db('GET','teams',`?event_id=eq.${ev.id}`),
-      db('GET','scores',`?event_id=eq.${ev.id}`),
+
+    const [stations,rotations,teams,scores]=await Promise.all([
+
       db('GET','stations',`?event_id=eq.${ev.id}&order=number`),
-      db('GET','rotations',`?event_id=eq.${ev.id}`)
+
+      db('GET','rotations',`?event_id=eq.${ev.id}`),
+
+      db('GET','teams',`?event_id=eq.${ev.id}`),
+
+      db('GET','scores',`?event_id=eq.${ev.id}`)
+
     ]);
-    const totals={};
-    teams.forEach(t=>{totals[t.name]={points:0,color:t.color||'#0673c1'};});
-    scores.forEach(s=>{
-      if(s.winning_team==='ALL')return;
-      if(s.winning_team==='TIE'){
-        const rot=rotations.find(r=>r.station_id===s.station_id&&r.rotation_number===s.rotation_number);
-        if(rot){
-          if(totals[rot.team1])totals[rot.team1].points+=0.5;
-          if(totals[rot.team2])totals[rot.team2].points+=0.5;
-        }
-        return;
-      }
-      if(totals[s.winning_team])totals[s.winning_team].points++;
-      else totals[s.winning_team]={points:1,color:'#0673c1'};
-    });
-    const sorted=Object.entries(totals).sort((a,b)=>b[1].points-a[1].points);
-    const maxPts=sorted[0]?.[1]?.points||1;
-    const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    // Per-team game breakdown
-    const teamBreakdown={};
-    teams.forEach(t=>{teamBreakdown[t.name]=[];});
-    stations.filter(s=>!s.games.includes('ALLTEAMS')).forEach(station=>{
-      const gameName=station.games.split('|')[0];
-      rotations.filter(r=>r.station_id===station.id).forEach(rot=>{
-        if(!rot.team1||!rot.team2)return;
-        const score=scores.find(s=>s.station_id===station.id&&s.rotation_number===rot.rotation_number);
-        const result=score?score.winning_team:null;
-        [rot.team1,rot.team2].forEach(team=>{
-          if(!teamBreakdown[team])return;
-          let res,resClass;
-          if(!result){res='Not played yet';resClass='pending';}
-          else if(result==='TIE'){res='Tie (+0.5)';resClass='tie';}
-          else if(result===team){res='Win (+1)';resClass='win';}
-          else{res='Loss';resClass='loss';}
-          teamBreakdown[team].push({game:gameName,res,resClass,opponent:team===rot.team1?rot.team2:rot.team1});
-        });
+
+    teams.forEach(t=>{teamColorCache[t.name]=t.color||'#0673c1';});
+
+
+
+    // ── SCHEDULE SECTION ──
+
+    const h2h=stations.filter(s=>!s.games.includes('ALLTEAMS'));
+
+    const allT=stations.filter(s=>s.games.includes('ALLTEAMS'));
+
+    const rot1Ids=new Set(rotations.filter(r=>r.rotation_number===1).map(r=>r.station_id));
+
+    const setSize=rot1Ids.size||h2h.length;
+
+    const sets=[];
+
+    for(let i=0;i<h2h.length;i+=setSize)sets.push(h2h.slice(i,i+setSize));
+
+    let schedHtml='';
+
+    sets.forEach((stns,si)=>{
+
+      const setRots=rotations.filter(r=>r.station_id===stns[0].id).sort((a,b)=>a.rotation_number-b.rotation_number);
+
+      let thead='<tr><th>Round</th>';
+
+      stns.forEach(s=>{
+
+        const coach=s.coaches?' <span style="font-weight:500;opacity:.7">· '+s.coaches+'</span>':'';
+
+        thead+='<th>Stn '+s.number+': '+getGameName(s)+coach+'</th>';
+
       });
-    });
-    // Build HTML
-    let rowsHtml='';
-    sorted.forEach(([name,data],i)=>{
-      const isExp=lbExpandedTeam===name;
-      const breakdown=teamBreakdown[name]||[];
-      let detailHtml='';
-      if(isExp){
-        let gameRows=breakdown.length===0?'<p class="text-muted" style="font-size:12px">No games recorded yet.</p>':'';
-        breakdown.forEach(b=>{
-          gameRows+='<div class="lb-game-row">'
-            +'<div class="lb-game-name">'+b.game+'<span style="font-size:10px;color:var(--text-muted);font-weight:500"> vs '+b.opponent+'</span></div>'
-            +'<div class="lb-game-result '+b.resClass+'">'+b.res+'</div>'
-            +'</div>';
+
+      thead+='</tr>';
+
+      let tbody='';
+
+      setRots.forEach((rot,ri)=>{
+
+        tbody+='<tr><td class="it-rot-num">R'+(ri+1)+'</td>';
+
+        stns.forEach(stn=>{
+
+          const r=rotations.find(x=>x.station_id===stn.id&&x.rotation_number===rot.rotation_number);
+
+          if(r&&r.team1&&r.team2){
+
+            const c1=teamColorCache[r.team1]||'#0673c1';
+
+            const c2=teamColorCache[r.team2]||'#e02020';
+
+            const rd1=readableTeamColor(c1==='CAMO'?'#5a6e4a':c1);
+
+            const rd2=readableTeamColor(c2==='CAMO'?'#5a6e4a':c2);
+
+            tbody+='<td><div class="it-matchup">'
+
+              +'<span class="it-team" style="color:'+rd1+'">'+r.team1+'</span>'
+
+              +'<span class="it-vs">vs</span>'
+
+              +'<span class="it-team" style="color:'+rd2+'">'+r.team2+'</span>'
+
+              +'</div></td>';
+
+          } else tbody+='<td style="color:var(--text-muted)">—</td>';
+
         });
-        detailHtml='<div class="lb-detail open"><div class="lb-detail-title">'+name+' — Game Breakdown</div>'+gameRows+'</div>';
-      }
-      const safeName=name.replace(/'/g,"\'");
-      rowsHtml+='<div class="lb-row '+(i===0&&data.points>0?'first':'')+'" onclick="lbExpandedTeam=lbExpandedTeam===\''+safeName+'\'?null:\''+safeName+'\';loadLeaderboard()">'
-        +'<div class="lb-rank">'+(i+1)+'</div>'
-        +colorDot(data.color,14)
-        +'<div class="lb-team-name">'+name+'</div>'
-        +'<div class="lb-bar-wrap"><div class="lb-bar" style="width:'+(maxPts>0?data.points/maxPts*100:0)+'%"></div></div>'
-        +'<div class="lb-points">'+(data.points%1===0?data.points:data.points.toFixed(1))+'</div>'
-        +'<div style="font-size:14px;color:var(--text-muted)">'+(isExp?'▲':'▼')+'</div>'
-        +'</div>'+detailHtml;
+
+        tbody+='</tr>';
+
+      });
+
+      schedHtml+=(sets.length>1?'<div style="padding:10px 16px 4px;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue)">Set '+(si+1)+'</div>':'')
+
+        +'<div style="overflow-x:auto"><table class="itinerary-table"><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table></div>';
+
     });
-    inner.innerHTML=`
-      <div class="lb-header">
-        <div class="lb-event-name">${ev.name}</div>
-        <div class="lb-subtitle">${ev.date||''} · <span class="badge badge-${ev.status}">${ev.status}</span></div>
-      </div>
-      <div class="lb-refresh-row">
-        <span class="lb-last-updated">Updated ${now} · Tap team for details</span>
-        <button class="btn btn-sm" onclick="loadLeaderboard()">↻ Refresh</button>
-      </div>
-      ${rowsHtml}
-      ${scores.length===0?'<p class="text-muted" style="text-align:center;margin-top:20px;font-size:13px;font-weight:600">No scores recorded yet.</p>':''}`;
-  }catch(err){inner.innerHTML=`<p class="text-muted" style="text-align:center;padding:40px">Error: ${err.message}</p>`;}
+
+    if(allT.length){
+
+      schedHtml+='<div style="padding:12px 16px;border-top:1px solid var(--border)">'
+
+        +'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px">Final Round</div>';
+
+      allT.forEach(stn=>{
+
+        const coach=stn.coaches?' · '+stn.coaches:'';
+
+        schedHtml+='<div style="font-size:14px;font-weight:700;margin-bottom:2px">'+getGameName(stn)
+
+          +'<span style="font-size:12px;font-weight:500;color:var(--text-muted)">'+coach+'</span></div>'
+
+          +'<div style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:6px">All teams compete together.</div>';
+
+      });
+
+      schedHtml+='</div>';
+
+    }
+
+
+
+    // ── SCORES SECTION ──
+
+    const totals={};
+
+    teams.forEach(t=>{totals[t.name]={points:0,color:t.color||'#0673c1'};});
+
+    scores.forEach(s=>{
+
+      if(s.winning_team==='ALL')return;
+
+      if(s.winning_team==='TIE'){
+
+        const rot=rotations.find(r=>r.station_id===s.station_id&&r.rotation_number===s.rotation_number);
+
+        if(rot){if(totals[rot.team1])totals[rot.team1].points+=0.5;if(totals[rot.team2])totals[rot.team2].points+=0.5;}
+
+        return;
+
+      }
+
+      if(totals[s.winning_team])totals[s.winning_team].points++;
+
+      else totals[s.winning_team]={points:1,color:'#0673c1'};
+
+    });
+
+    const sorted=Object.entries(totals).sort((a,b)=>b[1].points-a[1].points);
+
+    const maxPts=sorted[0]?.[1]?.points||1;
+
+    const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+
+    const teamBreakdown={};
+
+    teams.forEach(t=>{teamBreakdown[t.name]=[];});
+
+    stations.filter(s=>!s.games.includes('ALLTEAMS')).forEach(station=>{
+
+      const gameName=station.games.split('|')[0];
+
+      rotations.filter(r=>r.station_id===station.id).forEach(rot=>{
+
+        if(!rot.team1||!rot.team2)return;
+
+        const score=scores.find(s=>s.station_id===station.id&&s.rotation_number===rot.rotation_number);
+
+        const result=score?score.winning_team:null;
+
+        [rot.team1,rot.team2].forEach(team=>{
+
+          if(!teamBreakdown[team])return;
+
+          let res,resClass;
+
+          if(!result){res='Not played yet';resClass='pending';}
+
+          else if(result==='TIE'){res='Tie (+0.5)';resClass='tie';}
+
+          else if(result===team){res='Win (+1)';resClass='win';}
+
+          else{res='Loss';resClass='loss';}
+
+          teamBreakdown[team].push({game:gameName,res,resClass,opponent:team===rot.team1?rot.team2:rot.team1});
+
+        });
+
+      });
+
+    });
+
+    let rowsHtml='';
+
+    sorted.forEach(([name,data],i)=>{
+
+      const isExp=lbExpandedTeam===name;
+
+      const breakdown=teamBreakdown[name]||[];
+
+      let detailHtml='';
+
+      if(isExp){
+
+        let gameRows=breakdown.length===0?'<p class="text-muted" style="font-size:12px">No games recorded yet.</p>':'';
+
+        breakdown.forEach(b=>{
+
+          gameRows+='<div class="lb-game-row"><div class="lb-game-name">'+b.game
+
+            +'<span style="font-size:10px;color:var(--text-muted);font-weight:500"> vs '+b.opponent+'</span></div>'
+
+            +'<div class="lb-game-result '+b.resClass+'">'+b.res+'</div></div>';
+
+        });
+
+        detailHtml='<div class="lb-detail open"><div class="lb-detail-title">'+name+' — Game Breakdown</div>'+gameRows+'</div>';
+
+      }
+
+      const safeName=name.replace(/'/g,"\'");
+
+      rowsHtml+='<div class="lb-row '+(i===0&&data.points>0?'first':'')+'" onclick="lbExpandedTeam=lbExpandedTeam===\''+safeName+'\'?null:\''+safeName+'\';loadResultsPage()">'
+
+        +'<div class="lb-rank">'+(i+1)+'</div>'
+
+        +colorDot(data.color,14)
+
+        +'<div class="lb-team-name">'+name+'</div>'
+
+        +'<div class="lb-bar-wrap"><div class="lb-bar" style="width:'+(maxPts>0?data.points/maxPts*100:0)+'%"></div></div>'
+
+        +'<div class="lb-points">'+(data.points%1===0?data.points:data.points.toFixed(1))+'</div>'
+
+        +'<div style="font-size:14px;color:var(--text-muted)">'+(isExp?'▲':'▼')+'</div>'
+
+        +'</div>'+detailHtml;
+
+    });
+
+    const scoresHtml='<div style="padding:14px 16px">'
+
+      +'<div class="lb-refresh-row" style="margin-bottom:12px">'
+
+      +'<span class="lb-last-updated">Updated '+now+' · Tap team for details</span>'
+
+      +'<button class="btn btn-sm" onclick="loadResultsPage()">↻ Refresh</button>'
+
+      +'</div>'
+
+      +rowsHtml
+
+      +(scores.length===0?'<p class="text-muted" style="text-align:center;margin-top:16px;font-size:13px;font-weight:600">No scores recorded yet.</p>':'')
+
+      +'</div>';
+
+
+
+    // ── RENDER ──
+
+    inner.innerHTML=
+
+      '<div class="event-header"><div class="event-title-lg">'+ev.name+'</div>'
+
+      +'<div class="event-meta">'+(ev.date||'')+' · <span class="badge badge-'+ev.status+'">'+ev.status+'</span></div></div>'
+
+      // Schedule section
+
+      +'<div class="results-section">'
+
+      +'<div class="results-section-header" onclick="resultsScheduleOpen=!resultsScheduleOpen;loadResultsPage()">'
+
+      +'<span class="results-section-title" style="color:var(--blue)">📋 Rotation Schedule</span>'
+
+      +'<span class="results-section-chevron '+(resultsScheduleOpen?'open':'')+'">▼</span>'
+
+      +'</div>'
+
+      +(resultsScheduleOpen?'<div class="results-section-body">'+schedHtml+'</div>':'')
+
+      +'</div>'
+
+      // Scores section
+
+      +'<div class="results-section">'
+
+      +'<div class="results-section-header" onclick="resultsScoresOpen=!resultsScoresOpen;loadResultsPage()">'
+
+      +'<span class="results-section-title" style="color:var(--blue)">🏆 Leaderboard</span>'
+
+      +'<span class="results-section-chevron '+(resultsScoresOpen?'open':'')+'">▼</span>'
+
+      +'</div>'
+
+      +(resultsScoresOpen?'<div class="results-section-body">'+scoresHtml+'</div>':'')
+
+      +'</div>';
+
+  }catch(err){inner.innerHTML='<p class="text-muted" style="text-align:center;padding:40px">Error: '+err.message+'</p>';}
+
 }
+
+
+
+
+
 
 
 window.addEventListener('load',loadAdminEventList);
 </script>
+<!-- ADMIN PIN MODAL -->
+<div class="modal-overlay" id="admin-pin-modal">
+  <div class="modal" style="max-width:320px;text-align:center">
+    <h2 style="margin-bottom:6px">Admin Access</h2>
+    <p class="text-muted" style="margin-bottom:20px;font-size:13px">Enter the PIN to continue</p>
+    <input type="password" id="admin-pin-input" inputmode="numeric" maxlength="10"
+      style="text-align:center;font-size:28px;font-weight:900;letter-spacing:8px;width:100%;padding:14px;border-radius:10px;border:1.5px solid var(--border);font-family:'Montserrat',sans-serif;margin-bottom:10px"
+      placeholder="••••" onkeydown="if(event.key==='Enter')submitAdminPin()">
+    <p id="admin-pin-error" style="color:var(--red);font-size:12px;font-weight:700;min-height:16px;margin-bottom:10px"></p>
+    <button class="btn btn-primary" onclick="submitAdminPin()" style="width:100%;margin-bottom:8px">Unlock</button>
+    <button class="btn btn-ghost" onclick="closeModal('admin-pin-modal')">Cancel</button>
+  </div>
+</div>
 </body>
 </html>
