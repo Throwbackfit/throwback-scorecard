@@ -2425,12 +2425,9 @@ async function podiumAward(rotNum){
   const atPodPart=atParts.find(p=>p.startsWith('POD:'));
   const podSize=atPodPart?parseInt(atPodPart.replace('POD:','')):(coachSelectedStation.podiumSize||3);
   const placePoints=[podSize,podSize>1?podSize-1:0,podSize>2?1:0];
-  // Store each placement as a separate score row using PODIUM:place format
-  for(let i=0;i<placements.length;i++){
-    const team=placements[i];
-    const pts=placePoints[i];
-    await scoreWinner(`PODIUM:${team}:${pts}`,rotNum);
-  }
+  // Store all placements in a single row: PODIUM:team1:pts1|team2:pts2|...
+  const podiumStr='PODIUM:'+placements.map((t,i)=>t+':'+placePoints[i]).join('|');
+  await scoreWinner(podiumStr,rotNum);
 }
 
 async function scoreWinner(team,rotNum){
@@ -2700,6 +2697,33 @@ async function loadResultsPage(){
 
       });
 
+    });
+
+    // Add All Teams games to every team's breakdown
+    stations.filter(s=>s.games.includes('ALLTEAMS')).forEach(station=>{
+      const gameName=station.games.split('|')[0];
+      const stationScore=scores.find(s=>s.station_id===station.id);
+      // Parse podium result
+      const podiumMap={};
+      if(stationScore&&stationScore.winning_team&&stationScore.winning_team.startsWith('PODIUM:')){
+        stationScore.winning_team.replace('PODIUM:','').split('|').forEach(entry=>{
+          const lastColon=entry.lastIndexOf(':');
+          const team=entry.substring(0,lastColon);
+          const pts=parseFloat(entry.substring(lastColon+1))||0;
+          podiumMap[team]=pts;
+        });
+      }
+      const hasResult=Object.keys(podiumMap).length>0;
+      teams.forEach(t=>{
+        if(!teamBreakdown[t.name])return;
+        let res,resClass;
+        if(!hasResult){res='Not played yet';resClass='pending';}
+        else if(podiumMap[t.name]!==undefined){
+          const pts=podiumMap[t.name];
+          res='+'+pts+' pt'+(pts!==1?'s':'');resClass='win';
+        } else {res='No points';resClass='loss';}
+        teamBreakdown[t.name].push({game:gameName,res,resClass,opponent:'All Teams'});
+      });
     });
 
     let rowsHtml='';
