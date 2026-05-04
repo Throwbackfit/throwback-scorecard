@@ -218,6 +218,60 @@
   .pf-award-for{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:2px;}
   .pf-no-answer{width:100%;background:transparent;border:1.5px dashed var(--border);border-radius:8px;padding:10px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);cursor:pointer;margin-bottom:14px;transition:all .15s;}
   .pf-no-answer:hover{border-color:var(--red);color:var(--red);}
+  /* PODIUM / ALL TEAMS */
+  .podium-wrap{margin-bottom:14px;}
+  .podium-instructions{text-align:center;font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+  .podium-team-btn{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--card);margin-bottom:8px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow);-webkit-tap-highlight-color:transparent;}
+  .podium-team-btn:active{transform:scale(.98);}
+  .podium-team-btn.placed{border-width:2px;}
+  .podium-place-badge{font-size:11px;font-weight:800;padding:3px 8px;border-radius:20px;background:#fff;min-width:32px;text-align:center;}
+  .podium-team-name{flex:1;font-size:14px;font-weight:800;}
+  .podium-pts-badge{font-size:12px;font-weight:800;padding:4px 10px;border-radius:20px;background:var(--bg);border:1.5px solid var(--border);}
+  .podium-clear-btn{width:100%;padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;cursor:pointer;color:var(--text-muted);margin-bottom:10px;}
+
+  /* SHOWDOWN SCORECARD */
+  .sd-song-card{background:var(--blue);color:#fff;border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;}
+  .sd-song-title{font-size:18px;font-weight:900;letter-spacing:-.5px;margin-bottom:4px;}
+  .sd-song-artist{font-size:12px;font-weight:600;opacity:.8;}
+  .sd-song-year{font-size:13px;font-weight:800;opacity:.7;margin-top:4px;}
+  .sd-teams{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .sd-team-row{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;box-shadow:var(--shadow);}
+  .sd-team-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .sd-team-name{font-size:13px;font-weight:800;flex:1;}
+  .sd-team-pts{font-size:18px;font-weight:900;letter-spacing:-1px;}
+  .sd-input-row{display:flex;align-items:center;gap:8px;}
+  .sd-year-input{flex:1;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;text-align:center;outline:none;-webkit-appearance:none;}
+  .sd-year-input:focus{border-color:var(--blue);}
+  .sd-pts-badge{font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;background:var(--bg);border:1.5px solid var(--border);white-space:nowrap;}
+  .sd-pts-badge.exact{background:#e8f5e9;border-color:#4caf50;color:#2e7d32;}
+  .sd-pts-badge.close{background:#fff8e1;border-color:#ff9800;color:#e65100;}
+  .sd-pts-badge.far{background:#fce4ec;border-color:#e91e63;color:#c2185b;}
+  .sd-reveal-btn{width:100%;padding:13px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;margin-bottom:10px;}
+  .sd-reveal-btn:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed;}
+  .sd-results{background:#f0f4ff;border:1.5px solid var(--blue);border-radius:10px;padding:14px;margin-bottom:14px;}
+  .sd-results-title{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+  .sd-result-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(6,115,193,.15);}
+  .sd-result-row:last-child{border-bottom:none;}
+  .sd-result-team{flex:1;font-size:12px;font-weight:700;}
+  .sd-result-guess{font-size:12px;font-weight:600;color:var(--text-muted);}
+  .sd-result-pts{font-size:14px;font-weight:900;min-width:40px;text-align:right;}
+  .sd-totals-bar{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px;box-shadow:var(--shadow);}
+  .sd-totals-title{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+  .sd-total-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+  .sd-total-team{flex:1;font-size:12px;font-weight:700;}
+  .sd-total-pts{font-size:16px;font-weight:900;letter-spacing:-1px;}
+  .sd-total-bar-wrap{width:60px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .sd-total-bar{height:100%;border-radius:3px;}
+  .sd-song-picker{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .sd-song-picker-title{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
+  .sd-song-list{max-height:220px;overflow-y:auto;}
+  .sd-song-btn{width:100%;text-align:left;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;cursor:pointer;margin-bottom:6px;transition:all .15s;}
+  .sd-song-btn:hover{border-color:var(--blue);background:var(--blue-dim);}
+  .sd-song-btn.used{opacity:.4;cursor:not-allowed;}
+  .sd-song-btn-title{font-size:13px;font-weight:700;color:var(--text);}
+  .sd-song-btn-sub{font-size:10px;font-weight:600;color:var(--text-muted);margin-top:2px;}
+  .sd-filter-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+
   /* Score edit mode */
   .score-edit-wrap{background:var(--card);border:1.5px solid var(--blue);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow-md);}
   .score-edit-title{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
@@ -405,14 +459,14 @@
     </div>
   </div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="requireAdminPin(this)">Admin</button>
+    <button class="nav-tab active" onclick="showPage('results',this)">Schedule & Results</button>
     <button class="nav-tab" onclick="showPage('coach',this)">Coach</button>
-    <button class="nav-tab" onclick="showPage('results',this)">Schedule & Results</button>
+    <button class="nav-tab" onclick="requireAdminPin(this)">Admin</button>
   </div>
 </nav>
 
 <!-- ══ ADMIN ══ -->
-<div class="page active" id="admin-page">
+<div class="page" id="admin-page">
   <div id="admin-event-list-section">
     <h1>Field Day <span>Events</span></h1>
     <div class="accent-line"></div>
@@ -471,7 +525,7 @@
 </div>
 
 <!-- ══ SCHEDULE ══ -->
-<div class="page" id="results-page">
+<div class="page active" id="results-page">
   <div id="results-inner"><div class="loading-state"><div class="spinner"></div></div></div>
 </div>
 
@@ -525,7 +579,19 @@
       <option value="none">No Scorecard</option>
       <option value="tally">Simple Tally</option>
       <option value="pongfeud">Pong Feud</option>
+      <option value="showdown">Showdown</option>
     </select>
+    <div id="showdown-settings" style="display:none">
+      <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
+        <label>Songs for this event</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span id="sdbank-selected-count" style="font-size:12px;font-weight:700;color:var(--blue)">0 selected</span>
+          <button class="btn btn-sm" onclick="sdClearAll()">Clear All</button>
+        </div>
+        <div class="qbank-filters" id="sdbank-filters"></div>
+        <div id="sdbank-list" style="max-height:260px;overflow-y:auto;padding-right:4px"></div>
+      </div>
+    </div>
     <div id="pongfeud-settings" style="display:none">
       <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
         <label>Team Split</label>
@@ -665,6 +731,46 @@ let teamColorCache={};
 let coachEventData=null,coachSelectedStation=null,coachCurrentRotation=0,coachScores={},coachRotationData=[];
 let tallyScores={}; // rotationNumber -> {t1:n, t2:n} — local tally, resets per rotation
 let tallyEditMode=false;
+// Showdown state
+let sdSelectedSongs=[]; // list of song IDs selected for this game
+let sdBankActiveTag=null;
+let podiumPlacements={}; // rotNum -> [team1, team2, team3] in order of finish
+let sdRoundScores={}; // rotNum -> {teamKey: {guess, pts}}
+let sdCurrentSong={}; // rotNum -> songId
+let sdGuessInputs={}; // rotNum -> {teamKey: guess string}
+
+// Showdown admin functions
+function renderSdBank(){
+  const allTags=[...SHOWDOWN_DECADES,...SHOWDOWN_GENRES];
+  const fEl=document.getElementById('sdbank-filters');
+  fEl.innerHTML='<button class="qbank-tag '+(sdBankActiveTag===null?'active':'')+'" onclick="setSdBankTag(null)">All</button>'
+    +allTags.map((t,ti)=>'<button class="qbank-tag '+(sdBankActiveTag===t?'active':'')+' " data-sdtag="'+ti+'" onclick="setSdBankTagByIdx(this.dataset.sdtag)">'+t+'</button>').join('');
+  const filtered=sdBankActiveTag?SHOWDOWN_SONGS.filter(s=>s.tags.includes(sdBankActiveTag)):SHOWDOWN_SONGS;
+  document.getElementById('sdbank-selected-count').textContent=`${sdSelectedSongs.length} selected`;
+  document.getElementById('sdbank-list').innerHTML=filtered.map(s=>{
+    const isSel=sdSelectedSongs.includes(s.id);
+    return`<div class="qbank-item ${isSel?'selected':''}" onclick="sdToggleSong(${s.id})">
+      <div class="qbank-item-check">${isSel?'✓':''}</div>
+      <div>
+        <div class="qbank-item-q">${s.title} <span style="font-weight:500;color:var(--text-muted)">— ${s.artist}</span></div>
+        <div class="qbank-item-tags"><span class="qbank-item-tag">${s.year}</span>${s.tags.map(t=>`<span class="qbank-item-tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function setSdBankTag(tag){sdBankActiveTag=tag;renderSdBank();}
+function setSdBankTagByIdx(idx){
+  const allTags=[...SHOWDOWN_DECADES,...SHOWDOWN_GENRES];
+  sdBankActiveTag=allTags[parseInt(idx)]||null;
+  renderSdBank();
+}
+function sdToggleSong(id){
+  if(sdSelectedSongs.includes(id))sdSelectedSongs=sdSelectedSongs.filter(x=>x!==id);
+  else sdSelectedSongs.push(id);
+  renderSdBank();
+}
+function sdClearAll(){if(editingGameIdx!==null)editorGames[editingGameIdx].sdSongs=[];sdSelectedSongs=[];renderSdBank();}
+
 // Pong Feud state
 let pfSplit='none'; // 'none'|'2'|'3' — set per game in admin, adjustable by coach
 let pfRoundScores={}; // rotationNum -> {groupKey: pts} e.g. {'t1g1':12,'t1g2':8,'t2g1':5,'t2g2':15}
@@ -805,15 +911,20 @@ async function openEventEditor(id,name,date){
       const isAll=raw.includes('|ALLTEAMS');
       const isTally=raw.includes('|TALLY');
       const isPongFeud=raw.includes('|PONGFEUD');
-      const gname=raw.replace('|ALLTEAMS','').replace('ALLTEAMS','').replace('|TALLY','').replace('|PONGFEUD','').split('|')[0];
-      const sct=isTally?'tally':isPongFeud?'pongfeud':'none';
+      const isShowdown=raw.includes('|SHOWDOWN');
+      const gname=raw.replace('|ALLTEAMS','').replace('ALLTEAMS','').replace('|TALLY','').replace('|PONGFEUD','').replace('|SHOWDOWN','').split('|')[0];
+      const sct=isTally?'tally':isPongFeud?'pongfeud':isShowdown?'showdown':'none';
       // Pong Feud settings encoded as extra pipe segments: |SPLIT:2|QS:1,3,5
       const rawParts=raw.split('|');
       const splitPart=rawParts.find(p=>p.startsWith('SPLIT:'));
       const qsPart=rawParts.find(p=>p.startsWith('QS:'));
       const pfSplitVal=splitPart?splitPart.replace('SPLIT:',''):'none';
       const pfQs=qsPart?qsPart.replace('QS:','').split(',').map(Number):[];
-      return{id:s.id,name:gname||'',type:isAll?'allteams':'h2h',coaches:s.coaches||'',scorecardType:sct,pfSplit:pfSplitVal,pfQuestions:pfQs,_stationId:s.id,_stationNum:s.number};
+      const podPart=rawParts.find(p=>p.startsWith('POD:'));
+      const podiumSizeVal=podPart?parseInt(podPart.replace('POD:','')):(3);
+      const ssPart=rawParts.find(p=>p.startsWith('SS:'));
+      const sdSongs=ssPart?ssPart.replace('SS:','').split(',').map(Number):[];
+      return{id:s.id,name:gname||'',type:isAll?'allteams':'h2h',coaches:s.coaches||'',scorecardType:sct,pfSplit:pfSplitVal,pfQuestions:pfQs,sdSongs,podiumSize:podiumSizeVal,_stationId:s.id,_stationNum:s.number};
     });
 
     // Rebuild schedule from rotations
@@ -857,7 +968,9 @@ async function setEventStatus(status){
 function onScorecardTypeChange(){
   const val=document.getElementById('edit-game-scorecard').value;
   document.getElementById('pongfeud-settings').style.display=val==='pongfeud'?'block':'none';
-  if(val==='pongfeud') renderQBank();
+  document.getElementById('showdown-settings').style.display=val==='showdown'?'block':'none';
+  if(val==='pongfeud')renderQBank();
+  if(val==='showdown')renderSdBank();
 }
 function setPfSplit(val){
   pfEditSplit=val;
@@ -973,6 +1086,7 @@ function renderGames(){
         <option value="none" ${(g.scorecardType||'none')==='none'?'selected':''}>No Scorecard</option>
         <option value="tally" ${g.scorecardType==='tally'?'selected':''}>Simple Tally</option>
         <option value="pongfeud" ${g.scorecardType==='pongfeud'?'selected':''}>Pong Feud</option>
+        <option value="showdown" ${g.scorecardType==='showdown'?'selected':''}>Showdown</option>
       </select>`:''}
       <button class="btn btn-ghost" onclick="openEditGame(${i})">Edit</button>
       <button class="btn btn-danger" onclick="removeGame(${i})">✕</button>
@@ -982,7 +1096,7 @@ function addGame(){
   const name=document.getElementById('new-game-name').value.trim();
   if(!name){toast('Enter a game name',true);return;}
   // Multiple All Teams games allowed
-  editorGames.push({id:null,name,type:newGameType,coaches:'',scorecardType:'none',pfSplit:'none',pfQuestions:[]});
+  editorGames.push({id:null,name,type:newGameType,coaches:'',scorecardType:'none',pfSplit:'none',pfQuestions:[],sdSongs:[],podiumSize:3});
   document.getElementById('new-game-name').value='';
   renderGames();autoGenerateSchedule();
 }
@@ -997,7 +1111,11 @@ function openEditGame(i){
   qbankActiveTag=null;
   ['none','2','3'].forEach(v=>document.getElementById(`split-btn-${v}`).classList.toggle('active',v===pfEditSplit));
   document.getElementById('pongfeud-settings').style.display=g.scorecardType==='pongfeud'?'block':'none';
+  document.getElementById('showdown-settings').style.display=g.scorecardType==='showdown'?'block':'none';
+  sdSelectedSongs=[...(g.sdSongs||[])];
+  sdBankActiveTag=null;
   if(g.scorecardType==='pongfeud')renderQBank();
+  if(g.scorecardType==='showdown')renderSdBank();
   openModal('edit-game-modal');
 }
 function saveGameEdit(){
@@ -1009,6 +1127,9 @@ function saveGameEdit(){
   if(g.scorecardType==='pongfeud'){
     g.pfSplit=pfEditSplit;
     g.pfQuestions=[...pfSelectedQuestions];
+  }
+  if(g.scorecardType==='showdown'){
+    g.sdSongs=[...sdSelectedSongs];
   }
   closeModal('edit-game-modal');
   renderGames();renderSchedule();toast('✓ Game updated');
@@ -1024,6 +1145,80 @@ function saveGameEdit(){
   Each set has numStations rotations (teams rotate through all slots in set)
   Round-robin generates matchups minimising repeat opponents
 */
+// ══════════════════════════════════════════════════════════
+// SHOWDOWN SONG BANK
+// ══════════════════════════════════════════════════════════
+const SHOWDOWN_DECADES=['1960s','1970s','1980s','1990s','2000s','2010s','2020s'];
+const SHOWDOWN_GENRES=['Pop','Hip-Hop','R&B','Rock','Country','Electronic','Soul'];
+const SHOWDOWN_SONGS=[
+  {id:1,title:'As It Was',artist:'Harry Styles',year:2022,tags:['2020s','Pop']},
+  {id:2,title:'Baby',artist:'Justin Bieber ft. Ludacris',year:2010,tags:['2010s','Pop']},
+  {id:3,title:'Bad Habits',artist:'Ed Sheeran',year:2021,tags:['2020s','Pop']},
+  {id:4,title:'Beat It',artist:'Michael Jackson',year:1982,tags:['1980s','Pop']},
+  {id:5,title:'Before He Cheats',artist:'Carrie Underwood',year:2006,tags:['2000s','Country']},
+  {id:6,title:'Bodak Yellow',artist:'Cardi B',year:2017,tags:['2010s','Hip-Hop']},
+  {id:7,title:'Bohemian Rhapsody',artist:'Queen',year:1975,tags:['1970s','Rock']},
+  {id:8,title:'Call Me Maybe',artist:'Carly Rae Jepsen',year:2011,tags:['2010s','Pop']},
+  {id:9,title:"Can't Feel My Face",artist:'The Weeknd',year:2015,tags:['2010s','Pop','R&B']},
+  {id:10,title:'CUFF IT',artist:'Beyoncé',year:2022,tags:['2020s','R&B']},
+  {id:11,title:'Dani California',artist:'Red Hot Chili Peppers',year:2006,tags:['2000s','Rock']},
+  {id:12,title:'DJ Got Us Fallin In Love',artist:'Usher ft. Pitbull',year:2010,tags:['2010s','Pop','R&B']},
+  {id:13,title:"Don't Start Now",artist:'Dua Lipa',year:2020,tags:['2020s','Pop']},
+  {id:14,title:"Don't You Worry Child",artist:'Swedish House Mafia ft. John Martin',year:2012,tags:['2010s','Electronic']},
+  {id:15,title:'Doo Wop (That Thing)',artist:'Lauryn Hill',year:1998,tags:['1990s','Hip-Hop','R&B']},
+  {id:16,title:"Everybody (Backstreet's Back)",artist:'Backstreet Boys',year:1997,tags:['1990s','Pop']},
+  {id:17,title:'Flowers',artist:'Miley Cyrus',year:2023,tags:['2020s','Pop']},
+  {id:18,title:"Gettin' Jiggy Wit It",artist:'Will Smith',year:1997,tags:['1990s','Hip-Hop']},
+  {id:19,title:'Gimme! Gimme! Gimme!',artist:'ABBA',year:1979,tags:['1970s','Pop']},
+  {id:20,title:'Good Vibrations',artist:'Marky Mark & the Funky Bunch',year:1991,tags:['1990s','Hip-Hop','Pop']},
+  {id:21,title:'Hey Ya',artist:'OutKast',year:2003,tags:['2000s','Hip-Hop']},
+  {id:22,title:"Hips Don't Lie",artist:'Shakira ft. Wyclef Jean',year:2005,tags:['2000s','Pop']},
+  {id:23,title:'Hypnotize',artist:'The Notorious B.I.G.',year:1997,tags:['1990s','Hip-Hop']},
+  {id:24,title:'I Wanna Dance with Somebody',artist:'Whitney Houston',year:1987,tags:['1980s','Pop']},
+  {id:25,title:'In Da Club',artist:'50 Cent',year:2003,tags:['2000s','Hip-Hop']},
+  {id:26,title:'Izzo (H.O.V.A.)',artist:'Jay-Z',year:2001,tags:['2000s','Hip-Hop']},
+  {id:27,title:'Jolene',artist:'Dolly Parton',year:1973,tags:['1970s','Country']},
+  {id:28,title:'Juicy',artist:'The Notorious B.I.G.',year:1994,tags:['1990s','Hip-Hop']},
+  {id:29,title:'Just Dance',artist:"Lady Gaga ft. Colby O'Donis",year:2008,tags:['2000s','Pop','Electronic']},
+  {id:30,title:'Levitating',artist:'Dua Lipa',year:2020,tags:['2020s','Pop']},
+  {id:31,title:'Maneater',artist:'Nelly Furtado',year:2006,tags:['2000s','Pop']},
+  {id:32,title:'Material Girl',artist:'Madonna',year:1985,tags:['1980s','Pop']},
+  {id:33,title:'Mesmerize',artist:'Ja Rule ft. Ashanti',year:2002,tags:['2000s','Hip-Hop','R&B']},
+  {id:34,title:'MMMBop',artist:'Hanson',year:1997,tags:['1990s','Pop']},
+  {id:35,title:'Mo Money Mo Problems',artist:'The Notorious B.I.G. ft. Puff Daddy & Mase',year:1997,tags:['1990s','Hip-Hop']},
+  {id:36,title:'Never Gonna Give You Up',artist:'Rick Astley',year:1987,tags:['1980s','Pop']},
+  {id:37,title:'Old Town Road',artist:'Lil Nas X ft. Billy Ray Cyrus',year:2019,tags:['2010s','Country','Hip-Hop']},
+  {id:38,title:'Only Girl (In the World)',artist:'Rihanna',year:2010,tags:['2010s','Pop']},
+  {id:39,title:'Pompeii',artist:'Bastille',year:2013,tags:['2010s','Pop']},
+  {id:40,title:'Poker Face',artist:'Lady Gaga',year:2008,tags:['2000s','Pop','Electronic']},
+  {id:41,title:'Play That Funky Music',artist:'Vanilla Ice',year:1990,tags:['1990s','Pop','Hip-Hop']},
+  {id:42,title:'Respect',artist:'Aretha Franklin',year:1967,tags:['1960s','R&B','Soul']},
+  {id:43,title:'Rhythm of the Night',artist:'Corona',year:1994,tags:['1990s','Electronic']},
+  {id:44,title:'Say My Name',artist:"Destiny's Child",year:1999,tags:['1990s','R&B']},
+  {id:45,title:'September',artist:'Earth, Wind & Fire',year:1978,tags:['1970s','R&B']},
+  {id:46,title:'Shape of You',artist:'Ed Sheeran',year:2017,tags:['2010s','Pop']},
+  {id:47,title:'Shivers',artist:'Ed Sheeran',year:2021,tags:['2020s','Pop']},
+  {id:48,title:'Starships',artist:'Nicki Minaj',year:2012,tags:['2010s','Pop','Hip-Hop']},
+  {id:49,title:'Summer',artist:'Calvin Harris',year:2014,tags:['2010s','Electronic','Pop']},
+  {id:50,title:'Sweet Caroline',artist:'Neil Diamond',year:1969,tags:['1960s','Pop']},
+  {id:51,title:'Sweet Emotion',artist:'Aerosmith',year:1975,tags:['1970s','Rock']},
+  {id:52,title:'Take a Chance on Me',artist:'ABBA',year:1977,tags:['1970s','Pop']},
+  {id:53,title:'thank u, next',artist:'Ariana Grande',year:2019,tags:['2010s','Pop']},
+  {id:54,title:'The Middle',artist:'Jimmy Eat World',year:2001,tags:['2000s','Rock']},
+  {id:55,title:'Titanium',artist:'David Guetta ft. Sia',year:2011,tags:['2010s','Electronic','Pop']},
+  {id:56,title:'Walk Like an Egyptian',artist:'The Bangles',year:1985,tags:['1980s','Pop','Rock']},
+  {id:57,title:'Wannabe',artist:'Spice Girls',year:1996,tags:['1990s','Pop']},
+  {id:58,title:'Watermelon Sugar',artist:'Harry Styles',year:2019,tags:['2010s','Pop']},
+  {id:59,title:'We Found Love',artist:'Rihanna ft. Calvin Harris',year:2011,tags:['2010s','Electronic','Pop']},
+  {id:60,title:"You Can't Hurry Love",artist:'The Supremes',year:1966,tags:['1960s','R&B','Soul']},
+];
+
+// Points for Showdown: exact gap between guess and correct year, capped at 20
+function showdownPoints(guess,correct){
+  if(!guess||isNaN(guess))return 20;
+  return Math.min(20,Math.abs(parseInt(guess)-correct));
+}
+
 // ── SCHEDULING ALGORITHM ──
 // Primary rule: every team plays every game exactly once.
 // Secondary rule: minimise repeat opponents (best-effort).
@@ -1199,13 +1394,18 @@ function renderSchedule(){
   schedule.forEach((set,si)=>{
     if(set.type==='allteams'){
       const g=editorGames[set.gameIdx];
+      const podSize=g?.podiumSize||3;
       html+=`<div class="set-block allteams-set">
         <div class="set-header">
           <span class="set-title">🏆 Final Round — All Teams</span>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center;margin-bottom:10px">
           <div style="font-size:14px;font-weight:700;color:var(--red)">${g?g.name:'All Teams Game'}</div>
           <input class="slot-coach-input" value="${set.coaches||''}" onchange="schedule[${si}].coaches=this.value" placeholder="Coach name(s)">
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-size:11px;font-weight:700;color:var(--text-muted)">Teams earning points:</span>
+          ${[1,2,3].map(n=>`<button class="pf-split-btn ${podSize===n?'active':''}" onclick="setAtPodiumSize(${si},${n})" style="flex:0 0 auto;padding:5px 14px">${n}</button>`).join('')}
         </div>
       </div>`;
       return;
@@ -1272,6 +1472,12 @@ function renderSchedule(){
   c.innerHTML=html;
 }
 
+function setAtPodiumSize(setIdx,n){
+  const g=editorGames[schedule[setIdx].gameIdx];
+  if(g)g.podiumSize=n;
+  renderSchedule();
+}
+
 function setSlotGame(setIdx,slotIdx,gameIdx){
   schedule[setIdx].stations[slotIdx].gameIdx=gameIdx;
   renderSchedule();
@@ -1293,18 +1499,22 @@ async function saveEventConfig(){
     await db('DELETE','rotations',`?event_id=eq.${currentEventId}`);
 
     const stationRows=[];
-    // h2h sets: each slot becomes a station (permanent for the event, coach stays there)
-    // We'll number stations 1..N across all sets
-    // Station games field: game name for that slot
-    // We also need to encode which set it belongs to so the coach view shows correct rotations
-
+    const stationMeta=[];
     let stationNum=1;
-    const stationMeta=[]; // {setIdx, slotIdx, stationNum}
 
     schedule.forEach((set,si)=>{
       if(set.type==='allteams'){
         const g=editorGames[set.gameIdx];
-        stationRows.push({event_id:currentEventId,number:stationNum,games:`${g?g.name:'All Teams'}|ALLTEAMS`,coaches:set.coaches||''});
+        const atName=g?g.name:'All Teams';
+        const atSct=g?.scorecardType||'none';
+        let atGamesField=atName+'|ALLTEAMS';
+        const atPodSize=g?.podiumSize||3;
+        atGamesField+=`|POD:${atPodSize}`;
+        if(atSct==='showdown'){
+          atGamesField+='|SHOWDOWN';
+          if(g.sdSongs&&g.sdSongs.length)atGamesField+=`|SS:${g.sdSongs.join(',')}`;
+        }
+        stationRows.push({event_id:currentEventId,number:stationNum,games:atGamesField,coaches:set.coaches||''});
         stationMeta.push({setIdx:si,slotIdx:0,stationNum,type:'allteams'});
         stationNum++;
       } else {
@@ -1316,6 +1526,10 @@ async function saveEventConfig(){
           else if(sct==='pongfeud'){
             gamesField+=`|PONGFEUD|SPLIT:${g.pfSplit||'none'}`;
             if(g.pfQuestions&&g.pfQuestions.length)gamesField+=`|QS:${g.pfQuestions.join(',')}`;
+          }
+          else if(sct==='showdown'){
+            gamesField+='|SHOWDOWN';
+            if(g.sdSongs&&g.sdSongs.length)gamesField+=`|SS:${g.sdSongs.join(',')}`;
           }
           stationRows.push({event_id:currentEventId,number:stationNum,games:gamesField,coaches:slot.coaches||''});
           stationMeta.push({setIdx:si,slotIdx,stationNum,type:'h2h'});
@@ -1500,6 +1714,7 @@ function renderCoachStationSelect(){
 
 async function selectCoachStation(stationId){
   stnSelectorOpen=false; // collapse after selection
+  sdRoundScores={};sdCurrentSong={};sdGuessInputs={};sdPickerFilter={};podiumPlacements={};
   const {stations,rotations,event}=coachEventData;
   coachSelectedStation=stations.find(s=>s.id===stationId);
   coachCurrentRotation=0;coachScores={};tallyScores={};pfRoundScores={};pfUsedAnswers={};pfActiveGroup=null;pfCurrentQOffset={};pfShotOrder={};pfSplit='none';
@@ -1534,27 +1749,62 @@ function renderCoachScorecard(){
   </div>`;
   const gameLabel=`<div class="game-label-sm">${gameName}${coachSelectedStation.coaches?' · '+coachSelectedStation.coaches:''}</div>`;
 
-  if(isAll){
+  // Parse scorecardType early so Showdown can bypass the isAll block
+  const gamesRaw2=coachSelectedStation.games||'';
+  const earlyScType=gamesRaw2.includes('|SHOWDOWN')?'showdown':'other';
+
+  if(isAll&&earlyScType!=='showdown'){
     const allTeams=Object.keys(teamColorCache);
-    el.innerHTML=`<div class="scorecard-wrap">
-      ${pips}${gameLabel}
-      <div class="dual-notice" style="margin-bottom:14px"><span class="dual-badge" style="background:rgba(251,54,64,.08);border-color:rgba(251,54,64,.3);color:var(--red)">🏆 All Teams Competing</span></div>
-      <p class="text-muted" style="text-align:center;font-size:12px;margin-bottom:14px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Tap the winning team</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-        ${allTeams.map(name=>{
-          const hex=teamColorCache[name]||'#0673c1';
-          const win=scored===name;
-          const border=hex==='CAMO'?'#5a6e4a':hex;
-          return`<div class="team-score-btn ${win?'winner':''}" style="${win?`border-color:${border}`:''};min-height:80px;padding:14px 8px" onclick="scoreWinner('${name}',${rot.rotation_number})">
-            <div style="display:flex;justify-content:center;margin-bottom:4px">${colorDot(hex,18)}</div>
-            <div class="team-name-lg" style="font-size:13px">${name}</div>
-            <div class="tap-hint">Tap</div><div class="winner-badge">✓ Win</div>
-          </div>`;
-        }).join('')}
-      </div>
-      <button class="next-btn" onclick="nextRotation()" ${!scored?'disabled':''}>${coachCurrentRotation+1<total?'Next Round →':'Finish ✓'}</button>
-      ${scored?`<button class="undo-btn" onclick="undoScore(${rot.rotation_number})">↩ Undo</button>`:''}
-    </div>`;
+    // Parse podium size from games field
+    const atParts=(coachSelectedStation.games||'').split('|');
+    const atPodPart=atParts.find(p=>p.startsWith('POD:'));
+    const podSize=atPodPart?parseInt(atPodPart.replace('POD:','')):(coachSelectedStation.podiumSize||3);
+    const placeLabels=['1st','2nd','3rd'];
+    const placePoints=[podSize,podSize>1?podSize-1:0,podSize>2?1:0];
+    if(!podiumPlacements[rot.rotation_number])podiumPlacements[rot.rotation_number]=[];
+    const placements=podiumPlacements[rot.rotation_number];
+    const allPlaced=placements.length>=podSize;
+
+    // Build team buttons
+    let teamBtns='';
+    allTeams.forEach(name=>{
+      const hex=teamColorCache[name]||'#0673c1';
+      const border=readableTeamColor(hex==='CAMO'?'#5a6e4a':hex);
+      const placeIdx=placements.indexOf(name);
+      const isPlaced=placeIdx>=0;
+      const pts=isPlaced?placePoints[placeIdx]:null;
+      teamBtns+='<div class="podium-team-btn '+(isPlaced?'placed':'')+'" '
+        +'style="'+(isPlaced?'border-color:'+border+';background:'+border+'15':'')+';" '
+        +'onclick="podiumTap('+rot.rotation_number+',\''+name+'\')">'  
+        +(isPlaced?'<span class="podium-place-badge" style="background:'+border+';color:#fff">'+placeLabels[placeIdx]+'</span>':'<span class="podium-place-badge" style="color:var(--text-muted)">'+(allPlaced?'—':'?')+'</span>')
+        +'<span class="podium-team-name" style="color:'+border+'">'+name+'</span>'
+        +(isPlaced?'<span class="podium-pts-badge" style="border-color:'+border+';color:'+border+'">+'+pts+' pts</span>':'')
+        +'</div>';
+    });
+
+    // Summary of current placements
+    let placeSummary='';
+    for(let i=0;i<podSize;i++){
+      const team=placements[i];
+      const pts=placePoints[i];
+      placeSummary+='<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">'
+        +'<span style="font-size:12px;font-weight:800;color:var(--text-muted);min-width:28px">'+placeLabels[i]+'</span>'
+        +'<span style="flex:1;font-size:13px;font-weight:700;color:'+(team?readableTeamColor(teamColorCache[team]||'#333'):'var(--text-muted)')+'">'+( team||'Not set')+'</span>'
+        +'<span style="font-size:12px;font-weight:800;color:var(--blue)">+'+pts+' pts</span>'
+        +'</div>';
+    }
+
+    el.innerHTML='<div class="scorecard-wrap">'
+      +pips+gameLabel
+      +'<div style="background:#fff5f5;border:1.5px solid var(--red);border-radius:10px;padding:12px 14px;margin-bottom:14px">'
+      +'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px">Podium ('+podSize+' teams score)</div>'
+      +placeSummary
+      +'</div>'
+      +'<div class="podium-instructions">Tap teams in finishing order</div>'
+      +'<div class="podium-wrap">'+teamBtns+'</div>'
+      +(placements.length>0?'<button class="podium-clear-btn" onclick="podiumPlacements['+rot.rotation_number+']=[];renderCoachScorecard()">↩ Reset Placements</button>':'')
+      +'<button class="next-btn" onclick="podiumAward('+rot.rotation_number+')" '+(allPlaced?'':'disabled')+'>Award Points & Continue</button>'
+      +'</div>';
     return;
   }
 
@@ -1564,7 +1814,7 @@ function renderCoachScorecard(){
   const t2b=readableTeamColor(t2hex==='CAMO'?'#5a6e4a':t2hex);
   const totals={};Object.values(coachScores).forEach(w=>{totals[w]=(totals[w]||0)+1;});
   const gamesRaw=coachSelectedStation.games||'';
-  const scorecardType=gamesRaw.includes('|TALLY')?'tally':gamesRaw.includes('|PONGFEUD')?'pongfeud':'none';
+  const scorecardType=gamesRaw.includes('|TALLY')?'tally':gamesRaw.includes('|PONGFEUD')?'pongfeud':gamesRaw.includes('|SHOWDOWN')?'showdown':'none';
   // Parse Pong Feud settings from games field
   const grawParts=gamesRaw.split('|');
   const grawSplitPart=grawParts.find(p=>p.startsWith('SPLIT:'));
@@ -1818,6 +2068,143 @@ function renderCoachScorecard(){
     return;
   }
 
+  // ── SHOWDOWN SCORECARD ──
+  if(scorecardType==='showdown'){
+    const stationSdSongIds=(()=>{
+      const ssPart=grawParts.find(p=>p.startsWith('SS:'));
+      return ssPart?ssPart.replace('SS:','').split(',').map(Number):[];
+    })();
+    const availableSongs=stationSdSongIds.map(id=>SHOWDOWN_SONGS.find(s=>s.id===id)).filter(Boolean);
+    if(!sdRoundScores[rot.rotation_number])sdRoundScores[rot.rotation_number]={};
+    if(!sdGuessInputs[rot.rotation_number])sdGuessInputs[rot.rotation_number]={};
+    const roundScores=sdRoundScores[rot.rotation_number];
+    const guesses=sdGuessInputs[rot.rotation_number];
+    const selectedSongId=sdCurrentSong[rot.rotation_number]||null;
+    const selectedSong=availableSongs.find(s=>s.id===selectedSongId)||null;
+    const roundRevealed=selectedSong&&Object.keys(roundScores).length>0;
+
+    // Build all teams list
+    const sdTeams=Object.keys(teamColorCache).map(name=>({
+      name,
+      hex:teamColorCache[name]||'#0673c1',
+      color:readableTeamColor(teamColorCache[name]==='CAMO'?'#5a6e4a':teamColorCache[name]||'#0673c1')
+    }));
+
+    // Running totals across all rotations
+    const runningTotals={};
+    sdTeams.forEach(t=>{runningTotals[t.name]=0;});
+    for(let r=0;r<total;r++){
+      const rs=coachRotationData[r];
+      if(!rs)continue;
+      const rScores=sdRoundScores[rs.rotation_number]||{};
+      Object.entries(rScores).forEach(([team,pts])=>{
+        if(runningTotals[team]!==undefined)runningTotals[team]+=pts;
+      });
+    }
+    const maxTotal=Math.max(1,...Object.values(runningTotals));
+    const sortedTeams=[...sdTeams].sort((a,b)=>runningTotals[a.name]-runningTotals[b.name]);
+
+    // Song picker filter
+    if(!sdPickerFilter[rot.rotation_number])sdPickerFilter[rot.rotation_number]=null;
+    const pickerFilter=sdPickerFilter[rot.rotation_number];
+    const allSdTags=[...SHOWDOWN_DECADES,...SHOWDOWN_GENRES];
+    const filteredSongs=pickerFilter?availableSongs.filter(s=>s.tags.includes(pickerFilter)):availableSongs;
+    const usedSongIds=Object.values(sdCurrentSong);
+
+    // Song picker HTML
+    const songPickerHtml='<div class="sd-song-picker">'
+      +'<div class="sd-song-picker-title">Select a Song</div>'
+      +'<div class="sd-filter-row">'
+      +'<button class="qbank-tag '+(pickerFilter===null?'active':'')+'" onclick="sdSetFilter('+rot.rotation_number+',null)">All</button>'
+      +allSdTags.map((t,ti)=>'<button class="qbank-tag '+(pickerFilter===t?'active':'')+' " data-sdti="'+ti+'" onclick="sdSetFilterByIdx('+rot.rotation_number+',this.dataset.sdti)">'+t+'</button>').join('')
+      +'</div>'
+      +'<div class="sd-song-list">'
+      +filteredSongs.map(s=>{
+        const isUsed=usedSongIds.includes(s.id)&&s.id!==selectedSongId;
+        return'<div class="sd-song-btn '+(isUsed?'used':'')+'" onclick="'+(isUsed?'':'sdSelectSong('+rot.rotation_number+','+s.id+')')+'">'
+          +'<div class="sd-song-btn-title">'+s.title+'</div>'
+          +'<div class="sd-song-btn-sub">'+s.artist+' · '+s.year+'</div>'
+          +'</div>';
+      }).join('')
+      +'</div></div>';
+
+    // Guesses / results HTML
+    const guessesHtml=selectedSong?'<div class="sd-teams">'
+      +sdTeams.map(t=>{
+        const guess=guesses[t.name]||'';
+        const pts=roundRevealed&&roundScores[t.name]!==undefined?roundScores[t.name]:null;
+        let badgeClass='',badgeText='';
+        if(pts!==null){
+          badgeClass=pts===0?'exact':pts<=5?'close':'far';
+          badgeText=pts===0?'Exact!':'+'+pts+' pts';
+        }
+        return'<div class="sd-team-row">'
+          +'<div class="sd-team-header">'
+          +'<div class="sd-team-name" style="color:'+t.color+'">'+t.name+'</div>'
+          +(pts!==null?'<div class="sd-pts-badge '+badgeClass+'">'+badgeText+'</div>':'')
+          +'</div>'
+          +'<div class="sd-input-row">'
+          +'<input class="sd-year-input" type="number" inputmode="numeric" placeholder="Year guess" '
+          +'value="'+(guess||'')+'" '+(roundRevealed?'disabled ':'')+''
+          +'onchange="sdUpdateGuess('+rot.rotation_number+',\''+t.name+'\',this.value)" '
+          +'oninput="sdUpdateGuess('+rot.rotation_number+',\''+t.name+'\',this.value)">'
+          +'</div>'
+          +'</div>';
+      }).join('')
+      +'</div>':'' ;
+
+    // Results summary
+    const resultsHtml=roundRevealed?'<div class="sd-results">'
+      +'<div class="sd-results-title">Round Results — Correct year: '+selectedSong.year+'</div>'
+      +sdTeams.map(t=>{
+        const pts=roundScores[t.name]||0;
+        const guess=guesses[t.name]||'?';
+        return'<div class="sd-result-row">'
+          +'<div class="sd-result-team" style="color:'+t.color+'">'+t.name+'</div>'
+          +'<div class="sd-result-guess">guessed '+guess+'</div>'
+          +'<div class="sd-result-pts" style="color:'+(pts===0?'#2e7d32':pts<=5?'#e65100':'#c2185b')+'">'+pts+'</div>'
+          +'</div>';
+      }).join('')
+      +'</div>':'' ;
+
+    // Totals bar
+    const totalsHtml='<div class="sd-totals-bar">'
+      +'<div class="sd-totals-title">Running Totals (lowest wins)</div>'
+      +sortedTeams.map((t,i)=>{
+        const pts=runningTotals[t.name];
+        return'<div class="sd-total-row">'
+          +'<div style="font-size:11px;font-weight:800;color:var(--text-muted);min-width:16px">'+(i+1)+'.</div>'
+          +'<div class="sd-total-team" style="color:'+t.color+'">'+t.name+'</div>'
+          +'<div class="sd-total-bar-wrap"><div class="sd-total-bar" style="width:'+(maxTotal>0?pts/maxTotal*100:0)+'%;background:'+t.hex+'"></div></div>'
+          +'<div class="sd-total-pts" style="color:'+t.color+'">'+pts+'</div>'
+          +'</div>';
+      }).join('')
+      +'</div>';
+
+    // Check all guesses entered
+    const allGuessesIn=sdTeams.every(t=>guesses[t.name]&&guesses[t.name].toString().trim()!=='');
+
+    el.innerHTML='<div class="scorecard-wrap">'
+      +pips+gameLabel
+      +totalsHtml
+      +(selectedSong
+        ?'<div class="sd-song-card"><div class="sd-song-title">'+selectedSong.title+'</div><div class="sd-song-artist">'+selectedSong.artist+'</div><div class="sd-song-year">'+selectedSong.year+'</div></div>'
+        :'<p class="text-muted" style="text-align:center;padding:10px;font-size:13px;font-weight:600">Pick a song to start the round</p>')
+      +(selectedSong&&!roundRevealed?guessesHtml:'')
+      +resultsHtml
+      +(!roundRevealed
+        ?'<button class="sd-reveal-btn" onclick="sdReveal('+rot.rotation_number+')" '+((!selectedSong||!allGuessesIn)?'disabled':'')+'>Reveal Answer & Score Round</button>'
+        :'')
+      +(roundRevealed
+        ?'<button class="next-btn" onclick="'+(coachCurrentRotation+1<total?'nextRotation()':'nextRotation()')+'">'+( coachCurrentRotation+1<total?'Next Rotation →':'Finish Station ✓')+'</button>'
+        +'<button class="undo-btn" onclick="sdUndoReveal('+rot.rotation_number+')">↩ Undo Reveal</button>'
+        :'')
+      +(selectedSong&&!roundRevealed?'':'')
+      +songPickerHtml
+      +'</div>';
+    return;
+  }
+
   // ── NO SCORECARD — simple tap to award ──
   el.innerHTML=`<div class="scorecard-wrap">
     ${pips}${gameLabel}
@@ -1855,6 +2242,57 @@ let stnSelectorOpen=true; // collapses after station selection
 let pfCurrentQOffset={}; // rotNum -> question offset within rotation
 let pfEditMode=false; // whether score edit inputs are showing
 let pfShotOrder={}; // rotNum -> [groupKey, groupKey, ...] in order of shot made
+
+// Showdown helpers
+let sdPickerFilter={}; // rotNum -> tag filter string
+
+function sdSetFilterByIdx(rotNum,idx){
+  const allSdTags=[...SHOWDOWN_DECADES,...SHOWDOWN_GENRES];
+  sdPickerFilter[rotNum]=allSdTags[parseInt(idx)]||null;
+  renderCoachScorecard();
+}
+function sdSetFilter(rotNum,tag){
+  sdPickerFilter[rotNum]=tag;
+  renderCoachScorecard();
+}
+function sdSelectSong(rotNum,songId){
+  sdCurrentSong[rotNum]=songId;
+  sdGuessInputs[rotNum]={};
+  sdRoundScores[rotNum]={};
+  renderCoachScorecard();
+}
+function sdUpdateGuess(rotNum,teamName,val){
+  if(!sdGuessInputs[rotNum])sdGuessInputs[rotNum]={};
+  sdGuessInputs[rotNum][teamName]=val;
+  // Update just the reveal button state without full re-render
+  const guesses=sdGuessInputs[rotNum];
+  const allIn=Object.keys(teamColorCache).every(t=>guesses[t]&&guesses[t].toString().trim()!=='');
+  const btn=document.querySelector('.sd-reveal-btn');
+  if(btn)btn.disabled=!allIn;
+}
+function sdReveal(rotNum){
+  const songId=sdCurrentSong[rotNum];
+  const song=SHOWDOWN_SONGS.find(s=>s.id===songId);
+  if(!song)return;
+  // Read current input values directly from DOM before scoring
+  const guesses=sdGuessInputs[rotNum]||{};
+  document.querySelectorAll('.sd-year-input').forEach(inp=>{
+    const tn=inp.dataset.team||inp.getAttribute('data-team');
+    if(tn&&inp.value)guesses[tn]=inp.value;
+  });
+  sdGuessInputs[rotNum]=guesses;
+  const scores={};
+  Object.keys(teamColorCache).forEach(team=>{
+    const guess=parseInt(guesses[team]);
+    scores[team]=showdownPoints(isNaN(guess)?null:guess,song.year);
+  });
+  sdRoundScores[rotNum]=scores;
+  renderCoachScorecard();
+}
+function sdUndoReveal(rotNum){
+  sdRoundScores[rotNum]={};
+  renderCoachScorecard();
+}
 
 function setPfActiveGroup(key){pfActiveGroup=key;renderCoachScorecard();}
 
@@ -1962,6 +2400,36 @@ async function pfFinishRound(rotNum){
   else{
     // Tied — just advance
     jumpToRotation(coachCurrentRotation+1);
+  }
+}
+
+function podiumTap(rotNum,teamName){
+  if(!podiumPlacements[rotNum])podiumPlacements[rotNum]=[];
+  const placements=podiumPlacements[rotNum];
+  const atParts=(coachSelectedStation.games||'').split('|');
+  const atPodPart=atParts.find(p=>p.startsWith('POD:'));
+  const podSize=atPodPart?parseInt(atPodPart.replace('POD:','')):(coachSelectedStation.podiumSize||3);
+  const idx=placements.indexOf(teamName);
+  if(idx>=0){
+    // Already placed — remove to allow re-ordering
+    podiumPlacements[rotNum]=placements.filter(t=>t!==teamName);
+  } else if(placements.length<podSize){
+    podiumPlacements[rotNum]=[...placements,teamName];
+  }
+  renderCoachScorecard();
+}
+
+async function podiumAward(rotNum){
+  const placements=podiumPlacements[rotNum]||[];
+  const atParts=(coachSelectedStation.games||'').split('|');
+  const atPodPart=atParts.find(p=>p.startsWith('POD:'));
+  const podSize=atPodPart?parseInt(atPodPart.replace('POD:','')):(coachSelectedStation.podiumSize||3);
+  const placePoints=[podSize,podSize>1?podSize-1:0,podSize>2?1:0];
+  // Store each placement as a separate score row using PODIUM:place format
+  for(let i=0;i<placements.length;i++){
+    const team=placements[i];
+    const pts=placePoints[i];
+    await scoreWinner(`PODIUM:${team}:${pts}`,rotNum);
   }
 }
 
@@ -2171,13 +2639,17 @@ async function loadResultsPage(){
       if(s.winning_team==='ALL')return;
 
       if(s.winning_team==='TIE'){
-
         const rot=rotations.find(r=>r.station_id===s.station_id&&r.rotation_number===s.rotation_number);
-
-        if(rot){if(totals[rot.team1])totals[rot.team1].points+=0.5;if(totals[rot.team2])totals[rot.team2].points+=0.5;}
-
+        if(rot){
+          if(rot.team1==='ALL'){
+            // All-teams game tie — award 0.5 to every team
+            Object.keys(totals).forEach(t=>{totals[t].points+=0.5;});
+          } else {
+            if(totals[rot.team1])totals[rot.team1].points+=0.5;
+            if(totals[rot.team2])totals[rot.team2].points+=0.5;
+          }
+        }
         return;
-
       }
 
       if(totals[s.winning_team])totals[s.winning_team].points++;
@@ -2347,6 +2819,11 @@ async function loadResultsPage(){
 
 
 window.addEventListener('load',loadAdminEventList);
+// Load default page on startup
+(function(){
+  const resultsBtn=document.querySelector('.nav-tab');
+  if(resultsBtn)showPage('results',resultsBtn);
+})();
 </script>
 <!-- ADMIN PIN MODAL -->
 <div class="modal-overlay" id="admin-pin-modal">
