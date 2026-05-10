@@ -400,8 +400,9 @@
   .itinerary-set{margin-bottom:18px;}
   .itinerary-set-title{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
   .itinerary-table{width:100%;border-collapse:collapse;font-size:13px;}
-  .itinerary-table th{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);padding:5px 8px;border-bottom:2px solid var(--border);text-align:left;background:var(--bg);}
-  .itinerary-table td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:middle;font-weight:600;}
+  .itinerary-table th:first-child,.itinerary-table td:first-child{width:52px;white-space:nowrap;}
+  .itinerary-table th{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);padding:5px 8px;border-bottom:2px solid var(--border);text-align:left;background:var(--bg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .itinerary-table td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:middle;font-weight:600;overflow:hidden;}
   .itinerary-table tr:last-child td{border-bottom:none;}
   .itinerary-table tr:nth-child(even) td{background:#f8fafc;}
   .it-rot-num{font-size:10px;font-weight:800;color:var(--text-muted);white-space:nowrap;}
@@ -2274,7 +2275,7 @@ function renderCoachScorecard(){
           +'<button class="pf-qpicker-toggle" style="padding:8px 12px;border-radius:8px;border:1.5px solid var(--blue);background:var(--blue-dim);color:var(--blue);white-space:nowrap" onclick="pfRandomQuestion('+rot.rotation_number+')">🎲 Random</button>'
           +'</div>';
       })()}
-      <div style="display:flex;gap:8px;margin-bottom:10px">
+      <div style="display:flex;gap:8px;margin-bottom:10px;margin-top:80px">
         <button class="next-btn" onclick="pfFinishRound(${rot.rotation_number})" ${!anyScored&&!scored?'disabled':''} style="flex:1">
           ${scored?'✓ Next Rotation →':coachCurrentRotation+1<total?'End Round':'Finish Station'}
         </button>
@@ -2885,11 +2886,14 @@ async function loadResultsPage(){
 
         const coach=s.coaches?' <span style="font-weight:500;opacity:.7">· '+s.coaches+'</span>':'';
 
-        thead+='<th>Stn '+s.number+': '+getGameName(s)+coach+'</th>';
+        const coachLine=s.coaches?'<div style="font-size:8px;font-weight:600;color:var(--text-muted);margin-top:1px">'+s.coaches+'</div>':'';
+        thead+='<th><div style="font-size:8px;font-weight:700;color:var(--text-muted)">STN '+s.number+'</div>'
+          +'<div style="font-size:9px;font-weight:800;color:var(--text)">'+getGameName(s)+'</div>'
+          +coachLine+'</th>';
 
       });
 
-      thead+='<th style="white-space:nowrap;color:var(--blue)">⏱ Rotate After</th></tr>';
+      thead+='</tr>';
 
       let tbody='';
 
@@ -2899,11 +2903,9 @@ async function loadResultsPage(){
         const dp=rp.find(p=>p.startsWith('DUR:'));
         return dp?parseInt(dp.replace('DUR:','')):(10);
       }));
-      const rotDur=maxDur;
-      const rotateStr=Math.floor(rotDur/60)>0?(Math.floor(rotDur/60)+'h'+(rotDur%60>0?' '+(rotDur%60)+'m':'')):(rotDur+'m');
       setRots.forEach((rot,ri)=>{
 
-        tbody+='<tr><td class="it-rot-num">R'+(ri+1)+'</td><td style="font-size:11px;font-weight:800;color:var(--blue);white-space:nowrap;padding:7px 8px">'+rotateStr+'</td>';
+        tbody+='<tr><td class="it-rot-num">R'+(ri+1)+'<br><span style="font-size:10px;color:var(--blue);font-weight:800">'+maxDur+'m</span></td>';
 
         stns.forEach(stn=>{
 
