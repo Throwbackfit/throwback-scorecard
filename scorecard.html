@@ -99,6 +99,24 @@
   .info-box.red{background:rgba(251,54,64,.06);border-color:rgba(251,54,64,.2);color:var(--red);}
 
   /* ── SCHEDULE BUILDER ── */
+  .checker-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .checker-title{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+  .checker-section{margin-bottom:16px;}
+  .checker-section-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+  .checker-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;}
+  .checker-row:last-child{border-bottom:none;}
+  .checker-team{font-weight:700;flex:1;}
+  .checker-ok{color:#16a34a;font-weight:800;font-size:12px;}
+  .checker-warn{color:var(--red);font-weight:800;font-size:12px;}
+  .checker-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--bg);border:1px solid var(--border);}
+  .checker-badge.ok{background:#f0fdf4;border-color:#86efac;color:#16a34a;}
+  .checker-badge.warn{background:#fef2f2;border-color:#fca5a5;color:var(--red);}
+  .matchup-grid{display:grid;gap:4px;font-size:12px;}
+  .matchup-grid-header{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+  .matchup-cell{padding:4px 8px;border-radius:6px;text-align:center;font-weight:700;font-size:12px;}
+  .matchup-cell.zero{background:#f8fafc;color:var(--text-muted);}
+  .matchup-cell.once{background:#f0fdf4;color:#16a34a;}
+  .matchup-cell.multi{background:#fff7ed;color:#ea580c;}
   .set-block{background:#f8fafc;border:2px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;}
   .set-block.allteams-set{border-color:rgba(251,54,64,.3);background:rgba(251,54,64,.03);}
   .set-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
@@ -109,7 +127,7 @@
   /* Station slot within a set */
   .slot-row{display:grid;grid-template-columns:56px 1fr auto;gap:8px;align-items:center;margin-bottom:8px;}
   .slot-label{font-size:10px;font-weight:800;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;}
-  .slot-game-select{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:7px 10px;border-radius:7px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;outline:none;cursor:pointer;width:100%;box-shadow:var(--shadow);margin-bottom:0;}
+  .slot-game-select{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:7px 10px;border-radius:7px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:600;outline:none;cursor:pointer;width:100%;box-shadow:var(--shadow);margin-bottom:0;}
   .slot-game-select:focus{border-color:var(--blue);}
   .slot-coach-input{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:6px 10px;border-radius:7px;font-family:'Montserrat',sans-serif;font-size:12px;outline:none;width:100%;box-shadow:var(--shadow);margin-bottom:0;}
   .slot-coach-input:focus{border-color:var(--blue);}
@@ -144,7 +162,7 @@
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .rotation-indicator{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
   .rot-nav-row{display:flex;gap:8px;margin-bottom:14px;}
-  .rot-nav-btn{flex:1;padding:8px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s;color:var(--text-mid);display:flex;align-items:center;justify-content:center;gap:6px;}
+  .rot-nav-btn{flex:1;padding:8px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s;color:var(--text-mid);display:flex;align-items:center;justify-content:center;gap:6px;}
   .rot-nav-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue);}
   .rot-nav-btn:disabled{opacity:.35;cursor:not-allowed;}
   .rot-nav-btn.jump-active{border-color:var(--blue);background:var(--blue-dim);color:var(--blue);}
@@ -153,7 +171,7 @@
   .pip.done{background:var(--blue);}
   .pip.current{background:var(--blue);opacity:.4;}
   .rotation-label{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
-  .game-label-sm{text-align:center;font-size:18px;font-weight:900;letter-spacing:-.5px;color:var(--text);margin-bottom:14px;line-height:1.2;}
+  .game-label-sm{text-align:center;font-size:22px;font-weight:900;letter-spacing:-.5px;color:var(--text);margin-bottom:14px;line-height:1.2;}
   .dual-badge{display:inline-flex;align-items:center;gap:5px;background:var(--blue-dim);border:1px solid rgba(6,115,193,0.3);border-radius:20px;padding:3px 12px;font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;}
   .dual-notice{text-align:center;margin-bottom:14px;}
   .matchup{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch;margin-bottom:16px;}
@@ -180,7 +198,7 @@
   .tally-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
   .tally-teams{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:14px;}
   .tally-side{display:flex;flex-direction:column;align-items:center;gap:8px;}
-  .tally-team-name{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:-.5px;text-align:center;}
+  .tally-team-name{font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:-.5px;text-align:center;}
   .tally-score{font-size:44px;font-weight:900;letter-spacing:-2px;line-height:1;}
   .tally-btns{display:flex;gap:8px;}
   .tally-btn{width:44px;height:44px;border-radius:10px;border:none;font-size:22px;font-weight:900;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
@@ -190,7 +208,7 @@
   .tally-btn-minus:disabled{opacity:.35;cursor:not-allowed;}
   .tally-vs{font-size:16px;font-weight:900;color:var(--text-muted);text-align:center;}
   .tally-award-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-  .tally-award-btn{padding:12px 8px;border-radius:10px;border:2px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .15s;text-align:center;}
+  .tally-award-btn{padding:12px 8px;border-radius:10px;border:2px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .15s;text-align:center;}
   .tally-award-btn:hover{border-color:var(--blue);background:var(--blue-dim);}
   .tally-award-btn.leading{border-color:var(--blue);background:var(--blue);color:#fff;}
   .tally-award-btn:disabled{opacity:.4;cursor:not-allowed;}
@@ -198,7 +216,7 @@
 
   /* PONG FEUD SCORECARD */
   .pf-header{text-align:center;margin-bottom:14px;}
-  .pf-question{background:var(--blue);color:#fff;border-radius:10px;padding:14px 16px;font-size:14px;font-weight:700;line-height:1.4;text-align:center;margin-bottom:14px;}
+  .pf-question{background:var(--blue);color:#fff;border-radius:10px;padding:14px 16px;font-size:16px;font-weight:700;line-height:1.4;text-align:center;margin-bottom:14px;}
   .pf-groups{display:grid;gap:10px;margin-bottom:12px;}
   .pf-groups.split-1{grid-template-columns:1fr 1fr;}
   .pf-groups.split-2{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));}
@@ -212,9 +230,9 @@
   .pf-answer.used{opacity:.45;cursor:not-allowed;}
   .pf-answer.used-by-t1{border-color:var(--blue);background:var(--blue-dim);}
   .pf-answer.used-by-t2{border-color:var(--red);background:var(--red-dim);}
-  .pf-answer-pts{font-size:18px;font-weight:900;color:var(--blue);min-width:36px;text-align:center;letter-spacing:-1px;}
+  .pf-answer-pts{font-size:20px;font-weight:900;color:var(--blue);min-width:38px;text-align:center;letter-spacing:-1px;}
   .pf-answer.used .pf-answer-pts{color:var(--text-muted);}
-  .pf-answer-text{flex:1;font-size:13px;font-weight:700;color:var(--text);}
+  .pf-answer-text{flex:1;font-size:15px;font-weight:700;color:var(--text);}
   .pf-award-for{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:2px;}
   .pf-no-answer{width:100%;background:transparent;border:1.5px dashed var(--border);border-radius:8px;padding:10px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);cursor:pointer;margin-bottom:14px;transition:all .15s;}
   .pf-no-answer:hover{border-color:var(--red);color:var(--red);}
@@ -225,7 +243,7 @@
   .podium-team-btn:active{transform:scale(.98);}
   .podium-team-btn.placed{border-width:2px;}
   .podium-place-badge{font-size:11px;font-weight:800;padding:3px 8px;border-radius:20px;background:#fff;min-width:32px;text-align:center;}
-  .podium-team-name{flex:1;font-size:14px;font-weight:800;}
+  .podium-team-name{flex:1;font-size:16px;font-weight:800;}
   .podium-pts-badge{font-size:12px;font-weight:800;padding:4px 10px;border-radius:20px;background:var(--bg);border:1.5px solid var(--border);}
   .podium-clear-btn{width:100%;padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;cursor:pointer;color:var(--text-muted);margin-bottom:10px;}
 
@@ -237,7 +255,7 @@
   .sd-teams{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
   .sd-team-row{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;box-shadow:var(--shadow);}
   .sd-team-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-  .sd-team-name{font-size:13px;font-weight:800;flex:1;}
+  .sd-team-name{font-size:15px;font-weight:800;flex:1;}
   .sd-team-pts{font-size:18px;font-weight:900;letter-spacing:-1px;}
   .sd-input-row{display:flex;align-items:center;gap:8px;}
   .sd-year-input{flex:1;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;text-align:center;outline:none;-webkit-appearance:none;}
@@ -246,19 +264,19 @@
   .sd-pts-badge.exact{background:#e8f5e9;border-color:#4caf50;color:#2e7d32;}
   .sd-pts-badge.close{background:#fff8e1;border-color:#ff9800;color:#e65100;}
   .sd-pts-badge.far{background:#fce4ec;border-color:#e91e63;color:#c2185b;}
-  .sd-reveal-btn{width:100%;padding:13px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;margin-bottom:10px;}
+  .sd-reveal-btn{width:100%;padding:13px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;margin-bottom:10px;}
   .sd-reveal-btn:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed;}
   .sd-results{background:#f0f4ff;border:1.5px solid var(--blue);border-radius:10px;padding:14px;margin-bottom:14px;}
   .sd-results-title{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
   .sd-result-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(6,115,193,.15);}
   .sd-result-row:last-child{border-bottom:none;}
-  .sd-result-team{flex:1;font-size:12px;font-weight:700;}
+  .sd-result-team{flex:1;font-size:14px;font-weight:700;}
   .sd-result-guess{font-size:12px;font-weight:600;color:var(--text-muted);}
-  .sd-result-pts{font-size:14px;font-weight:900;min-width:40px;text-align:right;}
+  .sd-result-pts{font-size:16px;font-weight:900;min-width:40px;text-align:right;}
   .sd-totals-bar{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px;box-shadow:var(--shadow);}
   .sd-totals-title{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
   .sd-total-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
-  .sd-total-team{flex:1;font-size:12px;font-weight:700;}
+  .sd-total-team{flex:1;font-size:14px;font-weight:700;}
   .sd-total-pts{font-size:16px;font-weight:900;letter-spacing:-1px;}
   .sd-total-bar-wrap{width:60px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
   .sd-total-bar{height:100%;border-radius:3px;}
@@ -268,7 +286,7 @@
   .sd-song-btn{width:100%;text-align:left;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;cursor:pointer;margin-bottom:6px;transition:all .15s;}
   .sd-song-btn:hover{border-color:var(--blue);background:var(--blue-dim);}
   .sd-song-btn.used{opacity:.4;cursor:not-allowed;}
-  .sd-song-btn-title{font-size:13px;font-weight:700;color:var(--text);}
+  .sd-song-btn-title{font-size:15px;font-weight:700;color:var(--text);}
   .sd-song-btn-sub{font-size:10px;font-weight:600;color:var(--text-muted);margin-top:2px;}
   .sd-filter-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
 
@@ -304,6 +322,16 @@
   .pf-group-selector{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:12px;}
   .pf-group-sel-btn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .15s;color:var(--text-muted);}
   .pf-group-sel-btn.active{border-color:var(--blue);background:var(--blue);color:#fff;}
+  /* Pong Feud question picker (coach) */
+  .pf-qpicker{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow);}
+  .pf-qpicker-title{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
+  .pf-qpicker-list{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;}
+  .pf-qpicker-btn{text-align:left;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--text);}
+  .pf-qpicker-btn:hover{border-color:var(--blue);background:var(--blue-dim);}
+  .pf-qpicker-btn.current{border-color:var(--blue);background:var(--blue);color:#fff;}
+  .pf-qpicker-btn.done{opacity:.5;}
+  .pf-qpicker-toggle{font-size:11px;font-weight:700;color:var(--blue);background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;letter-spacing:.5px;padding:0;}
+
   /* Question picker admin */
   .qbank-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
   .qbank-tag{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .15s;color:var(--text-muted);}
@@ -371,7 +399,7 @@
   .itinerary-body.open{display:block;}
   .itinerary-set{margin-bottom:18px;}
   .itinerary-set-title{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
-  .itinerary-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .itinerary-table{width:100%;border-collapse:collapse;font-size:13px;}
   .itinerary-table th{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);padding:5px 8px;border-bottom:2px solid var(--border);text-align:left;background:var(--bg);}
   .itinerary-table td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:middle;font-weight:600;}
   .itinerary-table tr:last-child td{border-bottom:none;}
@@ -379,7 +407,7 @@
   .it-rot-num{font-size:10px;font-weight:800;color:var(--text-muted);white-space:nowrap;}
   .it-matchup{display:flex;align-items:center;gap:4px;white-space:nowrap;}
   .it-vs{font-size:9px;color:var(--text-muted);font-weight:600;}
-  .it-team{font-size:11px;font-weight:800;}
+  .it-team{font-size:13px;font-weight:800;}
 
   /* RESULTS PAGE SECTIONS */
   .results-section{background:var(--card);border:1.5px solid var(--border);border-radius:14px;margin-bottom:14px;overflow:hidden;box-shadow:var(--shadow);}
@@ -400,32 +428,41 @@
   .stn-select-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
 
   /* ── MOBILE OVERRIDES ── */
-  @media(max-width:400px){
+  @media(max-width:480px){
     nav{padding:0 12px;}
     .page{padding:16px 14px;}
-    .nav-logo-text{font-size:11px;letter-spacing:1px;}
+    .nav-logo-text{font-size:12px;letter-spacing:1px;}
     .nav-logo-sub{display:none;}
-    h1{font-size:20px;}
+    h1{font-size:22px;}
     .card{padding:14px;}
-    .tally-score{font-size:38px;}
-    .pf-question{font-size:13px;padding:12px;}
-    .pf-answer{padding:8px 10px;}
-    .pf-answer-pts{font-size:15px;min-width:28px;}
-    .pf-answer-text{font-size:12px;}
-    .team-score-btn{min-height:110px;padding:16px 8px;}
-    .team-name-lg{font-size:13px;}
-    .score-tally{font-size:24px;}
-    .next-btn{font-size:12px;padding:14px;}
-    .rot-nav-btn{font-size:10px;padding:6px 8px;}
-    .stn-num{font-size:22px;}
-    .stn-game{font-size:9px;}
-    .lb-team-name{font-size:12px;}
-    .lb-points{font-size:20px;}
-    .lb-bar-wrap{width:36px;}
-    .shot-order-title{font-size:9px;}
-    .shot-btn{padding:8px 10px;font-size:12px;}
-    .tally-btn{width:40px;height:40px;font-size:20px;}
-    .score-edit-input{width:70px;font-size:16px;}
+    .tally-score{font-size:42px;}
+    .pf-question{font-size:15px;padding:14px;}
+    .pf-answer{padding:10px 12px;}
+    .pf-answer-pts{font-size:17px;min-width:32px;}
+    .pf-answer-text{font-size:14px;}
+    .team-score-btn{min-height:120px;padding:16px 8px;}
+    .team-name-lg{font-size:15px;}
+    .score-tally{font-size:26px;}
+    .next-btn{font-size:14px;padding:16px;letter-spacing:1px;}
+    .rot-nav-btn{font-size:12px;padding:8px 10px;}
+    .stn-num{font-size:26px;}
+    .stn-game{font-size:11px;}
+    .lb-team-name{font-size:17px;}
+    .lb-points{font-size:22px;}
+    .lb-bar-wrap{width:40px;}
+    .shot-btn{padding:10px 14px;font-size:13px;}
+    .tally-btn{width:44px;height:44px;font-size:22px;}
+    .score-edit-input{width:72px;font-size:17px;}
+    .game-label-sm{font-size:20px;}
+    .stn-pill-name{font-size:16px;}
+    .pf-group-name{font-size:11px;}
+    .pf-group-score{font-size:28px;}
+    .sd-song-title{font-size:20px;}
+    .sd-team-row{padding:14px;}
+    .podium-team-name{font-size:15px;}
+    .it-team{font-size:12px;}
+    .itinerary-table th{font-size:10px;}
+    .itinerary-table td{font-size:12px;padding:8px 6px;}
   }
 
   /* MISC */
@@ -513,6 +550,7 @@
     <div class="card">
       <div class="sec-label">Schedule</div>
       <div id="schedule-container"></div>
+      <div id="schedule-checker"></div>
     </div>
     <button class="btn btn-primary" onclick="saveEventConfig()" style="font-size:14px;padding:18px;letter-spacing:2px">💾 Save Event</button>
     <div style="height:40px"></div>
@@ -624,7 +662,7 @@ const H={'apikey':SK,'Authorization':`Bearer ${SK}`,'Content-Type':'application/
 const COLORS=[
   {name:'Black',hex:'#1a1a1a'},{name:'Charcoal',hex:'#4a4a4a'},{name:'White',hex:'#f0f0f0'},
   {name:'Silver',hex:'#a8b0bc'},{name:'Red',hex:'#e02020'},{name:'Crimson',hex:'#9b1c1c'},
-  {name:'Orange',hex:'#f97316'},{name:'Gold',hex:'#f59e0b'},{name:'Yellow',hex:'#eab308'},
+  {name:'Orange',hex:'#f97316'},{name:'Gold',hex:'#f59e0b'},{name:'Dark Yellow',hex:'#ca8a04'},
   {name:'Lime',hex:'#84cc16'},{name:'Green',hex:'#16a34a'},{name:'Forest',hex:'#166534'},
   {name:'Teal',hex:'#0d9488'},{name:'Cyan',hex:'#06b6d4'},{name:'Light Blue',hex:'#38bdf8'},
   {name:'Blue',hex:'#0673c1'},{name:'Dark Blue',hex:'#1e3a8a'},{name:'Navy',hex:'#1e2d5a'},
@@ -924,7 +962,9 @@ async function openEventEditor(id,name,date){
       const podiumSizeVal=podPart?parseInt(podPart.replace('POD:','')):(3);
       const ssPart=rawParts.find(p=>p.startsWith('SS:'));
       const sdSongs=ssPart?ssPart.replace('SS:','').split(',').map(Number):[];
-      return{id:s.id,name:gname||'',type:isAll?'allteams':'h2h',coaches:s.coaches||'',scorecardType:sct,pfSplit:pfSplitVal,pfQuestions:pfQs,sdSongs,podiumSize:podiumSizeVal,_stationId:s.id,_stationNum:s.number};
+      const durPart=rawParts.find(p=>p.startsWith('DUR:'));
+      const durationVal=durPart?parseInt(durPart.replace('DUR:','')):(10);
+      return{id:s.id,name:gname||'',type:isAll?'allteams':'h2h',coaches:s.coaches||'',scorecardType:sct,pfSplit:pfSplitVal,pfQuestions:pfQs,sdSongs,podiumSize:podiumSizeVal,duration:durationVal,_stationId:s.id,_stationNum:s.number};
     });
 
     // Rebuild schedule from rotations
@@ -1096,7 +1136,7 @@ function addGame(){
   const name=document.getElementById('new-game-name').value.trim();
   if(!name){toast('Enter a game name',true);return;}
   // Multiple All Teams games allowed
-  editorGames.push({id:null,name,type:newGameType,coaches:'',scorecardType:'none',pfSplit:'none',pfQuestions:[],sdSongs:[],podiumSize:3});
+  editorGames.push({id:null,name,type:newGameType,coaches:'',scorecardType:'none',pfSplit:'none',pfQuestions:[],sdSongs:[],podiumSize:3,duration:10});
   document.getElementById('new-game-name').value='';
   renderGames();autoGenerateSchedule();
 }
@@ -1403,9 +1443,14 @@ function renderSchedule(){
           <div style="font-size:14px;font-weight:700;color:var(--red)">${g?g.name:'All Teams Game'}</div>
           <input class="slot-coach-input" value="${set.coaches||''}" onchange="schedule[${si}].coaches=this.value" placeholder="Coach name(s)">
         </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
           <span style="font-size:11px;font-weight:700;color:var(--text-muted)">Teams earning points:</span>
           ${[1,2,3].map(n=>`<button class="pf-split-btn ${podSize===n?'active':''}" onclick="setAtPodiumSize(${si},${n})" style="flex:0 0 auto;padding:5px 14px">${n}</button>`).join('')}
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:11px;font-weight:700;color:var(--text-muted)">⏱ Duration:</span>
+          <input type="number" min="1" max="60" value="${g?.duration||10}" onchange="if(editorGames[${schedule[si].gameIdx}])editorGames[${schedule[si].gameIdx}].duration=parseInt(this.value)||10" style="width:56px;padding:4px 8px;border-radius:6px;border:1.5px solid var(--border);font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;text-align:center">
+          <span style="font-size:11px;font-weight:600;color:var(--text-muted)">min</span>
         </div>
       </div>`;
       return;
@@ -1433,6 +1478,11 @@ function renderSchedule(){
             }).join('')}
           </select>
           <input class="slot-coach-input" value="${slot.coaches||''}" onchange="schedule[${si}].stations[${slotIdx}].coaches=this.value" placeholder="Coach">
+          <div style="display:flex;align-items:center;gap:5px;margin-top:5px">
+            <span style="font-size:11px;font-weight:700;color:var(--text-muted)">⏱</span>
+            <input type="number" min="1" max="60" value="${slot.gameIdx>=0?editorGames[slot.gameIdx]?.duration||10:10}" onchange="setSlotDuration(${si},${slotIdx},this.value)" style="width:52px;padding:4px 8px;border-radius:6px;border:1.5px solid var(--border);font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;text-align:center;margin-bottom:0">
+            <span style="font-size:11px;font-weight:600;color:var(--text-muted)">min</span>
+          </div>
         </div>`).join('')}
 
       <!-- Matchups per rotation -->
@@ -1446,12 +1496,12 @@ function renderSchedule(){
               const slotGame=editorGames[set.stations[mi]?.gameIdx];
               return`<div class="matchup-row">
                 <span class="slot-label" style="font-size:10px">${slotGame?slotGame.name.substring(0,10):'Stn '+(mi+1)}</span>
-                <select onchange="schedule[${si}].rotations[${ri}].matchups[${mi}].team1=this.value">
+                <select onchange="schedule[${si}].rotations[${ri}].matchups[${mi}].team1=this.value;renderChecker()">
                   <option value="">Team A</option>
                   ${editorTeams.map(t=>`<option value="${t.name}" ${m.team1===t.name?'selected':''}>${t.name}</option>`).join('')}
                 </select>
                 <span class="vs-dot">VS</span>
-                <select onchange="schedule[${si}].rotations[${ri}].matchups[${mi}].team2=this.value">
+                <select onchange="schedule[${si}].rotations[${ri}].matchups[${mi}].team2=this.value;renderChecker()">
                   <option value="">Team B</option>
                   ${editorTeams.map(t=>`<option value="${t.name}" ${m.team2===t.name?'selected':''}>${t.name}</option>`).join('')}
                 </select>
@@ -1470,12 +1520,149 @@ function renderSchedule(){
   <p class="text-muted" style="margin-top:10px;font-size:11px">Change game assignments or matchups above, then Save Event.</p>`;
 
   c.innerHTML=html;
+  renderChecker();
 }
 
 function setAtPodiumSize(setIdx,n){
   const g=editorGames[schedule[setIdx].gameIdx];
   if(g)g.podiumSize=n;
   renderSchedule();
+}
+
+function renderChecker(){
+  const el=document.getElementById('schedule-checker');
+  if(!el)return;
+  if(!schedule.length||!editorTeams.length){el.innerHTML='';return;}
+
+  const teamNames=editorTeams.map(t=>t.name);
+  const h2hSets=schedule.filter(s=>s.type==='h2h');
+
+  // Populate teamColorCache from editorTeams (may not be set in admin context)
+  editorTeams.forEach(t=>{if(t.color)teamColorCache[t.name]=t.color;});
+
+  // Build game list — one game per station slot
+  const gameSlots=[]; // {setIdx, slotIdx, gameName}
+  h2hSets.forEach((set,si)=>{
+    set.stations.forEach((slot,slotIdx)=>{
+      const g=slot.gameIdx>=0?editorGames[slot.gameIdx]:null;
+      gameSlots.push({setIdx:si,slotIdx,gameName:g?g.name:'(no game)',gameIdx:slot.gameIdx});
+    });
+  });
+
+  // For each team, figure out which game they play at each station
+  // teamGameMap[team] = [gameName, gameName, ...] — one per station they visit
+  const teamGameMap={}; // team -> [gameName]
+  const teamOpponentMap={}; // team -> {opponent: count}
+  teamNames.forEach(t=>{teamGameMap[t]=[];teamOpponentMap[t]={};});
+
+  h2hSets.forEach((set,si)=>{
+    const numSlots=(set.stations||[]).length;
+
+    // For each station slot, find which teams play there across all rotations
+    for(let slotIdx=0;slotIdx<numSlots;slotIdx++){
+      const slot=set.stations[slotIdx];
+      const g=slot?.gameIdx>=0?editorGames[slot.gameIdx]:null;
+      const gameName=g?g.name:'(no game)';
+
+      // Collect all teams that appear at this slot across all rotations
+      const teamsAtSlot=[];
+      (set.rotations||[]).forEach(rot=>{
+        const m=(rot.matchups||[])[slotIdx];
+        if(m&&m.team1&&m.team2){
+          teamsAtSlot.push(m.team1,m.team2);
+        }
+      });
+
+      // Each team should appear exactly once at this slot (one rotation)
+      const slotTeamCount={};
+      teamsAtSlot.forEach(t=>{slotTeamCount[t]=(slotTeamCount[t]||0)+1;});
+
+      // Record game visits
+      Object.keys(slotTeamCount).forEach(team=>{
+        if(teamGameMap[team]===undefined)return;
+        const times=slotTeamCount[team];
+        // Push once per unique visit (should be 1; if >1 it's a duplicate we'll catch)
+        for(let i=0;i<times;i++)teamGameMap[team].push(gameName);
+      });
+    }
+
+    // Opponent counts — count how many rotations each pair faces each other
+    (set.rotations||[]).forEach(rot=>{
+      (rot.matchups||[]).forEach(m=>{
+        if(!m.team1||!m.team2)return;
+        if(teamOpponentMap[m.team1]!==undefined)
+          teamOpponentMap[m.team1][m.team2]=(teamOpponentMap[m.team1][m.team2]||0)+1;
+        if(teamOpponentMap[m.team2]!==undefined)
+          teamOpponentMap[m.team2][m.team1]=(teamOpponentMap[m.team2][m.team1]||0)+1;
+      });
+    });
+  });
+
+  // ── Check 1: Each team plays every game exactly once ──
+  const uniqueGames=[...new Set(gameSlots.map(g=>g.gameName).filter(g=>g!=='(no game)'))];
+  let gameCheckRows='';
+  let gameCheckOk=true;
+  teamNames.forEach(team=>{
+    const played=teamGameMap[team]||[];
+    const issues=[];
+    uniqueGames.forEach(game=>{
+      const count=played.filter(g=>g===game).length;
+      if(count===0)issues.push(game+' (missing)');
+      if(count>1)issues.push(game+' (×'+count+')');
+    });
+    const ok=issues.length===0;
+    if(!ok)gameCheckOk=false;
+    gameCheckRows+='<div class="checker-row">'
+      +'<div class="checker-team" style="color:'+readableTeamColor(teamColorCache[team]||'#333')+'">'+team+'</div>'
+      +(ok
+        ?'<span class="checker-ok">✓ All games covered</span>'
+        :'<span class="checker-warn">✗ '+issues.join(', ')+'</span>')
+      +'</div>';
+  });
+
+  // ── Check 2: Opponent matrix ──
+  // Build a grid: rows = teams, cols = teams, value = how many times they faced
+  let matrixHeader='<div style="display:grid;grid-template-columns:auto '+teamNames.map(()=>'1fr').join(' ')+';gap:4px;margin-top:8px">';
+  matrixHeader+='<div></div>'; // top-left empty
+  teamNames.forEach(t=>{
+    matrixHeader+='<div class="matchup-cell" style="font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted)">'+t.substring(0,4)+'</div>';
+  });
+  let matrixRows='';
+  teamNames.forEach(rowTeam=>{
+    matrixRows+='<div class="matchup-cell" style="font-size:11px;font-weight:800;color:'+readableTeamColor(teamColorCache[rowTeam]||'#333')+';text-align:left">'+rowTeam+'</div>';
+    teamNames.forEach(colTeam=>{
+      if(rowTeam===colTeam){
+        matrixRows+='<div class="matchup-cell" style="background:#f0f4ff;color:var(--text-muted)">—</div>';
+      } else {
+        const count=(teamOpponentMap[rowTeam]||{})[colTeam]||0;
+        const cls=count===0?'zero':count===1?'once':'multi';
+        matrixRows+='<div class="matchup-cell '+cls+'">'+count+'</div>';
+      }
+    });
+  });
+  const matrix=matrixHeader+matrixRows+'</div>';
+
+  el.innerHTML='<div class="checker-wrap" style="margin-top:0;margin-bottom:16px">'
+    +'<div class="checker-title">📋 Schedule Checker'
+    +'<span class="checker-badge '+(gameCheckOk?'ok':'warn')+'">'+(gameCheckOk?'✓ All Good':'⚠ Issues Found')+'</span>'
+    +'</div>'
+    +'<div class="checker-section">'
+    +'<div class="checker-section-title" style="color:'+(gameCheckOk?'#16a34a':'var(--red)')+'">Game Coverage — Each team should play every game once</div>'
+    +gameCheckRows
+    +'</div>'
+    +'<div class="checker-section">'
+    +'<div class="checker-section-title" style="color:var(--blue)">Opponent Matrix — How many times each team faces each other</div>'
+    +'<div class="matchup-grid-header">0 = never · 1 = once (ideal) · 2+ = repeat</div>'
+    +matrix
+    +'</div>'
+    +'</div>';
+}
+
+function setSlotDuration(setIdx,slotIdx,val){
+  const slot=schedule[setIdx]?.stations?.[slotIdx];
+  if(!slot)return;
+  const gameIdx=slot.gameIdx;
+  if(gameIdx>=0&&editorGames[gameIdx])editorGames[gameIdx].duration=parseInt(val)||10;
 }
 
 function setSlotGame(setIdx,slotIdx,gameIdx){
@@ -1509,7 +1696,8 @@ async function saveEventConfig(){
         const atSct=g?.scorecardType||'none';
         let atGamesField=atName+'|ALLTEAMS';
         const atPodSize=g?.podiumSize||3;
-        atGamesField+=`|POD:${atPodSize}`;
+        const atDur=g?.duration||10;
+        atGamesField+=`|POD:${atPodSize}|DUR:${atDur}`;
         if(atSct==='showdown'){
           atGamesField+='|SHOWDOWN';
           if(g.sdSongs&&g.sdSongs.length)atGamesField+=`|SS:${g.sdSongs.join(',')}`;
@@ -1522,6 +1710,8 @@ async function saveEventConfig(){
           const g=slot.gameIdx>=0?editorGames[slot.gameIdx]:null;
           const sct=g?.scorecardType||'none';
           let gamesField=g?g.name:'TBD';
+          const dur=g?.duration||10;
+          gamesField+=`|DUR:${dur}`;
           if(sct==='tally')gamesField+=`|TALLY`;
           else if(sct==='pongfeud'){
             gamesField+=`|PONGFEUD|SPLIT:${g.pfSplit||'none'}`;
@@ -1714,7 +1904,7 @@ function renderCoachStationSelect(){
 
 async function selectCoachStation(stationId){
   stnSelectorOpen=false; // collapse after selection
-  sdRoundScores={};sdCurrentSong={};sdGuessInputs={};sdPickerFilter={};podiumPlacements={};
+  sdRoundScores={};sdCurrentSong={};sdGuessInputs={};sdPickerFilter={};sdRoundIndex={};podiumPlacements={};pfQPickerOpen={};pfUsedQIndices={};
   const {stations,rotations,event}=coachEventData;
   coachSelectedStation=stations.find(s=>s.id===stationId);
   coachCurrentRotation=0;coachScores={};tallyScores={};pfRoundScores={};pfUsedAnswers={};pfActiveGroup=null;pfCurrentQOffset={};pfShotOrder={};pfSplit='none';
@@ -1738,9 +1928,15 @@ function renderCoachScorecard(){
   const scored=coachScores[rot.rotation_number];
   const gameName=getGameName(coachSelectedStation);
   const isAll=isAllTeamsStn(coachSelectedStation)||rot.team1==='ALL';
+  // Parse duration from station games field
+  const coachStationDur=(()=>{
+    const raw=(coachSelectedStation.games||'').split('|');
+    const dp=raw.find(p=>p.startsWith('DUR:'));
+    return dp?parseInt(dp.replace('DUR:','')):(10);
+  })();
   const pips=`<div class="rotation-indicator">
     <div class="rotation-pips">${coachRotationData.map((_,i)=>`<div class="pip ${i<coachCurrentRotation?'done':i===coachCurrentRotation?'current':''}" title="Jump to Rotation ${i+1}" onclick="jumpToRotation(${i})" style="cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='scaleY(1.8)'" onmouseout="this.style.transform='scaleY(1)'"></div>`).join('')}</div>
-    <span class="rotation-label">Round ${coachCurrentRotation+1} / ${total}</span>
+    <span class="rotation-label">Round ${coachCurrentRotation+1} / ${total} &nbsp;·&nbsp; <span style="color:var(--blue)">⏱ ${coachStationDur}min</span></span>
   </div>
   <div class="rot-nav-row">
     <button class="rot-nav-btn" onclick="jumpToRotation(${coachCurrentRotation-1})" ${coachCurrentRotation===0?'disabled':''}>← Prev</button>
@@ -1932,8 +2128,10 @@ function renderCoachScorecard(){
 
     // Current question — cycle through selected questions by rotation index
     const qList=stationPfQuestions;
-    const baseOffset=pfCurrentQOffset[rot.rotation_number]||0;
-    const qIdx=(coachCurrentRotation+baseOffset)%Math.max(qList.length,1);
+    const baseOffset=pfCurrentQOffset[rot.rotation_number];
+    const qIdx=baseOffset!==undefined
+      ? ((baseOffset%Math.max(qList.length,1))+Math.max(qList.length,1))%Math.max(qList.length,1)
+      : coachCurrentRotation%Math.max(qList.length,1);
     const currentQ=qList[qIdx]||null;
 
 
@@ -2023,16 +2221,20 @@ function renderCoachScorecard(){
     });
     const groupSelHtml='<div class="pf-selecting-lbl">Awarding points to:</div><div class="pf-group-selector">'+groupSelInner+'</div>';
 
-    // Answers list
+    // Answers list — used answers can be tapped to unassign
     const answersHtml=currentQ?currentQ.answers.map((ans,ai)=>{
       const usedBy=usedAnswers[ai];
       const usedGroup=usedBy?groups.find(g=>g.key===usedBy):null;
       const usedClass=usedBy?`used used-by-${usedBy.startsWith('t1')?'t1':'t2'}`:'';
-      return`<div class="pf-answer ${usedClass}" onclick="${usedBy?'':`pfAwardAnswer(${rot.rotation_number},${ai},${currentQ.answers[ai].pts})`}">
+      // Used: tap to unassign. Unused: tap to award.
+      const clickHandler=usedBy
+        ?`pfUnassignAnswer(${rot.rotation_number},${ai},${ans.pts})`
+        :`pfAwardAnswer(${rot.rotation_number},${ai},${ans.pts})`;
+      return`<div class="pf-answer ${usedClass}" onclick="${clickHandler}" style="cursor:pointer">
         <div class="pf-answer-pts">${ans.pts}</div>
-        <div>
+        <div style="flex:1">
           <div class="pf-answer-text">${ans.a}</div>
-          ${usedGroup?`<div class="pf-award-for">→ ${usedGroup.label}</div>`:''}
+          ${usedGroup?`<div class="pf-award-for">→ ${usedGroup.label} <span style="font-size:9px;opacity:.7">(tap to undo)</span></div>`:''}
         </div>
       </div>`;
     }).join(''):'<p class="text-muted" style="text-align:center;padding:20px">No questions selected for this game. Edit the game in Admin to add questions.</p>';
@@ -2050,10 +2252,28 @@ function renderCoachScorecard(){
       ${currentQ?`<div class="pf-question">Q${qIdx+1} of ${qList.length}: ${currentQ.q}</div>`:''}
       <div class="pf-answers">${answersHtml}</div>
       <button class="pf-no-answer" onclick="pfNoAnswer(${rot.rotation_number})">✕ Not on the board — 0 points this round</button>
-      <div style="display:flex;gap:8px;margin-bottom:10px">
-        <button class="btn btn-sm" style="flex:1" onclick="pfPrevQuestion(${rot.rotation_number})">← Prev Q</button>
-        <button class="btn btn-sm" style="flex:1" onclick="pfNextQuestion(${rot.rotation_number})">Next Q →</button>
-      </div>
+      ${(()=>{
+        const qPickOpen=pfQPickerOpen[rot.rotation_number];
+        const qPickerHtml='<div class="pf-qpicker">'
+          +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
+          +'<span class="pf-qpicker-title">Choose Question</span>'
+          +'<button class="pf-qpicker-toggle" onclick="pfQPickerOpen['+rot.rotation_number+']=false;renderCoachScorecard()">✕ Close</button>'
+          +'</div>'
+          +'<div class="pf-qpicker-list">'
+          +qList.map((q,qi)=>{
+            const isCurrent=qi===qIdx;
+            const isUsed=pfCurrentQOffset[rot.rotation_number]!==undefined&&qi!==(coachCurrentRotation+(pfCurrentQOffset[rot.rotation_number]||0))%qList.length&&pfUsedAnswers[rot.rotation_number+'_q'+qi]!==undefined;
+            return'<button class="pf-qpicker-btn '+(isCurrent?'current':'')+'" onclick="pfJumpToQuestion('+rot.rotation_number+','+qi+')">'
+              +(isCurrent?'▶ ':'')+'Q'+(qi+1)+': '+q.q
+              +'</button>';
+          }).join('')
+          +'</div></div>';
+        return qPickOpen?qPickerHtml
+          :'<div style="display:flex;gap:8px;margin-bottom:10px">'
+          +'<button class="pf-qpicker-toggle" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);text-align:center" onclick="pfQPickerOpen['+rot.rotation_number+']=true;renderCoachScorecard()">📋 Choose Question ('+qList.length+' available)</button>'
+          +'<button class="pf-qpicker-toggle" style="padding:8px 12px;border-radius:8px;border:1.5px solid var(--blue);background:var(--blue-dim);color:var(--blue);white-space:nowrap" onclick="pfRandomQuestion('+rot.rotation_number+')">🎲 Random</button>'
+          +'</div>';
+      })()}
       <div style="display:flex;gap:8px;margin-bottom:10px">
         <button class="next-btn" onclick="pfFinishRound(${rot.rotation_number})" ${!anyScored&&!scored?'disabled':''} style="flex:1">
           ${scored?'✓ Next Rotation →':coachCurrentRotation+1<total?'End Round':'Finish Station'}
@@ -2075,13 +2295,18 @@ function renderCoachScorecard(){
       return ssPart?ssPart.replace('SS:','').split(',').map(Number):[];
     })();
     const availableSongs=stationSdSongIds.map(id=>SHOWDOWN_SONGS.find(s=>s.id===id)).filter(Boolean);
+    if(!sdRoundIndex[rot.rotation_number])sdRoundIndex[rot.rotation_number]=0;
+    const sdRi=sdRoundIndex[rot.rotation_number];
     if(!sdRoundScores[rot.rotation_number])sdRoundScores[rot.rotation_number]={};
+    if(!sdRoundScores[rot.rotation_number][sdRi])sdRoundScores[rot.rotation_number][sdRi]={};
     if(!sdGuessInputs[rot.rotation_number])sdGuessInputs[rot.rotation_number]={};
-    const roundScores=sdRoundScores[rot.rotation_number];
-    const guesses=sdGuessInputs[rot.rotation_number];
-    const selectedSongId=sdCurrentSong[rot.rotation_number]||null;
+    if(!sdGuessInputs[rot.rotation_number][sdRi])sdGuessInputs[rot.rotation_number][sdRi]={};
+    const roundScores=sdRoundScores[rot.rotation_number][sdRi];
+    const guesses=sdGuessInputs[rot.rotation_number][sdRi];
+    const currentSongMap=sdCurrentSong[rot.rotation_number]||{};
+    const selectedSongId=currentSongMap[sdRi]||null;
     const selectedSong=availableSongs.find(s=>s.id===selectedSongId)||null;
-    const roundRevealed=selectedSong&&Object.keys(roundScores).length>0;
+    const roundRevealed=selectedSong&&roundScores&&Object.keys(roundScores).length>0;
 
     // Build all teams list
     const sdTeams=Object.keys(teamColorCache).map(name=>({
@@ -2096,11 +2321,15 @@ function renderCoachScorecard(){
     for(let r=0;r<total;r++){
       const rs=coachRotationData[r];
       if(!rs)continue;
-      const rScores=sdRoundScores[rs.rotation_number]||{};
-      Object.entries(rScores).forEach(([team,pts])=>{
-        if(runningTotals[team]!==undefined)runningTotals[team]+=pts;
+      const rotAllRounds=sdRoundScores[rs.rotation_number]||{};
+      // Sum across all rounds within this rotation
+      Object.values(rotAllRounds).forEach(rScores=>{
+        Object.entries(rScores).forEach(([team,pts])=>{
+          if(runningTotals[team]!==undefined)runningTotals[team]+=pts;
+        });
       });
     }
+    const completedRounds=Object.keys(sdRoundScores[rot.rotation_number]||{}).filter(ri=>Object.keys(sdRoundScores[rot.rotation_number][ri]||{}).length>0).length;
     const maxTotal=Math.max(1,...Object.values(runningTotals));
     const sortedTeams=[...sdTeams].sort((a,b)=>runningTotals[a.name]-runningTotals[b.name]);
 
@@ -2109,11 +2338,11 @@ function renderCoachScorecard(){
     const pickerFilter=sdPickerFilter[rot.rotation_number];
     const allSdTags=[...SHOWDOWN_DECADES,...SHOWDOWN_GENRES];
     const filteredSongs=pickerFilter?availableSongs.filter(s=>s.tags.includes(pickerFilter)):availableSongs;
-    const usedSongIds=Object.values(sdCurrentSong);
+    const usedSongIds=Object.values(sdCurrentSong[rot.rotation_number]||{});
 
     // Song picker HTML
     const songPickerHtml='<div class="sd-song-picker">'
-      +'<div class="sd-song-picker-title">Select a Song</div>'
+      +'<div class="sd-song-picker-title">Select Song for Round '+(sdRi+1)+'</div>'
       +'<div class="sd-filter-row">'
       +'<button class="qbank-tag '+(pickerFilter===null?'active':'')+'" onclick="sdSetFilter('+rot.rotation_number+',null)">All</button>'
       +allSdTags.map((t,ti)=>'<button class="qbank-tag '+(pickerFilter===t?'active':'')+' " data-sdti="'+ti+'" onclick="sdSetFilterByIdx('+rot.rotation_number+',this.dataset.sdti)">'+t+'</button>').join('')
@@ -2145,9 +2374,9 @@ function renderCoachScorecard(){
           +'</div>'
           +'<div class="sd-input-row">'
           +'<input class="sd-year-input" type="number" inputmode="numeric" placeholder="Year guess" '
-          +'value="'+(guess||'')+'" '+(roundRevealed?'disabled ':'')+''
-          +'onchange="sdUpdateGuess('+rot.rotation_number+',\''+t.name+'\',this.value)" '
-          +'oninput="sdUpdateGuess('+rot.rotation_number+',\''+t.name+'\',this.value)">'
+          +'data-rotnum="'+rot.rotation_number+'" data-team="'+t.name+'" '
+          +'value="'+(guess||'')+'" '+(roundRevealed?'disabled ':'')
+          +'oninput="sdUpdateGuessFromInput(this)" onchange="sdUpdateGuessFromInput(this)">'
           +'</div>'
           +'</div>';
       }).join('')
@@ -2169,7 +2398,7 @@ function renderCoachScorecard(){
 
     // Totals bar
     const totalsHtml='<div class="sd-totals-bar">'
-      +'<div class="sd-totals-title">Running Totals (lowest wins)</div>'
+      +'<div class="sd-totals-title">Running Totals · '+completedRounds+' round'+(completedRounds!==1?'s':'')+' played (lowest wins)</div>'
       +sortedTeams.map((t,i)=>{
         const pts=runningTotals[t.name];
         return'<div class="sd-total-row">'
@@ -2196,7 +2425,12 @@ function renderCoachScorecard(){
         ?'<button class="sd-reveal-btn" onclick="sdReveal('+rot.rotation_number+')" '+((!selectedSong||!allGuessesIn)?'disabled':'')+'>Reveal Answer & Score Round</button>'
         :'')
       +(roundRevealed
-        ?'<button class="next-btn" onclick="'+(coachCurrentRotation+1<total?'nextRotation()':'nextRotation()')+'">'+( coachCurrentRotation+1<total?'Next Rotation →':'Finish Station ✓')+'</button>'
+        ?'<div style="display:flex;gap:8px;margin-bottom:8px">'
+        +'<button class="next-btn" style="flex:2" onclick="sdNextRound('+rot.rotation_number+')">Next Song →</button>'
+        +(coachCurrentRotation+1<total
+          ?'<button class="next-btn" style="flex:1;font-size:11px;background:#555" onclick="nextRotation()">Next Rotation</button>'
+          :'<button class="next-btn" style="flex:1;font-size:11px;background:#555" onclick="nextRotation()">Finish ✓</button>')
+        +'</div>'
         +'<button class="undo-btn" onclick="sdUndoReveal('+rot.rotation_number+')">↩ Undo Reveal</button>'
         :'')
       +(selectedSong&&!roundRevealed?'':'')
@@ -2240,11 +2474,25 @@ function renderCoachScorecard(){
 let pfActiveGroup=null;
 let stnSelectorOpen=true; // collapses after station selection
 let pfCurrentQOffset={}; // rotNum -> question offset within rotation
+let pfQPickerOpen={}; // rotNum -> bool
+let pfUsedQIndices={}; // rotNum -> Set of used question indices
 let pfEditMode=false; // whether score edit inputs are showing
 let pfShotOrder={}; // rotNum -> [groupKey, groupKey, ...] in order of shot made
 
 // Showdown helpers
 let sdPickerFilter={}; // rotNum -> tag filter string
+let sdRoundIndex={}; // rotNum -> current round index within this station
+
+function sdNextRound(rotNum){
+  // Advance to next round within same rotation
+  if(!sdRoundIndex[rotNum])sdRoundIndex[rotNum]=0;
+  sdRoundIndex[rotNum]++;
+  if(!sdCurrentSong[rotNum])sdCurrentSong[rotNum]={};
+  if(!sdGuessInputs[rotNum])sdGuessInputs[rotNum]={};
+  if(!sdRoundScores[rotNum])sdRoundScores[rotNum]={};
+  // New round starts with no song selected
+  renderCoachScorecard();
+}
 
 function sdSetFilterByIdx(rotNum,idx){
   const allSdTags=[...SHOWDOWN_DECADES,...SHOWDOWN_GENRES];
@@ -2256,41 +2504,80 @@ function sdSetFilter(rotNum,tag){
   renderCoachScorecard();
 }
 function sdSelectSong(rotNum,songId){
-  sdCurrentSong[rotNum]=songId;
-  sdGuessInputs[rotNum]={};
-  sdRoundScores[rotNum]={};
+  // Move to a new round — don't clear previous round scores
+  if(!sdRoundIndex[rotNum])sdRoundIndex[rotNum]=0;
+  // Only increment if current round already has scores
+  if(sdRoundScores[rotNum]&&sdRoundScores[rotNum][sdRoundIndex[rotNum]]&&Object.keys(sdRoundScores[rotNum][sdRoundIndex[rotNum]]).length>0){
+    sdRoundIndex[rotNum]++;
+  }
+  const ri=sdRoundIndex[rotNum];
+  if(!sdCurrentSong[rotNum])sdCurrentSong[rotNum]={};
+  sdCurrentSong[rotNum][ri]=songId;
+  if(!sdGuessInputs[rotNum])sdGuessInputs[rotNum]={};
+  sdGuessInputs[rotNum][ri]={};
+  if(!sdRoundScores[rotNum])sdRoundScores[rotNum]={};
+  sdRoundScores[rotNum][ri]={};
   renderCoachScorecard();
 }
+function sdUpdateGuessFromInput(inp){
+  const rotNum=parseInt(inp.dataset.rotnum);
+  const teamName=inp.dataset.team;
+  if(!rotNum&&rotNum!==0||!teamName)return;
+  sdUpdateGuess(rotNum,teamName,inp.value);
+}
 function sdUpdateGuess(rotNum,teamName,val){
+  const ri=sdRoundIndex[rotNum]||0;
   if(!sdGuessInputs[rotNum])sdGuessInputs[rotNum]={};
-  sdGuessInputs[rotNum][teamName]=val;
-  // Update just the reveal button state without full re-render
-  const guesses=sdGuessInputs[rotNum];
+  if(!sdGuessInputs[rotNum][ri])sdGuessInputs[rotNum][ri]={};
+  sdGuessInputs[rotNum][ri][teamName]=val;
+  // Update reveal button state without full re-render
+  const guesses=sdGuessInputs[rotNum][ri];
   const allIn=Object.keys(teamColorCache).every(t=>guesses[t]&&guesses[t].toString().trim()!=='');
   const btn=document.querySelector('.sd-reveal-btn');
   if(btn)btn.disabled=!allIn;
 }
-function sdReveal(rotNum){
-  const songId=sdCurrentSong[rotNum];
+async function sdReveal(rotNum){
+  const ri=sdRoundIndex[rotNum]||0;
+  const songMap=sdCurrentSong[rotNum]||{};
+  const songId=songMap[ri];
   const song=SHOWDOWN_SONGS.find(s=>s.id===songId);
   if(!song)return;
-  // Read current input values directly from DOM before scoring
-  const guesses=sdGuessInputs[rotNum]||{};
+  // Flush any DOM inputs not yet captured by oninput
   document.querySelectorAll('.sd-year-input').forEach(inp=>{
-    const tn=inp.dataset.team||inp.getAttribute('data-team');
-    if(tn&&inp.value)guesses[tn]=inp.value;
+    const rn=parseInt(inp.dataset.rotnum);
+    const tn=inp.dataset.team;
+    const v=inp.value.trim();
+    if(tn&&v&&rn===rotNum){
+      if(!sdGuessInputs[rotNum])sdGuessInputs[rotNum]={};
+      if(!sdGuessInputs[rotNum][ri])sdGuessInputs[rotNum][ri]={};
+      sdGuessInputs[rotNum][ri][tn]=v;
+    }
   });
-  sdGuessInputs[rotNum]=guesses;
+  const guesses=(sdGuessInputs[rotNum]||{})[ri]||{};
   const scores={};
   Object.keys(teamColorCache).forEach(team=>{
-    const guess=parseInt(guesses[team]);
+    const raw=guesses[team];
+    const guess=parseInt(raw);
     scores[team]=showdownPoints(isNaN(guess)?null:guess,song.year);
   });
-  sdRoundScores[rotNum]=scores;
+  if(!sdRoundScores[rotNum])sdRoundScores[rotNum]={};
+  sdRoundScores[rotNum][ri]=scores;
+  // Persist to DB: aggregate all rounds into one score row
+  // Format: SHOWDOWN:team1:totalPts|team2:totalPts|...
+  const allRounds=sdRoundScores[rotNum]||{};
+  const teamTotals={};
+  Object.values(allRounds).forEach(rScores=>{
+    Object.entries(rScores).forEach(([team,pts])=>{
+      teamTotals[team]=(teamTotals[team]||0)+pts;
+    });
+  });
+  const showdownStr='SHOWDOWN:'+Object.entries(teamTotals).map(([t,p])=>t+':'+p).join('|');
+  await scoreWinner(showdownStr,rotNum);
   renderCoachScorecard();
 }
 function sdUndoReveal(rotNum){
-  sdRoundScores[rotNum]={};
+  const ri=sdRoundIndex[rotNum]||0;
+  if(sdRoundScores[rotNum])sdRoundScores[rotNum][ri]={};
   renderCoachScorecard();
 }
 
@@ -2325,6 +2612,52 @@ function pfRecordShot(rotNum,groupKey){
 function pfClearShots(rotNum){
   pfShotOrder[rotNum]=[];
   pfActiveGroup=null;
+  renderCoachScorecard();
+}
+
+function pfRandomQuestion(rotNum){
+  // Pick a random question index that hasn't been used yet this rotation
+  // Track used q indices per rotation
+  if(!pfUsedQIndices)pfUsedQIndices={};
+  if(!pfUsedQIndices[rotNum])pfUsedQIndices[rotNum]=new Set();
+  // Build list of unused indices
+  const stationPfQIds2=(()=>{
+    const raw=(coachSelectedStation.games||'').split('|');
+    const qs=raw.find(p=>p.startsWith('QS:'));
+    return qs?qs.replace('QS:','').split(',').map(Number):[];
+  })();
+  const qCount=stationPfQIds2.length;
+  if(qCount===0)return;
+  const used=pfUsedQIndices[rotNum];
+  let available=[...Array(qCount).keys()].filter(i=>!used.has(i));
+  if(available.length===0){
+    // All used — reset and pick from all
+    pfUsedQIndices[rotNum]=new Set();
+    available=[...Array(qCount).keys()];
+  }
+  const pick=available[Math.floor(Math.random()*available.length)];
+  pfUsedQIndices[rotNum].add(pick);
+  pfJumpToQuestion(rotNum,pick);
+}
+
+function pfJumpToQuestion(rotNum,targetQIdx){
+  pfCurrentQOffset[rotNum]=targetQIdx;
+  pfUsedAnswers[rotNum]={};
+  pfActiveGroup=null;
+  pfShotOrder[rotNum]=[];
+  pfQPickerOpen[rotNum]=false;
+  renderCoachScorecard();
+}
+
+function pfUnassignAnswer(rotNum,ansIdx,pts){
+  // Remove the answer assignment and deduct points from that group
+  if(!pfUsedAnswers[rotNum])return;
+  const groupKey=pfUsedAnswers[rotNum][ansIdx];
+  if(!groupKey)return;
+  delete pfUsedAnswers[rotNum][ansIdx];
+  if(pfRoundScores[rotNum]&&pfRoundScores[rotNum][groupKey]!==undefined){
+    pfRoundScores[rotNum][groupKey]=Math.max(0,pfRoundScores[rotNum][groupKey]-pts);
+  }
   renderCoachScorecard();
 }
 
@@ -2425,9 +2758,10 @@ async function podiumAward(rotNum){
   const atPodPart=atParts.find(p=>p.startsWith('POD:'));
   const podSize=atPodPart?parseInt(atPodPart.replace('POD:','')):(coachSelectedStation.podiumSize||3);
   const placePoints=[podSize,podSize>1?podSize-1:0,podSize>2?1:0];
-  // Store all placements in a single row: PODIUM:team1:pts1|team2:pts2|...
   const podiumStr='PODIUM:'+placements.map((t,i)=>t+':'+placePoints[i]).join('|');
   await scoreWinner(podiumStr,rotNum);
+  // Advance to next rotation after awarding
+  jumpToRotation(coachCurrentRotation+1);
 }
 
 async function scoreWinner(team,rotNum){
@@ -2555,13 +2889,21 @@ async function loadResultsPage(){
 
       });
 
-      thead+='</tr>';
+      thead+='<th style="white-space:nowrap;color:var(--blue)">⏱ Rotate After</th></tr>';
 
       let tbody='';
 
+      // Calculate cumulative rotation time using max duration of stations in set
+      const maxDur=Math.max(...stns.map(s=>{
+        const rp=(s.games||'').split('|');
+        const dp=rp.find(p=>p.startsWith('DUR:'));
+        return dp?parseInt(dp.replace('DUR:','')):(10);
+      }));
+      const rotDur=maxDur;
+      const rotateStr=Math.floor(rotDur/60)>0?(Math.floor(rotDur/60)+'h'+(rotDur%60>0?' '+(rotDur%60)+'m':'')):(rotDur+'m');
       setRots.forEach((rot,ri)=>{
 
-        tbody+='<tr><td class="it-rot-num">R'+(ri+1)+'</td>';
+        tbody+='<tr><td class="it-rot-num">R'+(ri+1)+'</td><td style="font-size:11px;font-weight:800;color:var(--blue);white-space:nowrap;padding:7px 8px">'+rotateStr+'</td>';
 
         stns.forEach(stn=>{
 
@@ -2610,12 +2952,16 @@ async function loadResultsPage(){
       allT.forEach(stn=>{
 
         const coach=stn.coaches?' · '+stn.coaches:'';
+        const atRawParts=(stn.games||'').split('|');
+        const atDurPart=atRawParts.find(p=>p.startsWith('DUR:'));
+        const atDurVal=atDurPart?parseInt(atDurPart.replace('DUR:','')):(10);
 
         schedHtml+='<div style="font-size:14px;font-weight:700;margin-bottom:2px">'+getGameName(stn)
 
           +'<span style="font-size:12px;font-weight:500;color:var(--text-muted)">'+coach+'</span></div>'
 
-          +'<div style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:6px">All teams compete together.</div>';
+          +'<div style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:2px">All teams compete together.</div>'
+          +'<div style="font-size:11px;font-weight:800;color:var(--blue);margin-bottom:8px">⏱ '+atDurVal+' min</div>';
 
       });
 
@@ -2632,14 +2978,40 @@ async function loadResultsPage(){
     teams.forEach(t=>{totals[t.name]={points:0,color:t.color||'#0673c1'};});
 
     scores.forEach(s=>{
-
-      if(s.winning_team==='ALL')return;
-
+      if(!s.winning_team||s.winning_team==='ALL')return;
+      // PODIUM score: "PODIUM:team1:pts1|team2:pts2|..."
+      if(s.winning_team.startsWith('PODIUM:')){
+        s.winning_team.replace('PODIUM:','').split('|').forEach(entry=>{
+          const lastColon=entry.lastIndexOf(':');
+          const team=entry.substring(0,lastColon);
+          const pts=parseFloat(entry.substring(lastColon+1))||0;
+          if(totals[team])totals[team].points+=pts;
+        });
+        return;
+      }
+      // SHOWDOWN score: "SHOWDOWN:team1:totalPts|team2:totalPts|..."
+      // Lower penalty score wins — award 1 point to the team with the lowest total
+      if(s.winning_team.startsWith('SHOWDOWN:')){
+        const entries=s.winning_team.replace('SHOWDOWN:','').split('|');
+        const teamPts={};
+        entries.forEach(entry=>{
+          const lastColon=entry.lastIndexOf(':');
+          const team=entry.substring(0,lastColon);
+          const pts=parseFloat(entry.substring(lastColon+1));
+          if(!isNaN(pts))teamPts[team]=pts;
+        });
+        // Team with lowest penalty score wins 1 point
+        const minPts=Math.min(...Object.values(teamPts));
+        const winners=Object.keys(teamPts).filter(t=>teamPts[t]===minPts);
+        winners.forEach(team=>{
+          if(totals[team])totals[team].points+=(1/winners.length);
+        });
+        return;
+      }
       if(s.winning_team==='TIE'){
         const rot=rotations.find(r=>r.station_id===s.station_id&&r.rotation_number===s.rotation_number);
         if(rot){
           if(rot.team1==='ALL'){
-            // All-teams game tie — award 0.5 to every team
             Object.keys(totals).forEach(t=>{totals[t].points+=0.5;});
           } else {
             if(totals[rot.team1])totals[rot.team1].points+=0.5;
@@ -2648,11 +3020,10 @@ async function loadResultsPage(){
         }
         return;
       }
-
+      // Skip any other unrecognized format with colons
+      if(s.winning_team.includes(':'))return;
       if(totals[s.winning_team])totals[s.winning_team].points++;
-
       else totals[s.winning_team]={points:1,color:'#0673c1'};
-
     });
 
     const sorted=Object.entries(totals).sort((a,b)=>b[1].points-a[1].points);
