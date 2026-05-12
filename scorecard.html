@@ -402,6 +402,9 @@
   .itinerary-table{width:100%;border-collapse:collapse;font-size:13px;}
   .itinerary-table th:first-child,.itinerary-table td:first-child{width:52px;white-space:nowrap;}
   .itinerary-table th{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);padding:5px 8px;border-bottom:2px solid var(--border);text-align:left;background:var(--bg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .itinerary-table th:first-child{position:sticky;left:0;z-index:2;background:var(--bg);box-shadow:2px 0 4px rgba(0,0,0,0.06);}
+  .itinerary-table td:first-child{position:sticky;left:0;z-index:1;background:#fff;box-shadow:2px 0 4px rgba(0,0,0,0.06);}
+  .itinerary-table tr:nth-child(even) td:first-child{background:#f8fafc;}
   .itinerary-table td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:middle;font-weight:600;overflow:hidden;}
   .itinerary-table tr:last-child td{border-bottom:none;}
   .itinerary-table tr:nth-child(even) td{background:#f8fafc;}
@@ -491,7 +494,7 @@
 
 <nav>
   <div class="nav-logo">
-    <div class="nav-logo-mark">TF</div>
+    <div class="nav-logo-mark">TBF</div>
     <div>
       <div class="nav-logo-text">Throwback</div>
       <div class="nav-logo-sub">Scorecard</div>
