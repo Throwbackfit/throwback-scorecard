@@ -405,6 +405,9 @@
   .itinerary-table th:first-child{position:sticky;left:0;z-index:2;background:var(--bg);box-shadow:2px 0 4px rgba(0,0,0,0.06);}
   .itinerary-table td:first-child{position:sticky;left:0;z-index:1;background:#fff;box-shadow:2px 0 4px rgba(0,0,0,0.06);}
   .itinerary-table tr:nth-child(even) td:first-child{background:#f8fafc;}
+  @media(max-width:480px){
+    .itinerary-table th:first-child,.itinerary-table td:first-child{max-width:90px;white-space:normal;word-break:break-word;}
+  }
   .itinerary-table td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:middle;font-weight:600;overflow:hidden;}
   .itinerary-table tr:last-child td{border-bottom:none;}
   .itinerary-table tr:nth-child(even) td{background:#f8fafc;}
