@@ -88,10 +88,10 @@
   .game-item{display:flex;align-items:center;gap:8px;background:#f8fafc;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:8px;}
   .game-badge{font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;text-transform:uppercase;white-space:nowrap;}
   .game-badge.h2h{background:var(--blue-mid);color:var(--blue);border:1px solid var(--blue);}
-  .game-badge.allteams{background:rgba(251,54,64,.08);color:var(--red);border:1px solid var(--red);}
+  .game-badge.allteams{background:rgba(13,148,136,0.08);color:#0d9488;border:1px solid #0d9488;}
   .type-btn{padding:8px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-muted);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap;}
   .type-btn.active{background:var(--blue-mid);border-color:var(--blue);color:var(--blue);}
-  .type-btn.active.allteams-btn{background:rgba(251,54,64,.08);border-color:var(--red);color:var(--red);}
+  .type-btn.active.allteams-btn{background:rgba(13,148,136,0.08);border-color:#0d9488;color:#0d9488;}
 
   /* INFO BOX */
   .info-box{background:var(--blue-dim);border:1px solid rgba(6,115,193,0.2);border-radius:8px;padding:10px 14px;font-size:11px;font-weight:600;color:var(--blue);line-height:1.6;margin-bottom:14px;}
@@ -118,10 +118,10 @@
   .matchup-cell.once{background:#f0fdf4;color:#16a34a;}
   .matchup-cell.multi{background:#fff7ed;color:#ea580c;}
   .set-block{background:#f8fafc;border:2px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;}
-  .set-block.allteams-set{border-color:rgba(251,54,64,.3);background:rgba(251,54,64,.03);}
+  .set-block.allteams-set{border-color:rgba(13,148,136,0.3);background:rgba(13,148,136,0.03);}
   .set-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
   .set-title{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--blue);text-transform:uppercase;flex:1;}
-  .set-block.allteams-set .set-title{color:var(--red);}
+  .set-block.allteams-set .set-title{color:#0d9488;}
   .set-meta{font-size:11px;color:var(--text-muted);font-weight:600;}
 
   /* Station slot within a set */
@@ -151,10 +151,10 @@
   .station-btn{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);}
   .station-btn:hover{border-color:var(--blue);box-shadow:var(--shadow-md);}
   .station-btn.active{border-color:var(--blue);background:var(--blue-dim);}
-  .station-btn.allteams-stn{border-color:rgba(251,54,64,.3);}
-  .station-btn.allteams-stn.active{background:rgba(251,54,64,.06);border-color:var(--red);}
+  .station-btn.allteams-stn{border-color:rgba(13,148,136,0.3);}
+  .station-btn.allteams-stn.active{background:rgba(13,148,136,0.06);border-color:#0d9488;}
   .stn-num{font-size:28px;font-weight:900;color:var(--blue);line-height:1;}
-  .station-btn.allteams-stn .stn-num{color:var(--red);}
+  .station-btn.allteams-stn .stn-num{color:#0d9488;}
   .stn-game{font-size:10px;font-weight:600;color:var(--text-muted);margin-top:5px;line-height:1.3;text-transform:uppercase;}
 
   /* SCORECARD */
@@ -420,11 +420,11 @@
   .results-section-body{border-top:1px solid var(--border);}
 
   /* STATION PILL */
-  .stn-pill{display:flex;align-items:center;justify-content:space-between;background:#fff5f5;border:2px solid var(--red);border-radius:12px;padding:12px 16px;cursor:pointer;margin-bottom:12px;-webkit-tap-highlight-color:transparent;}
+  .stn-pill{display:flex;align-items:center;justify-content:space-between;background:#f0fdfa;border:2px solid #0d9488;border-radius:12px;padding:12px 16px;cursor:pointer;margin-bottom:12px;-webkit-tap-highlight-color:transparent;}
   .stn-pill:active{opacity:.85;}
-  .stn-pill-name{font-size:15px;font-weight:900;color:var(--red);letter-spacing:-.3px;}
-  .stn-pill-sub{font-size:11px;font-weight:600;color:var(--red);opacity:.7;margin-top:2px;}
-  .stn-pill-chevron{font-size:16px;color:var(--red);transition:transform .2s;flex-shrink:0;}
+  .stn-pill-name{font-size:15px;font-weight:900;color:#0d9488;letter-spacing:-.3px;}
+  .stn-pill-sub{font-size:11px;font-weight:600;color:#0d9488;opacity:.7;margin-top:2px;}
+  .stn-pill-chevron{font-size:16px;color:#0d9488;transition:transform .2s;flex-shrink:0;}
   .stn-pill-chevron.open{transform:rotate(180deg);}
   .stn-select-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
 
@@ -434,6 +434,7 @@
     .page{padding:16px 14px;}
     .nav-logo-text{font-size:12px;letter-spacing:1px;}
     .nav-logo-sub{display:none;}
+  @media(max-width:600px){.nav-logo-text{display:none;}.nav-logo-sub{display:none;}}
     h1{font-size:22px;}
     .card{padding:14px;}
     .tally-score{font-size:42px;}
@@ -1441,7 +1442,7 @@ function renderSchedule(){
           <span class="set-title">🏆 Final Round — All Teams</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center;margin-bottom:10px">
-          <div style="font-size:14px;font-weight:700;color:var(--red)">${g?g.name:'All Teams Game'}</div>
+          <div style="font-size:14px;font-weight:700;color:#0d9488">${g?g.name:'All Teams Game'}</div>
           <input class="slot-coach-input" value="${set.coaches||''}" onchange="schedule[${si}].coaches=this.value" placeholder="Coach name(s)">
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
@@ -1878,7 +1879,7 @@ function renderCoachStationSelect(){
   });
   if(allTeamsStations.length){
     gridHtml+='<div class="stn-set-row" style="margin-bottom:10px">'
-      +'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px">Final Round</div>'
+      +'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#0d9488;margin-bottom:6px">Final Round</div>'
       +'<div class="station-selector" style="margin-bottom:0">'+allTeamsStations.map(renderBtn).join('')+'</div>'
       +'</div>';
   }
@@ -2879,62 +2880,42 @@ async function loadResultsPage(){
     sets.forEach((stns,si)=>{
 
       const setRots=rotations.filter(r=>r.station_id===stns[0].id).sort((a,b)=>a.rotation_number-b.rotation_number);
-
-      let thead='<tr><th>Round</th>';
-
-      stns.forEach(s=>{
-
-        const coach=s.coaches?' <span style="font-weight:500;opacity:.7">· '+s.coaches+'</span>':'';
-
-        const coachLine=s.coaches?'<div style="font-size:8px;font-weight:600;color:var(--text-muted);margin-top:1px">'+s.coaches+'</div>':'';
-        thead+='<th><div style="font-size:8px;font-weight:700;color:var(--text-muted)">STN '+s.number+'</div>'
-          +'<div style="font-size:9px;font-weight:800;color:var(--text)">'+getGameName(s)+'</div>'
-          +coachLine+'</th>';
-
-      });
-
-      thead+='</tr>';
-
-      let tbody='';
-
-      // Calculate cumulative rotation time using max duration of stations in set
       const maxDur=Math.max(...stns.map(s=>{
         const rp=(s.games||'').split('|');
         const dp=rp.find(p=>p.startsWith('DUR:'));
         return dp?parseInt(dp.replace('DUR:','')):(10);
       }));
+
+      // Transposed: rows=games/stations, cols=rotations
+      let thead='<tr><th style="min-width:90px">Game / Coach</th>';
       setRots.forEach((rot,ri)=>{
-
-        tbody+='<tr><td class="it-rot-num">R'+(ri+1)+'<br><span style="font-size:10px;color:var(--blue);font-weight:800">'+maxDur+'m</span></td>';
-
-        stns.forEach(stn=>{
-
+        thead+='<th style="text-align:center;width:80px">'
+          +'<div style="font-size:9px;font-weight:800;color:var(--text-muted)">R'+(ri+1)+'</div>'
+          +'<div style="font-size:9px;font-weight:700;color:var(--blue)">'+maxDur+'m</div></th>';
+      });
+      thead+='</tr>';
+      let tbody='';
+      stns.forEach(stn=>{
+        tbody+='<tr>';
+        tbody+='<td style="white-space:nowrap;padding:8px">'
+          +'<div style="font-size:9px;font-weight:700;color:var(--text-muted)">STN '+stn.number+'</div>'
+          +'<div style="font-size:12px;font-weight:800;color:var(--text)">'+getGameName(stn)+'</div>'
+          +(stn.coaches?'<div style="font-size:10px;font-weight:600;color:var(--text-muted)">'+stn.coaches+'</div>':'')
+          +'</td>';
+        setRots.forEach((rot,ri)=>{
           const r=rotations.find(x=>x.station_id===stn.id&&x.rotation_number===rot.rotation_number);
-
           if(r&&r.team1&&r.team2){
-
             const c1=teamColorCache[r.team1]||'#0673c1';
-
             const c2=teamColorCache[r.team2]||'#e02020';
-
             const rd1=readableTeamColor(c1==='CAMO'?'#5a6e4a':c1);
-
             const rd2=readableTeamColor(c2==='CAMO'?'#5a6e4a':c2);
-
-            tbody+='<td><div class="it-matchup">'
-
+            tbody+='<td style="padding:6px 8px"><div style="display:flex;flex-direction:column;gap:1px">'
               +'<span class="it-team" style="color:'+rd1+'">'+r.team1+'</span>'
-
-              +'<span class="it-vs">vs</span>'
-
+              +'<span style="font-size:8px;color:var(--text-muted);font-weight:600">vs</span>'
               +'<span class="it-team" style="color:'+rd2+'">'+r.team2+'</span>'
-
               +'</div></td>';
-
           } else tbody+='<td style="color:var(--text-muted)">—</td>';
-
         });
-
         tbody+='</tr>';
 
       });
