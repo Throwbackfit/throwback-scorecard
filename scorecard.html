@@ -1986,6 +1986,34 @@ function renderCoachScorecard(){
         +'</div>';
     });
 
+    // Edit mode for podium points
+    let podiumEditPanel='';
+    if(pfEditMode&&coachScores[rot.rotation_number]){
+      const existingStr=coachScores[rot.rotation_number]||'';
+      const existingPlacements={};
+      if(existingStr.startsWith('PODIUM:')){
+        existingStr.replace('PODIUM:','').split('|').forEach(e=>{
+          const lc=e.lastIndexOf(':');
+          existingPlacements[e.substring(0,lc)]=parseFloat(e.substring(lc+1))||0;
+        });
+      }
+      let editRows='';
+      allTeams.forEach(name=>{
+        const pts=existingPlacements[name]||0;
+        editRows+='<div class="score-edit-row">'
+          +'<div class="score-edit-label" style="color:'+readableTeamColor(teamColorCache[name]||'#333')+'">'+name+'</div>'
+          +'<input class="score-edit-input" type="number" min="0" id="podedit_'+name.replace(/\s/g,'_')+'" value="'+pts+'">'
+          +'</div>';
+      });
+      podiumEditPanel='<div class="score-edit-wrap" style="margin-bottom:14px">'
+        +'<div class="score-edit-title">Edit Points</div>'
+        +editRows
+        +'<div style="display:flex;gap:8px;margin-top:4px">'
+        +'<button class="score-edit-btn" onclick="pfEditMode=false;renderCoachScorecard()">Cancel</button>'
+        +'<button class="score-edit-btn save" onclick="podiumSaveEdits('+rot.rotation_number+')">Save</button>'
+        +'</div></div>';
+    }
+
     // Summary of current placements
     let placeSummary='';
     for(let i=0;i<podSize;i++){
@@ -2000,14 +2028,21 @@ function renderCoachScorecard(){
 
     el.innerHTML='<div class="scorecard-wrap">'
       +pips+gameLabel
-      +'<div style="background:#fff5f5;border:1.5px solid var(--red);border-radius:10px;padding:12px 14px;margin-bottom:14px">'
-      +'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px">Podium ('+podSize+' teams score)</div>'
+      +podiumEditPanel
+      +'<div style="background:#f0fdfa;border:1.5px solid #0d9488;border-radius:10px;padding:12px 14px;margin-bottom:14px">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'
+      +'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#0d9488">Podium ('+podSize+' teams score)</div>'
+      +(coachScores[rot.rotation_number]?'<button style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;font-family:Montserrat,sans-serif;color:var(--text-muted)" onclick="pfEditMode=!pfEditMode;renderCoachScorecard()">✏ Edit</button>':'')
+      +'</div>'
       +placeSummary
       +'</div>'
       +'<div class="podium-instructions">Tap teams in finishing order</div>'
       +'<div class="podium-wrap">'+teamBtns+'</div>'
       +(placements.length>0?'<button class="podium-clear-btn" onclick="podiumPlacements['+rot.rotation_number+']=[];renderCoachScorecard()">↩ Reset Placements</button>':'')
       +'<button class="next-btn" onclick="podiumAward('+rot.rotation_number+')" '+(allPlaced?'':'disabled')+'>Award Points & Continue</button>'
+      +(coachScores[rot.rotation_number]
+        ?'<button class="undo-btn" style="margin-top:8px" onclick="undoScore('+rot.rotation_number+');podiumPlacements['+rot.rotation_number+']=[];renderCoachScorecard()">↩ Undo Points</button>'
+        :'')
       +'</div>';
     return;
   }
@@ -2283,7 +2318,7 @@ function renderCoachScorecard(){
           +'</div>';
       })()}
       <div style="display:flex;gap:8px;margin-bottom:10px;margin-top:80px">
-        <button class="next-btn" onclick="pfFinishRound(${rot.rotation_number})" ${!anyScored&&!scored?'disabled':''} style="flex:1">
+        <button class="next-btn" onclick="${scored?'nextRotation()':'pfFinishRound('+rot.rotation_number+')'}" ${!anyScored&&!scored?'disabled':''} style="flex:1">
           ${scored?'✓ Next Rotation →':coachCurrentRotation+1<total?'End Round':'Finish Station'}
         </button>
         <button class="btn btn-sm" onclick="scoreWinner('TIE',${rot.rotation_number})" style="${scored==='TIE'?'border-color:var(--text-muted);background:var(--text-muted);color:#fff':''}">
@@ -2742,6 +2777,28 @@ async function pfFinishRound(rotNum){
     // Tied — just advance
     jumpToRotation(coachCurrentRotation+1);
   }
+}
+
+function podiumSaveEdits(rotNum){
+  const allTeams=Object.keys(teamColorCache);
+  const entries=[];
+  allTeams.forEach(name=>{
+    const safeId='podedit_'+name.replace(/\s/g,'_');
+    const el=document.getElementById(safeId);
+    if(el){
+      const pts=parseFloat(el.value)||0;
+      if(pts>0)entries.push(name+':'+pts);
+    }
+  });
+  const newStr=entries.length?'PODIUM:'+entries.join('|'):'';
+  if(newStr){
+    coachScores[rotNum]=newStr;
+    db('DELETE','scores','?event_id=eq.'+coachEventData.event.id+'&station_id=eq.'+coachSelectedStation.id+'&rotation_number=eq.'+rotNum)
+      .then(()=>db('POST','scores','',{event_id:coachEventData.event.id,station_id:coachSelectedStation.id,rotation_number:rotNum,winning_team:newStr}))
+      .catch(err=>toast('Sync error: '+err.message,true));
+  }
+  pfEditMode=false;
+  renderCoachScorecard();
 }
 
 function podiumTap(rotNum,teamName){
