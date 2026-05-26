@@ -629,6 +629,11 @@
     </select>
     <div id="showdown-settings" style="display:none">
       <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
+        <label>Team Split</label>
+        <div class="pf-split-selector" style="margin-bottom:14px">
+          <button class="pf-split-btn active" id="sd-split-btn-none" onclick="setSdSplit('none')">No Split</button>
+          <button class="pf-split-btn" id="sd-split-btn-2" onclick="setSdSplit('2')">2 Groups</button>
+        </div>
         <label>Songs for this event</label>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
           <span id="sdbank-selected-count" style="font-size:12px;font-weight:700;color:var(--blue)">0 selected</span>
@@ -779,6 +784,7 @@ let tallyScores={}; // rotationNumber -> {t1:n, t2:n} — local tally, resets pe
 let tallyEditMode=false;
 // Showdown state
 let sdSelectedSongs=[]; // list of song IDs selected for this game
+let sdEditSplit='none'; // split setting for current game being edited
 let sdBankActiveTag=null;
 let podiumPlacements={}; // rotNum -> [team1, team2, team3] in order of finish
 let sdRoundScores={}; // rotNum -> {teamKey: {guess, pts}}
@@ -814,6 +820,14 @@ function sdToggleSong(id){
   if(sdSelectedSongs.includes(id))sdSelectedSongs=sdSelectedSongs.filter(x=>x!==id);
   else sdSelectedSongs.push(id);
   renderSdBank();
+}
+function setSdSplit(val){
+  sdEditSplit=val;
+  if(editingGameIdx!==null)editorGames[editingGameIdx].sdSplit=val;
+  ['none','2'].forEach(v=>{
+    const btn=document.getElementById('sd-split-btn-'+v);
+    if(btn)btn.classList.toggle('active',v===val);
+  });
 }
 function sdClearAll(){if(editingGameIdx!==null)editorGames[editingGameIdx].sdSongs=[];sdSelectedSongs=[];renderSdBank();}
 
@@ -970,9 +984,11 @@ async function openEventEditor(id,name,date){
       const podiumSizeVal=podPart?parseInt(podPart.replace('POD:','')):(3);
       const ssPart=rawParts.find(p=>p.startsWith('SS:'));
       const sdSongs=ssPart?ssPart.replace('SS:','').split(',').map(Number):[];
+      const sdSplitPart=rawParts.find(p=>p.startsWith('SDSPLIT:'));
+      const sdSplitVal=sdSplitPart?sdSplitPart.replace('SDSPLIT:',''):'none';
       const durPart=rawParts.find(p=>p.startsWith('DUR:'));
       const durationVal=durPart?parseInt(durPart.replace('DUR:','')):(10);
-      return{id:s.id,name:gname||'',type:isAll?'allteams':'h2h',coaches:s.coaches||'',scorecardType:sct,pfSplit:pfSplitVal,pfQuestions:pfQs,sdSongs,podiumSize:podiumSizeVal,duration:durationVal,_stationId:s.id,_stationNum:s.number};
+      return{id:s.id,name:gname||'',type:isAll?'allteams':'h2h',coaches:s.coaches||'',scorecardType:sct,pfSplit:pfSplitVal,pfQuestions:pfQs,sdSongs,sdSplit:sdSplitVal,podiumSize:podiumSizeVal,duration:durationVal,_stationId:s.id,_stationNum:s.number};
     });
 
     // Rebuild schedule from rotations
@@ -1144,7 +1160,7 @@ function addGame(){
   const name=document.getElementById('new-game-name').value.trim();
   if(!name){toast('Enter a game name',true);return;}
   // Multiple All Teams games allowed
-  editorGames.push({id:null,name,type:newGameType,coaches:'',scorecardType:'none',pfSplit:'none',pfQuestions:[],sdSongs:[],podiumSize:3,duration:10});
+  editorGames.push({id:null,name,type:newGameType,coaches:'',scorecardType:'none',pfSplit:'none',pfQuestions:[],sdSongs:[],sdSplit:'none',podiumSize:3,duration:10});
   document.getElementById('new-game-name').value='';
   renderGames();autoGenerateSchedule();
 }
@@ -1161,6 +1177,11 @@ function openEditGame(i){
   document.getElementById('pongfeud-settings').style.display=g.scorecardType==='pongfeud'?'block':'none';
   document.getElementById('showdown-settings').style.display=g.scorecardType==='showdown'?'block':'none';
   sdSelectedSongs=[...(g.sdSongs||[])];
+  sdEditSplit=g.sdSplit||'none';
+  ['none','2'].forEach(v=>{
+    const btn=document.getElementById('sd-split-btn-'+v);
+    if(btn)btn.classList.toggle('active',v===sdEditSplit);
+  });
   sdBankActiveTag=null;
   if(g.scorecardType==='pongfeud')renderQBank();
   if(g.scorecardType==='showdown')renderSdBank();
@@ -1178,6 +1199,7 @@ function saveGameEdit(){
   }
   if(g.scorecardType==='showdown'){
     g.sdSongs=[...sdSelectedSongs];
+    g.sdSplit=sdEditSplit;
   }
   closeModal('edit-game-modal');
   renderGames();renderSchedule();toast('✓ Game updated');
@@ -1303,6 +1325,12 @@ function buildSetSchedule(teamNames, numStations){
 // Latin square approach — guaranteed every team plays every station exactly once.
 // In rotation r, station s is visited by teams at positions (s-r)%numStations and (s-r)%numStations+numStations.
 function buildSetScheduleFallback(teamNames, numStations){
+  // Special case: 2 teams (1 station) — one rotation, they just play each other
+  if(numStations===1){
+    return [{
+      matchups:[{team1:teamNames[0],team2:teamNames[1]}]
+    }];
+  }
   const teams=[...teamNames];
   if(teams.length%2===1)teams.push(null);
   const rotations=[];
@@ -1327,11 +1355,20 @@ function validSetCounts(){
   const h2h=editorGames.filter(g=>g.type==='h2h');
   const numStations=Math.floor(editorTeams.length/2);
   if(h2h.length<1||numStations<1)return[];
+  // Special case: 2 teams (1 station) — any number of games is valid,
+  // each game becomes its own set of 1 rotation
+  if(numStations===1){
+    // Each set has 1 game — so N games = N sets
+    const valid=[];
+    for(let s=1;s<=h2h.length;s++){
+      if(h2h.length%s===0&&h2h.length/s===1)valid.push(s);
+    }
+    // Simply: every game count is valid as h2h.length sets of 1
+    return[h2h.length];
+  }
   const valid=[];
-  // 1 set: all games in one set — valid only if h2h.length === numStations
-  if(h2h.length===numStations) valid.push(1);
-  // 2 sets: split in half — valid only if h2h.length is even AND h2h.length/2 === numStations
-  if(h2h.length%2===0&&h2h.length/2===numStations) valid.push(2);
+  if(h2h.length===numStations)valid.push(1);
+  if(h2h.length%2===0&&h2h.length/2===numStations)valid.push(2);
   return valid;
 }
 
@@ -1345,12 +1382,13 @@ function autoGenerateSchedule(savedRotations,savedStations){
   const valid=validSetCounts();
   if(valid.length===0){schedule=[];renderSchedule();return;} // no valid config yet
 
-  // Pick numSets: use preferredNumSets if still valid, else default to 2 sets if available, else 1
+  // Pick numSets: use preferredNumSets if still valid, else default to largest valid option
   let numSets;
   if(preferredNumSets&&valid.includes(preferredNumSets)){
     numSets=preferredNumSets;
   } else {
-    numSets=valid.includes(2)?2:1;
+    // For 2 teams: use h2h.length sets (one game per set); otherwise prefer 2 sets, then 1
+    numSets=numStations===1?h2h.length:(valid.includes(2)?2:valid[0]||1);
     preferredNumSets=numSets;
   }
 
@@ -1708,6 +1746,7 @@ async function saveEventConfig(){
         atGamesField+=`|POD:${atPodSize}|DUR:${atDur}`;
         if(atSct==='showdown'){
           atGamesField+='|SHOWDOWN';
+          if(g.sdSplit&&g.sdSplit!=='none')atGamesField+=`|SDSPLIT:${g.sdSplit}`;
           if(g.sdSongs&&g.sdSongs.length)atGamesField+=`|SS:${g.sdSongs.join(',')}`;
         }
         stationRows.push({event_id:currentEventId,number:stationNum,games:atGamesField,coaches:set.coaches||''});
@@ -1727,6 +1766,7 @@ async function saveEventConfig(){
           }
           else if(sct==='showdown'){
             gamesField+='|SHOWDOWN';
+            if(g.sdSplit&&g.sdSplit!=='none')gamesField+=`|SDSPLIT:${g.sdSplit}`;
             if(g.sdSongs&&g.sdSongs.length)gamesField+=`|SS:${g.sdSongs.join(',')}`;
           }
           stationRows.push({event_id:currentEventId,number:stationNum,games:gamesField,coaches:slot.coaches||''});
@@ -2134,7 +2174,7 @@ function renderCoachScorecard(){
           ${scored===rot.team2?'✓ Point Awarded':'Award Point to'}<br><strong>${rot.team2}</strong>
         </button>
       </div>
-      <button class="next-btn" onclick="nextRotation()" ${!scored?'disabled':''}>${coachCurrentRotation+1<total?'Next Rotation →':'Finish Station ✓'}</button>
+      <button class="next-btn" onclick="nextRotation()" ${!scored?'disabled':''}>${coachCurrentRotation+1<total?'Next Rotation →':'Wrap Up & Lock Scores ✓'}</button>
       ${scored?`<button class="undo-btn" onclick="undoScore(${rot.rotation_number})">↩ Undo Point</button>`:''}
     </div>`;
     return;
@@ -2319,7 +2359,7 @@ function renderCoachScorecard(){
       })()}
       <div style="display:flex;gap:8px;margin-bottom:10px;margin-top:80px">
         <button class="next-btn" onclick="${scored?'nextRotation()':'pfFinishRound('+rot.rotation_number+')'}" ${!anyScored&&!scored?'disabled':''} style="flex:1">
-          ${scored?'✓ Next Rotation →':coachCurrentRotation+1<total?'End Round':'Finish Station'}
+          ${scored?'✓ Next Rotation →':coachCurrentRotation+1<total?'End Round':'Wrap Up & Lock Scores'}
         </button>
         <button class="btn btn-sm" onclick="scoreWinner('TIE',${rot.rotation_number})" style="${scored==='TIE'?'border-color:var(--text-muted);background:var(--text-muted);color:#fff':''}">
           ${scored==='TIE'?'✓ Tie':'Tie'}
@@ -2351,12 +2391,26 @@ function renderCoachScorecard(){
     const selectedSong=availableSongs.find(s=>s.id===selectedSongId)||null;
     const roundRevealed=selectedSong&&roundScores&&Object.keys(roundScores).length>0;
 
-    // Build all teams list
-    const sdTeams=Object.keys(teamColorCache).map(name=>({
+    // Parse split setting from games field
+    const sdSplitRaw=(()=>{
+      const sp=grawParts.find(p=>p.startsWith('SDSPLIT:'));
+      return sp?sp.replace('SDSPLIT:',''):'none';
+    })();
+    const sdNumGroups=sdSplitRaw==='2'?2:1;
+
+    // Build all teams list — with sub-groups if split enabled
+    const sdBaseTeams=Object.keys(teamColorCache).map(name=>({
       name,
       hex:teamColorCache[name]||'#0673c1',
       color:readableTeamColor(teamColorCache[name]==='CAMO'?'#5a6e4a':teamColorCache[name]||'#0673c1')
     }));
+    // Expand into groups: if split=2, each team becomes team+" 1" and team+" 2"
+    const sdTeams=sdNumGroups===2
+      ? sdBaseTeams.flatMap(t=>[
+          {name:t.name+' 1',baseName:t.name,hex:t.hex,color:t.color},
+          {name:t.name+' 2',baseName:t.name,hex:t.hex,color:t.color}
+        ])
+      : sdBaseTeams.map(t=>({...t,baseName:t.name}));
 
     // Running totals across all rotations
     const runningTotals={};
@@ -2368,6 +2422,7 @@ function renderCoachScorecard(){
       // Sum across all rounds within this rotation
       Object.values(rotAllRounds).forEach(rScores=>{
         Object.entries(rScores).forEach(([team,pts])=>{
+          if(pts==='SKIP')return; // don't add skip to totals
           if(runningTotals[team]!==undefined)runningTotals[team]+=pts;
         });
       });
@@ -2407,19 +2462,24 @@ function renderCoachScorecard(){
         const pts=roundRevealed&&roundScores[t.name]!==undefined?roundScores[t.name]:null;
         let badgeClass='',badgeText='';
         if(pts!==null){
-          badgeClass=pts===0?'exact':pts<=5?'close':'far';
-          badgeText=pts===0?'Exact!':'+'+pts+' pts';
+          if(pts==='SKIP'){badgeClass='';badgeText='Skipped';}
+          else{badgeClass=pts===0?'exact':pts<=5?'close':'far';badgeText=pts===0?'Exact!':'+'+pts+' pts';}
         }
         return'<div class="sd-team-row">'
           +'<div class="sd-team-header">'
           +'<div class="sd-team-name" style="color:'+t.color+'">'+t.name+'</div>'
           +(pts!==null?'<div class="sd-pts-badge '+badgeClass+'">'+badgeText+'</div>':'')
-          +'</div>'
-          +'<div class="sd-input-row">'
-          +'<input class="sd-year-input" type="number" inputmode="numeric" placeholder="Year guess" '
-          +'data-rotnum="'+rot.rotation_number+'" data-team="'+t.name+'" '
-          +'value="'+(guess||'')+'" '+(roundRevealed?'disabled ':'')
-          +'oninput="sdUpdateGuessFromInput(this)" onchange="sdUpdateGuessFromInput(this)">'
+          +(()=>{
+            const isSkip=guess==='SKIP';
+            const inputHtml=isSkip
+              ?'<div style="flex:1;padding:10px 12px;border-radius:8px;border:1.5px dashed var(--border);font-size:13px;font-weight:700;color:var(--text-muted);text-align:center">Skipped</div>'
+              :'<input class="sd-year-input" type="number" inputmode="numeric" placeholder="Year guess" '
+              +'data-rotnum="'+rot.rotation_number+'" data-team="'+t.name+'" '
+              +'value="'+(guess||'')+'" '+(roundRevealed?'disabled ':'')
+              +'oninput="sdUpdateGuessFromInput(this)" onchange="sdUpdateGuessFromInput(this)">';
+            const skipBtn=roundRevealed?'':'<button style="padding:6px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;cursor:pointer;color:var(--text-muted);white-space:nowrap" onclick="sdToggleSkip('+rot.rotation_number+',&apos;'+t.name+'&apos;)">'+(isSkip?'Undo':'Skip')+'</button>';
+            return '<div class="sd-input-row">'+inputHtml+skipBtn+'</div>';
+          })()
           +'</div>'
           +'</div>';
       }).join('')
@@ -2454,7 +2514,7 @@ function renderCoachScorecard(){
       +'</div>';
 
     // Check all guesses entered
-    const allGuessesIn=sdTeams.every(t=>guesses[t.name]&&guesses[t.name].toString().trim()!=='');
+    const allGuessesIn=sdTeams.every(t=>guesses[t.name]!==undefined&&guesses[t.name].toString().trim()!=='');
 
     el.innerHTML='<div class="scorecard-wrap">'
       +pips+gameLabel
@@ -2472,7 +2532,7 @@ function renderCoachScorecard(){
         +'<button class="next-btn" style="flex:2" onclick="sdNextRound('+rot.rotation_number+')">Next Song →</button>'
         +(coachCurrentRotation+1<total
           ?'<button class="next-btn" style="flex:1;font-size:11px;background:#555" onclick="nextRotation()">Next Rotation</button>'
-          :'<button class="next-btn" style="flex:1;font-size:11px;background:#555" onclick="nextRotation()">Finish ✓</button>')
+          :'<button class="next-btn" style="flex:1;font-size:11px;background:#555" onclick="nextRotation()">Wrap Up & Lock Scores ✓</button>')
         +'</div>'
         +'<button class="undo-btn" onclick="sdUndoReveal('+rot.rotation_number+')">↩ Undo Reveal</button>'
         :'')
@@ -2508,7 +2568,7 @@ function renderCoachScorecard(){
     <button class="btn btn-sm" onclick="scoreWinner('TIE',${rot.rotation_number})" style="width:100%;margin-bottom:10px;${scored==='TIE'?'border-color:var(--text-muted);background:var(--text-muted);color:#fff':''}">
       ${scored==='TIE'?'✓ Tied':'Declare Tie'}
     </button>
-    <button class="next-btn" onclick="nextRotation()" ${!scored?'disabled':''}>${coachCurrentRotation+1<total?'Next Rotation →':'Finish Station ✓'}</button>
+    <button class="next-btn" onclick="nextRotation()" ${!scored?'disabled':''}>${coachCurrentRotation+1<total?'Next Rotation →':'Wrap Up & Lock Scores ✓'}</button>
     ${scored?`<button class="undo-btn" onclick="undoScore(${rot.rotation_number})">↩ Undo Last Point</button>`:''}
   </div>`;
 }
@@ -2562,6 +2622,26 @@ function sdSelectSong(rotNum,songId){
   sdRoundScores[rotNum][ri]={};
   renderCoachScorecard();
 }
+function sdToggleSkip(rotNum,teamName){
+  const ri=sdRoundIndex[rotNum]||0;
+  if(!sdGuessInputs[rotNum])sdGuessInputs[rotNum]={};
+  if(!sdGuessInputs[rotNum][ri])sdGuessInputs[rotNum][ri]={};
+  if(sdGuessInputs[rotNum][ri][teamName]==='SKIP'){
+    delete sdGuessInputs[rotNum][ri][teamName];
+  } else {
+    sdGuessInputs[rotNum][ri][teamName]='SKIP';
+  }
+  // Update reveal button
+  const guesses=sdGuessInputs[rotNum][ri];
+  const _sdBase=Object.keys(teamColorCache);
+  const _sdSplitCheck=(()=>{const raw=(coachSelectedStation?.games||'').split('|');const sp=raw.find(p=>p.startsWith('SDSPLIT:'));return sp?sp.replace('SDSPLIT:',''):'none';})();
+  const _sdCheckNames=_sdSplitCheck==='2'?_sdBase.flatMap(t=>[t+' 1',t+' 2']):_sdBase;
+  const allIn=_sdCheckNames.every(t=>guesses[t]!==undefined&&guesses[t].toString().trim()!=='');
+  const btn=document.querySelector('.sd-reveal-btn');
+  if(btn)btn.disabled=!allIn;
+  renderCoachScorecard();
+}
+
 function sdUpdateGuessFromInput(inp){
   const rotNum=parseInt(inp.dataset.rotnum);
   const teamName=inp.dataset.team;
@@ -2575,7 +2655,17 @@ function sdUpdateGuess(rotNum,teamName,val){
   sdGuessInputs[rotNum][ri][teamName]=val;
   // Update reveal button state without full re-render
   const guesses=sdGuessInputs[rotNum][ri];
-  const allIn=Object.keys(teamColorCache).every(t=>guesses[t]&&guesses[t].toString().trim()!=='');
+  // Build sdTeams list to check against (handles split groups)
+  const _sdBase=Object.keys(teamColorCache);
+  const _sdSplitCheck=(()=>{
+    const raw=(coachSelectedStation?.games||'').split('|');
+    const sp=raw.find(p=>p.startsWith('SDSPLIT:'));
+    return sp?sp.replace('SDSPLIT:',''):'none';
+  })();
+  const _sdCheckNames=_sdSplitCheck==='2'
+    ?_sdBase.flatMap(t=>[t+' 1',t+' 2'])
+    :_sdBase;
+  const allIn=_sdCheckNames.every(t=>guesses[t]!==undefined&&guesses[t].toString().trim()!=='');
   const btn=document.querySelector('.sd-reveal-btn');
   if(btn)btn.disabled=!allIn;
 }
@@ -2598,20 +2688,26 @@ async function sdReveal(rotNum){
   });
   const guesses=(sdGuessInputs[rotNum]||{})[ri]||{};
   const scores={};
-  Object.keys(teamColorCache).forEach(team=>{
+  // For split groups, iterate sdTeams; fall back to teamColorCache keys
+  const _revBase=Object.keys(teamColorCache);
+  const _revSplit=(()=>{const raw=(coachSelectedStation?.games||'').split('|');const sp=raw.find(p=>p.startsWith('SDSPLIT:'));return sp?sp.replace('SDSPLIT:',''):'none';})();
+  const _revNames=_revSplit==='2'?_revBase.flatMap(t=>[t+' 1',t+' 2']):_revBase;
+  _revNames.forEach(team=>{
     const raw=guesses[team];
+    if(raw==='SKIP'){scores[team]='SKIP';return;}
     const guess=parseInt(raw);
     scores[team]=showdownPoints(isNaN(guess)?null:guess,song.year);
   });
   if(!sdRoundScores[rotNum])sdRoundScores[rotNum]={};
   sdRoundScores[rotNum][ri]=scores;
-  // Persist to DB: aggregate all rounds into one score row
-  // Format: SHOWDOWN:team1:totalPts|team2:totalPts|...
+  // Persist to DB: aggregate all rounds and sub-groups into base team totals
   const allRounds=sdRoundScores[rotNum]||{};
   const teamTotals={};
   Object.values(allRounds).forEach(rScores=>{
-    Object.entries(rScores).forEach(([team,pts])=>{
-      teamTotals[team]=(teamTotals[team]||0)+pts;
+    Object.entries(rScores).forEach(([group,pts])=>{
+      if(pts==='SKIP')return;
+      const baseName=group.replace(/ [12]$/,'');
+      teamTotals[baseName]=(teamTotals[baseName]||0)+pts;
     });
   });
   const showdownStr='SHOWDOWN:'+Object.entries(teamTotals).map(([t,p])=>t+':'+p).join('|');
@@ -2889,8 +2985,28 @@ let resultsScheduleOpen=true;
 
 let resultsScoresOpen=false;
 let lbExpandedTeam=null;
+let clearScoresMode=false;
 
 
+
+async function confirmClearScores(){
+  const input=document.getElementById('clear-scores-confirm');
+  if(!input||input.value.trim().toLowerCase()!=='delete'){
+    input.style.borderColor='var(--red)';
+    input.focus();
+    toast('Type "delete" to confirm',true);
+    return;
+  }
+  try{
+    const ev=await db('GET','events','?status=eq.active');
+    if(!ev||!ev.length){toast('No active event',true);return;}
+    const eventId=ev[0].id;
+    await db('DELETE','scores','?event_id=eq.'+eventId);
+    clearScoresMode=false;
+    toast('✓ All scores cleared');
+    loadResultsPage();
+  }catch(err){toast('Error: '+err.message,true);}
+}
 
 async function loadResultsPage(){
 
@@ -2940,6 +3056,47 @@ async function loadResultsPage(){
 
     let schedHtml='';
 
+    // For 2-team events (1 station per set), merge all sets into one table
+    const isTwoTeam=sets.length>0&&sets[0].length===1&&h2h.length===sets.length;
+
+    if(isTwoTeam){
+      // Single table: rows = all games, col = matchup
+      const allDurs=sets.map(stns=>{
+        const rp=(stns[0].games||'').split('|');
+        const dp=rp.find(p=>p.startsWith('DUR:'));
+        return dp?parseInt(dp.replace('DUR:','')):(10);
+      });
+      let thead='<tr><th style="min-width:90px">Game / Coach</th><th style="text-align:center;width:100px">Matchup</th><th style="text-align:center;width:60px">Duration</th></tr>';
+      let tbody='';
+      sets.forEach((stns,si)=>{
+        const stn=stns[0];
+        const setRots=rotations.filter(r=>r.station_id===stn.id).sort((a,b)=>a.rotation_number-b.rotation_number);
+        const rot=setRots[0];
+        const r=rot?rotations.find(x=>x.station_id===stn.id&&x.rotation_number===rot.rotation_number):null;
+        tbody+='<tr>';
+        tbody+='<td style="white-space:normal;padding:8px">'
+          +'<div style="font-size:9px;font-weight:700;color:var(--text-muted)">STN '+stn.number+'</div>'
+          +'<div style="font-size:12px;font-weight:800;color:var(--text)">'+getGameName(stn)+'</div>'
+          +(stn.coaches?'<div style="font-size:10px;font-weight:600;color:var(--text-muted)">'+stn.coaches+'</div>':'')
+          +'</td>';
+        if(r&&r.team1&&r.team2){
+          const c1=teamColorCache[r.team1]||'#0673c1';
+          const c2=teamColorCache[r.team2]||'#e02020';
+          const rd1=readableTeamColor(c1==='CAMO'?'#5a6e4a':c1);
+          const rd2=readableTeamColor(c2==='CAMO'?'#5a6e4a':c2);
+          tbody+='<td style="padding:6px 8px;text-align:center"><div style="display:flex;flex-direction:column;gap:1px;align-items:center">'
+            +'<span class="it-team" style="color:'+rd1+'">'+r.team1+'</span>'
+            +'<span style="font-size:8px;color:var(--text-muted);font-weight:600">vs</span>'
+            +'<span class="it-team" style="color:'+rd2+'">'+r.team2+'</span>'
+            +'</div></td>';
+        } else tbody+='<td style="color:var(--text-muted);text-align:center">—</td>';
+        tbody+='<td style="text-align:center;font-size:11px;font-weight:800;color:var(--blue)">'+allDurs[si]+'m</td>';
+        tbody+='</tr>';
+      });
+      schedHtml+='<div style="overflow-x:auto"><table class="itinerary-table"><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table></div>';
+
+    } else {
+
     sets.forEach((stns,si)=>{
 
       const setRots=rotations.filter(r=>r.station_id===stns[0].id).sort((a,b)=>a.rotation_number-b.rotation_number);
@@ -2949,7 +3106,6 @@ async function loadResultsPage(){
         return dp?parseInt(dp.replace('DUR:','')):(10);
       }));
 
-      // Transposed: rows=games/stations, cols=rotations
       let thead='<tr><th style="min-width:90px">Game / Coach</th>';
       setRots.forEach((rot,ri)=>{
         thead+='<th style="text-align:center;width:80px">'
@@ -2984,10 +3140,10 @@ async function loadResultsPage(){
       });
 
       schedHtml+=(sets.length>1?'<div style="padding:10px 16px 4px;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue)">Set '+(si+1)+'</div>':'')
-
         +'<div style="overflow-x:auto"><table class="itinerary-table"><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table></div>';
 
     });
+    } // end non-2-team
 
     if(allT.length){
 
@@ -3102,6 +3258,26 @@ async function loadResultsPage(){
 
           if(!result){res='Not played yet';resClass='pending';}
 
+          else if(result.startsWith('PODIUM:')){
+            // Podium score — skip, handled by all-teams loop
+            return;
+          }
+
+          else if(result.startsWith('SHOWDOWN:')){
+            // Showdown: lowest score wins
+            const showdownPts={};
+            result.replace('SHOWDOWN:','').split('|').forEach(e=>{
+              const lc=e.lastIndexOf(':');
+              showdownPts[e.substring(0,lc)]=parseFloat(e.substring(lc+1));
+            });
+            const minPts=Math.min(...Object.values(showdownPts));
+            const isWinner=showdownPts[team]!==undefined&&showdownPts[team]===minPts;
+            const pts=showdownPts[team];
+            if(pts===undefined){res='Not played yet';resClass='pending';}
+            else if(isWinner){res='Win — '+pts+' pts';resClass='win';}
+            else{res=pts+' pts (Showdown)';resClass='loss';}
+          }
+
           else if(result==='TIE'){res='Tie (+0.5)';resClass='tie';}
 
           else if(result===team){res='Win (+1)';resClass='win';}
@@ -3120,25 +3296,54 @@ async function loadResultsPage(){
     stations.filter(s=>s.games.includes('ALLTEAMS')).forEach(station=>{
       const gameName=station.games.split('|')[0];
       const stationScore=scores.find(s=>s.station_id===station.id);
-      // Parse podium result
+      const wt=stationScore?.winning_team||'';
+
+      // Parse PODIUM scores
       const podiumMap={};
-      if(stationScore&&stationScore.winning_team&&stationScore.winning_team.startsWith('PODIUM:')){
-        stationScore.winning_team.replace('PODIUM:','').split('|').forEach(entry=>{
-          const lastColon=entry.lastIndexOf(':');
-          const team=entry.substring(0,lastColon);
-          const pts=parseFloat(entry.substring(lastColon+1))||0;
-          podiumMap[team]=pts;
+      if(wt.startsWith('PODIUM:')){
+        wt.replace('PODIUM:','').split('|').forEach(entry=>{
+          const lc=entry.lastIndexOf(':');
+          podiumMap[entry.substring(0,lc)]=parseFloat(entry.substring(lc+1))||0;
         });
       }
-      const hasResult=Object.keys(podiumMap).length>0;
+
+      // Parse SHOWDOWN scores — lowest penalty wins
+      const showdownMap={}; // team -> penalty pts
+      let showdownWinner=null;
+      if(wt.startsWith('SHOWDOWN:')){
+        wt.replace('SHOWDOWN:','').split('|').forEach(entry=>{
+          const lc=entry.lastIndexOf(':');
+          const team=entry.substring(0,lc);
+          const pts=parseFloat(entry.substring(lc+1));
+          if(!isNaN(pts))showdownMap[team]=pts;
+        });
+        const minPts=Math.min(...Object.values(showdownMap));
+        showdownWinner=Object.keys(showdownMap).filter(t=>showdownMap[t]===minPts);
+      }
+
+      const hasPodium=Object.keys(podiumMap).length>0;
+      const hasShowdown=Object.keys(showdownMap).length>0;
+      const hasResult=hasPodium||hasShowdown;
+
       teams.forEach(t=>{
         if(!teamBreakdown[t.name])return;
         let res,resClass;
-        if(!hasResult){res='Not played yet';resClass='pending';}
-        else if(podiumMap[t.name]!==undefined){
-          const pts=podiumMap[t.name];
-          res='+'+pts+' pt'+(pts!==1?'s':'');resClass='win';
-        } else {res='No points';resClass='loss';}
+        if(!hasResult){
+          res='Not played yet';resClass='pending';
+        } else if(hasPodium){
+          if(podiumMap[t.name]!==undefined){
+            const pts=podiumMap[t.name];
+            res='+'+pts+' pt'+(pts!==1?'s':'');resClass='win';
+          } else {res='No points';resClass='loss';}
+        } else if(hasShowdown){
+          const pts=showdownMap[t.name];
+          if(pts===undefined){res='Not played yet';resClass='pending';}
+          else if(showdownWinner&&showdownWinner.includes(t.name)){
+            res='Win — '+pts+' pts';resClass='win';
+          } else {
+            res=showdownMap[t.name]+' pts (Showdown)';resClass='loss';
+          }
+        }
         teamBreakdown[t.name].push({game:gameName,res,resClass,opponent:'All Teams'});
       });
     });
@@ -3173,7 +3378,7 @@ async function loadResultsPage(){
 
       const safeName=name.replace(/'/g,"\'");
 
-      rowsHtml+='<div class="lb-row '+(i===0&&data.points>0?'first':'')+'" onclick="lbExpandedTeam=lbExpandedTeam===\''+safeName+'\'?null:\''+safeName+'\';loadResultsPage()">'
+      rowsHtml+='<div class="lb-row '+(i===0&&data.points>0?'first':'')+'" onclick="lbExpandedTeam=lbExpandedTeam===\''+safeName+'\'?null:\''+safeName+'\';window._savedScroll=window.scrollY;loadResultsPage()">'
 
         +'<div class="lb-rank">'+(i+1)+'</div>'
 
@@ -3211,6 +3416,8 @@ async function loadResultsPage(){
 
     // ── RENDER ──
 
+    const _scrollY=window._savedScroll||0;
+    window._savedScroll=0;
     inner.innerHTML=
 
       '<div class="event-header"><div class="event-title-lg">'+ev.name+'</div>'
@@ -3221,7 +3428,7 @@ async function loadResultsPage(){
 
       +'<div class="results-section">'
 
-      +'<div class="results-section-header" onclick="resultsScheduleOpen=!resultsScheduleOpen;loadResultsPage()">'
+      +'<div class="results-section-header" onclick="resultsScheduleOpen=!resultsScheduleOpen;window._savedScroll=window.scrollY;loadResultsPage()">'
 
       +'<span class="results-section-title" style="color:var(--blue)">📋 Rotation Schedule</span>'
 
@@ -3237,7 +3444,7 @@ async function loadResultsPage(){
 
       +'<div class="results-section">'
 
-      +'<div class="results-section-header" onclick="resultsScoresOpen=!resultsScoresOpen;loadResultsPage()">'
+      +'<div class="results-section-header" onclick="resultsScoresOpen=!resultsScoresOpen;window._savedScroll=window.scrollY;loadResultsPage()">'
 
       +'<span class="results-section-title" style="color:var(--blue)">🏆 Leaderboard</span>'
 
@@ -3247,6 +3454,20 @@ async function loadResultsPage(){
 
       +(resultsScoresOpen?'<div class="results-section-body">'+scoresHtml+'</div>':'')
 
+      +'</div>'
+
+      // Clear scores section
+      +'<div style="margin-top:24px;padding:16px;background:var(--card);border:1.5px solid var(--border);border-radius:14px;box-shadow:var(--shadow)">'
+      +'<div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px">⚠ Danger Zone</div>'
+      +'<div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">Clear all scores for this event. This cannot be undone.</div>'
+      +(clearScoresMode
+        ?'<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'
+        +'<input id="clear-scores-confirm" type="text" placeholder="Type delete to confirm" style="flex:1;min-width:140px;padding:10px 12px;border-radius:8px;border:1.5px solid var(--red);font-family:Montserrat,sans-serif;font-size:13px;font-weight:700;outline:none">'
+        +'<button style="padding:10px 16px;border-radius:8px;border:none;background:var(--red);color:#fff;font-family:Montserrat,sans-serif;font-size:12px;font-weight:800;cursor:pointer;letter-spacing:1px;text-transform:uppercase" onclick="confirmClearScores()">Confirm Delete</button>'
+        +'<button style="padding:10px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);font-family:Montserrat,sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--text-muted)" onclick="clearScoresMode=false;window._savedScroll=window.scrollY;loadResultsPage()">Cancel</button>'
+        +'</div>'
+        :'<button style="padding:10px 18px;border-radius:8px;border:1.5px solid var(--red);background:#fff5f5;color:var(--red);font-family:Montserrat,sans-serif;font-size:12px;font-weight:800;cursor:pointer;letter-spacing:1px;text-transform:uppercase" onclick="clearScoresMode=true;window._savedScroll=window.scrollY;loadResultsPage()">🗑 Clear All Scores</button>'
+      )
       +'</div>';
 
   }catch(err){inner.innerHTML='<p class="text-muted" style="text-align:center;padding:40px">Error: '+err.message+'</p>';}
