@@ -624,6 +624,7 @@
     <select id="edit-game-scorecard" onchange="onScorecardTypeChange()">
       <option value="none">No Scorecard</option>
       <option value="tally">Simple Tally</option>
+      <option value="multitally">Multi-Team Tally</option>
       <option value="pongfeud">Pong Feud</option>
       <option value="showdown">Showdown</option>
     </select>
@@ -973,7 +974,8 @@ async function openEventEditor(id,name,date){
       const isPongFeud=raw.includes('|PONGFEUD');
       const isShowdown=raw.includes('|SHOWDOWN');
       const gname=raw.replace('|ALLTEAMS','').replace('ALLTEAMS','').replace('|TALLY','').replace('|PONGFEUD','').replace('|SHOWDOWN','').split('|')[0];
-      const sct=isTally?'tally':isPongFeud?'pongfeud':isShowdown?'showdown':'none';
+      const isMultiTally=raw.includes('|MULTITALLY');
+      const sct=isTally?'tally':isMultiTally?'multitally':isPongFeud?'pongfeud':isShowdown?'showdown':'none';
       // Pong Feud settings encoded as extra pipe segments: |SPLIT:2|QS:1,3,5
       const rawParts=raw.split('|');
       const splitPart=rawParts.find(p=>p.startsWith('SPLIT:'));
@@ -992,7 +994,7 @@ async function openEventEditor(id,name,date){
     });
 
     // Rebuild schedule from rotations
-    // rotations has: rotation_number, station_id, team1, team2
+    // rotations has: rotation_number, station_id, team1, team2, team3 (optional)
     // rotation_number encoding: setIdx*1000 + rotWithinSet (we'll re-derive on load)
     // Actually on first load from old data, just auto-generate schedule
     autoGenerateSchedule(rotations,stations);
@@ -1149,6 +1151,7 @@ function renderGames(){
       ${g.type!=='allteams'?`<select onchange="editorGames[${i}].scorecardType=this.value" style="margin-bottom:0;padding:4px 8px;font-size:11px;font-weight:700;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;max-width:130px">
         <option value="none" ${(g.scorecardType||'none')==='none'?'selected':''}>No Scorecard</option>
         <option value="tally" ${g.scorecardType==='tally'?'selected':''}>Simple Tally</option>
+        <option value="multitally" ${g.scorecardType==='multitally'?'selected':''}>Multi-Team Tally</option>
         <option value="pongfeud" ${g.scorecardType==='pongfeud'?'selected':''}>Pong Feud</option>
         <option value="showdown" ${g.scorecardType==='showdown'?'selected':''}>Showdown</option>
       </select>`:''}
@@ -1331,6 +1334,12 @@ function buildSetScheduleFallback(teamNames, numStations){
       matchups:[{team1:teamNames[0],team2:teamNames[1]}]
     }];
   }
+  // Special case: 3 teams — one rotation, all 3 compete together at this station
+  if(teamNames.length===3){
+    return [{
+      matchups:[{team1:teamNames[0],team2:teamNames[1],team3:teamNames[2]}]
+    }];
+  }
   const teams=[...teamNames];
   if(teams.length%2===1)teams.push(null);
   const rotations=[];
@@ -1355,15 +1364,9 @@ function validSetCounts(){
   const h2h=editorGames.filter(g=>g.type==='h2h');
   const numStations=Math.floor(editorTeams.length/2);
   if(h2h.length<1||numStations<1)return[];
-  // Special case: 2 teams (1 station) — any number of games is valid,
+  // Special case: 2 teams (1 station) OR 3 teams — any number of games valid,
   // each game becomes its own set of 1 rotation
-  if(numStations===1){
-    // Each set has 1 game — so N games = N sets
-    const valid=[];
-    for(let s=1;s<=h2h.length;s++){
-      if(h2h.length%s===0&&h2h.length/s===1)valid.push(s);
-    }
-    // Simply: every game count is valid as h2h.length sets of 1
+  if(numStations===1||editorTeams.length===3){
     return[h2h.length];
   }
   const valid=[];
@@ -1445,7 +1448,7 @@ function renderSchedule(){
 
   // Info + validation
   let validationMsg='';
-  if(valid.length===0){
+  if(valid.length===0&&T!==3){
     // No valid config — explain what's needed
     const need1=numStations;
     const need2=numStations*2;
@@ -1760,6 +1763,7 @@ async function saveEventConfig(){
           const dur=g?.duration||10;
           gamesField+=`|DUR:${dur}`;
           if(sct==='tally')gamesField+=`|TALLY`;
+          else if(sct==='multitally')gamesField+='|MULTITALLY';
           else if(sct==='pongfeud'){
             gamesField+=`|PONGFEUD|SPLIT:${g.pfSplit||'none'}`;
             if(g.pfQuestions&&g.pfQuestions.length)gamesField+=`|QS:${g.pfQuestions.join(',')}`;
@@ -1804,7 +1808,7 @@ async function saveEventConfig(){
           rot.matchups.forEach((m,mi)=>{
             const sid=stationIdByMeta(si,mi);
             if(sid&&(m.team1||m.team2)){
-              rotRows.push({event_id:currentEventId,station_id:sid,rotation_number:globalRot,team1:m.team1||'',team2:m.team2||''});
+              rotRows.push({event_id:currentEventId,station_id:sid,rotation_number:globalRot,team1:m.team1||'',team2:m.team2||'',...(m.team3?{team3:m.team3}:{})});
             }
           });
         });
@@ -1847,6 +1851,45 @@ async function confirmDeleteEvent(){
 // ══════════════════════════════════════════════════════════
 // COACH
 // ══════════════════════════════════════════════════════════
+// Event delegation for multi-team tally buttons
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('[data-action]');
+  if(!btn)return;
+  const action=btn.dataset.action;
+  const rot=parseInt(btn.dataset.rot);
+  const team=btn.dataset.team;
+  if(action==='mtplus'){
+    if(!tallyScores[rot])tallyScores[rot]={};
+    tallyScores[rot][team]=(tallyScores[rot][team]||0)+1;
+    renderCoachScorecard();
+  } else if(action==='mtminus'){
+    if(!tallyScores[rot])tallyScores[rot]={};
+    tallyScores[rot][team]=Math.max(0,(tallyScores[rot][team]||0)-1);
+    renderCoachScorecard();
+  } else if(action==='mtaward1st'||action==='mtaward2nd'){
+    // Build PODIUM string with existing awards + new one
+    const pts=action==='mtaward1st'?2:1;
+    const existing=coachScores[rot]||'';
+    const parts=existing.startsWith('PODIUM:')?existing.replace('PODIUM:','').split('|'):[];
+    // Remove existing entry for this team if any
+    const filtered=parts.filter(p=>{const lc=p.lastIndexOf(':');return p.substring(0,lc)!==team;});
+    filtered.push(team+':'+pts);
+    const podiumStr='PODIUM:'+filtered.join('|');
+    coachScores[rot]=podiumStr;
+    // Save to DB
+    if(coachEventData){
+      const {event}=coachEventData;
+      const stn=coachSelectedStation;
+      db('DELETE','scores','?event_id=eq.'+event.id+'&station_id=eq.'+stn.id+'&rotation_number=eq.'+rot)
+        .then(()=>db('POST','scores','',{event_id:event.id,station_id:stn.id,rotation_number:rot,winning_team:podiumStr}))
+        .catch(err=>toast('Sync error: '+err.message,true));
+    }
+    renderCoachScorecard();
+  } else if(action==='mtawardtie'){
+    scoreWinner('TIE',rot);
+  }
+});
+
 async function loadCoachPage(){
   const inner=document.getElementById('coach-inner');
   inner.innerHTML='<div class="loading-state"><div class="spinner"></div></div>';
@@ -1863,7 +1906,7 @@ async function loadCoachPage(){
       db('GET','teams',`?event_id=eq.${ev.id}`)
     ]);
     teams.forEach(t=>{teamColorCache[t.name]=t.color;});
-    coachEventData={event:ev,stations,rotations};
+    coachEventData={event:ev,stations,rotations,teams};
     renderCoachStationSelect();
   }catch(err){inner.innerHTML=`<p class="text-muted" style="text-align:center;padding:40px">Error: ${err.message}</p>`;}
 }
@@ -1957,6 +2000,14 @@ async function selectCoachStation(stationId){
   coachSelectedStation=stations.find(s=>s.id===stationId);
   coachCurrentRotation=0;coachScores={};tallyScores={};pfRoundScores={};pfUsedAnswers={};pfActiveGroup=null;pfCurrentQOffset={};pfShotOrder={};pfSplit='none';
   coachRotationData=rotations.filter(r=>r.station_id===stationId).sort((a,b)=>a.rotation_number-b.rotation_number);
+  // If 3 teams and team3 missing from DB, reconstruct from event teams list
+  const _allTeamNames=(coachEventData?.teams||[]).map(t=>t.name);
+  if(_allTeamNames.length===3&&coachRotationData.length>0&&!coachRotationData[0].team3){
+    coachRotationData.forEach(r=>{
+      const missing=_allTeamNames.find(t=>t!==r.team1&&t!==r.team2);
+      if(missing)r.team3=missing;
+    });
+  }
   const existing=await db('GET','scores',`?event_id=eq.${event.id}&station_id=eq.${stationId}`);
   existing.forEach(s=>{coachScores[s.rotation_number]=s.winning_team;});
   const firstUnscore=coachRotationData.findIndex(r=>!coachScores[r.rotation_number]);
@@ -2089,11 +2140,13 @@ function renderCoachScorecard(){
 
   const t1hex=teamColorCache[rot.team1]||'#0673c1';
   const t2hex=teamColorCache[rot.team2]||'#e02020';
+  const t3hex=rot.team3?(teamColorCache[rot.team3]||'#16a34a'):null;
   const t1b=readableTeamColor(t1hex==='CAMO'?'#5a6e4a':t1hex);
   const t2b=readableTeamColor(t2hex==='CAMO'?'#5a6e4a':t2hex);
+  const t3b=t3hex?readableTeamColor(t3hex==='CAMO'?'#5a6e4a':t3hex):null;
   const totals={};Object.values(coachScores).forEach(w=>{totals[w]=(totals[w]||0)+1;});
   const gamesRaw=coachSelectedStation.games||'';
-  const scorecardType=gamesRaw.includes('|TALLY')?'tally':gamesRaw.includes('|PONGFEUD')?'pongfeud':gamesRaw.includes('|SHOWDOWN')?'showdown':'none';
+  const scorecardType=gamesRaw.includes('|TALLY')?'tally':gamesRaw.includes('|MULTITALLY')?'multitally':gamesRaw.includes('|PONGFEUD')?'pongfeud':gamesRaw.includes('|SHOWDOWN')?'showdown':'none';
   // Parse Pong Feud settings from games field
   const grawParts=gamesRaw.split('|');
   const grawSplitPart=grawParts.find(p=>p.startsWith('SPLIT:'));
@@ -2154,6 +2207,17 @@ function renderCoachScorecard(){
               <button class="tally-btn tally-btn-minus" onclick="tallyAdjust(${rot.rotation_number},'t2',-1)" ${t2wins===0?'disabled':''}>−</button>
             </div>
           </div>
+          ${rot.team3?`
+          <div class="tally-vs">·</div>
+          <div class="tally-side">
+            <div style="display:flex;justify-content:center;margin-bottom:4px">${colorDot(t3hex,20)}</div>
+            <div class="tally-team-name" style="color:${t3b}">${rot.team3}</div>
+            <div class="tally-score" style="color:${t3b}">${t3wins||0}</div>
+            <div class="tally-btns">
+              <button class="tally-btn tally-btn-plus" style="background:${t3b};box-shadow:0 3px 8px ${t3b}55" onclick="tallyAdjust(${rot.rotation_number},'t3',1)">+</button>
+              <button class="tally-btn tally-btn-minus" onclick="tallyAdjust(${rot.rotation_number},'t3',-1)" ${(t3wins||0)===0?'disabled':''}>−</button>
+            </div>
+          </div>`:''}
         </div>
       </div>
       <p class="tally-note">${scored?`✓ Point awarded to ${scored}`:(anyRoundsPlayed?(tied?'Tied — play another round':'Tap below to award the point to the leader'):'Tap + to tally rounds as they finish')}</p>
@@ -2163,10 +2227,13 @@ function renderCoachScorecard(){
           ${(!anyRoundsPlayed||tied)&&scored!==rot.team1?'disabled':''}>
           ${scored===rot.team1?'✓ Point Awarded':'Award Point to'}<br><strong>${rot.team1}</strong>
         </button>
-        <button class="tally-award-btn ${scored==='TIE'?'leading':''}"
-          onclick="scoreWinner('TIE',${rot.rotation_number})"
-          style="${scored==='TIE'?'border-color:var(--text-muted);background:var(--text-muted);color:#fff':''}">
+        ${rot.team3?`
+        <button class="tally-award-btn ${scored===rot.team3?'leading':t3leading?'leading':''}" onclick="scoreWinner('${rot.team3}',${rot.rotation_number})" ${(!anyRoundsPlayed||tied)&&scored!==rot.team3?'disabled':''}>
+          ${scored===rot.team3?'✓ Point Awarded':'Award Point to'}<br><strong>${rot.team3}</strong>
+        </button>`:`
+        <button class="tally-award-btn ${scored==='TIE'?'leading':''}" onclick="scoreWinner('TIE',${rot.rotation_number})" style="${scored==='TIE'?'border-color:var(--text-muted);background:var(--text-muted);color:#fff':''}">
           ${scored==='TIE'?'✓ Tied':'Declare'}<br><strong>Tie</strong>
+        </button>`}
         </button>
         <button class="tally-award-btn ${scored===rot.team2?'leading':t2leading?'leading':''}"
           onclick="scoreWinner('${rot.team2}',${rot.rotation_number})"
@@ -2542,32 +2609,206 @@ function renderCoachScorecard(){
     return;
   }
 
+  // ── 3-TEAM STATION SCORECARD ──
+  if(scorecardType==='multitally'){
+    const mtTeams=Object.keys(teamColorCache).map(name=>({
+      name,
+      hex:teamColorCache[name]||'#0673c1',
+      color:readableTeamColor(teamColorCache[name]==='CAMO'?'#5a6e4a':teamColorCache[name]||'#0673c1')
+    }));
+    if(!tallyScores[rot.rotation_number])tallyScores[rot.rotation_number]={};
+    const mtScores=tallyScores[rot.rotation_number];
+    const scored=coachScores[rot.rotation_number];
+    const totalRounds=mtTeams.reduce((s,t)=>s+(mtScores[t.name]||0),0);
+    const maxScore=Math.max(0,...mtTeams.map(t=>mtScores[t.name]||0));
+    const leaders=maxScore>0?mtTeams.filter(t=>(mtScores[t.name]||0)===maxScore):[];
+    const isTied=leaders.length>1;
+    const anyPlayed=totalRounds>0;
+
+    // Team rows — styled like 2-team tally
+    const teamRows=mtTeams.map(t=>{
+      const score=mtScores[t.name]||0;
+      const isLeading=score>0&&score===maxScore;
+      return`<div class="tally-team" style="border:1.5px solid ${isLeading&&!isTied?t.color:'var(--border)'};border-radius:12px;padding:14px;margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)">
+        <div style="display:flex;justify-content:center;margin-bottom:6px">${colorDot(t.hex,20)}</div>
+        <div class="tally-team-name" style="color:${t.color}">${t.name}</div>
+        <div class="tally-score" style="color:${t.color}">${score}</div>
+        <div class="tally-btns">
+          <button class="tally-btn tally-btn-plus" style="background:${t.color};box-shadow:0 3px 8px ${t.color}55" data-action="mtplus" data-rot="${rot.rotation_number}" data-team="${t.name}">+</button>
+          <button class="tally-btn tally-btn-minus" data-action="mtminus" data-rot="${rot.rotation_number}" data-team="${t.name}" ${score<=0?'disabled':''}>−</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    // Award section — sort teams by score descending for podium
+    const sortedByScore=[...mtTeams].sort((a,b)=>(mtScores[b.name]||0)-(mtScores[a.name]||0));
+    const firstScore=mtScores[sortedByScore[0]?.name]||0;
+    const secondScore=mtScores[sortedByScore[1]?.name]||0;
+    const firstTied=sortedByScore.filter(t=>(mtScores[t.name]||0)===firstScore&&firstScore>0);
+    const secondTied=sortedByScore.filter(t=>(mtScores[t.name]||0)===secondScore&&secondScore>0&&(mtScores[t.name]||0)<firstScore);
+
+    let awardSection='';
+    // Parse already-awarded teams from PODIUM string
+    const awardedMap={};
+    if(scored&&scored.startsWith('PODIUM:')){
+      scored.replace('PODIUM:','').split('|').forEach(e=>{
+        const lc=e.lastIndexOf(':');
+        awardedMap[e.substring(0,lc)]=parseFloat(e.substring(lc+1));
+      });
+    }
+    const has1st=Object.values(awardedMap).some(p=>p>=2);
+    const has2nd=Object.values(awardedMap).some(p=>p===1);
+    const fullyAwarded=has1st&&(has2nd||secondScore===0||mtTeams.length<3);
+
+    if(scored==='TIE'){
+      awardSection=`<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:12px;margin-bottom:10px;text-align:center;font-size:13px;font-weight:700;color:#16a34a">✓ Tie declared</div>`;
+    } else if(anyPlayed){
+      awardSection='<div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;text-align:center">Award Points</div>';
+
+      // Summary of already awarded
+      if(Object.keys(awardedMap).length>0){
+        awardSection+='<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:10px 12px;margin-bottom:10px">';
+        Object.entries(awardedMap).forEach(([team,pts])=>{
+          const tc=mtTeams.find(t=>t.name===team);
+          awardSection+=`<div style="font-size:12px;font-weight:700;color:${tc?.color||'#16a34a'}">✓ ${team} +${pts} pt${pts!==1?'s':''}</div>`;
+        });
+        awardSection+='</div>';
+      }
+
+      // 1st place button — show if not yet awarded
+      if(!has1st){
+        if(firstTied.length===1){
+          const t=firstTied[0];
+          awardSection+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:11px;font-weight:800;min-width:28px;color:var(--text-muted)">1st</span>
+            <button class="tally-award-btn" data-action="mtaward1st" data-rot="${rot.rotation_number}" data-team="${t.name}" style="flex:1;border-color:${t.color};color:${t.color}">${t.name} <span style="font-weight:900">+2 pts</span></button>
+          </div>`;
+        } else {
+          firstTied.forEach(t=>{
+            awardSection+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <span style="font-size:11px;font-weight:800;min-width:28px;color:var(--text-muted)">1st</span>
+              <button class="tally-award-btn" data-action="mtaward1st" data-rot="${rot.rotation_number}" data-team="${t.name}" style="flex:1;border-color:${t.color};color:${t.color}">${t.name} <span style="font-weight:900">+2 pts</span></button>
+            </div>`;
+          });
+        }
+      }
+
+      // 2nd place button — show if not yet awarded and there is a clear 2nd
+      if(!has2nd&&secondScore>0){
+        if(secondTied.length===1){
+          const t=secondTied[0];
+          awardSection+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:11px;font-weight:800;min-width:28px;color:var(--text-muted)">2nd</span>
+            <button class="tally-award-btn" data-action="mtaward2nd" data-rot="${rot.rotation_number}" data-team="${t.name}" style="flex:1;border-color:${t.color};color:${t.color}">${t.name} <span style="font-weight:900">+1 pt</span></button>
+          </div>`;
+        } else {
+          secondTied.forEach(t=>{
+            awardSection+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <span style="font-size:11px;font-weight:800;min-width:28px;color:var(--text-muted)">2nd</span>
+              <button class="tally-award-btn" data-action="mtaward2nd" data-rot="${rot.rotation_number}" data-team="${t.name}" style="flex:1;border-color:${t.color};color:${t.color}">${t.name} <span style="font-weight:900">+1 pt</span></button>
+            </div>`;
+          });
+        }
+      }
+
+      if(!scored){
+        awardSection+='<button class="tally-award-btn" data-action="mtawardtie" data-rot="'+rot.rotation_number+'" style="width:100%;margin-top:4px;margin-bottom:4px;color:var(--text-muted)">Declare Tie</button>';
+      }
+    } else {
+      awardSection=`<p style="text-align:center;font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:10px">Tap + to tally rounds as they finish</p>`;
+    }
+
+    el.innerHTML=`<div class="scorecard-wrap">
+      ${pips}${gameLabel}
+      <div style="display:grid;grid-template-columns:repeat(${Math.min(mtTeams.length,4)},1fr);gap:8px;margin-bottom:14px">
+        ${teamRows}
+      </div>
+      <p style="text-align:center;font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">${totalRounds} round${totalRounds!==1?'s':''} played</p>
+      ${awardSection}
+      <button class="next-btn" onclick="nextRotation()" ${!scored?'disabled':''}>${coachCurrentRotation+1<total?'Next Rotation →':'Wrap Up & Lock Scores ✓'}</button>
+      ${scored?`<button class="undo-btn" onclick="undoScore(${rot.rotation_number});tallyScores[${rot.rotation_number}]={};renderCoachScorecard()">↩ Undo</button>`:''}
+    </div>`;
+    return;
+  }
+
+  // ── MULTI-TEAM TALLY ──
+  if(!isAll&&rot.team3){
+    if(!podiumPlacements[rot.rotation_number])podiumPlacements[rot.rotation_number]=[];
+    const placements=podiumPlacements[rot.rotation_number];
+    const threeTeams=[rot.team1,rot.team2,rot.team3];
+    const pts=[2,1,0];
+    const placeLabels=['1st','2nd','3rd'];
+    const allPlaced=placements.length>=3;
+    const scored=coachScores[rot.rotation_number];
+
+    let teamBtns='';
+    threeTeams.forEach(name=>{
+      const hex=teamColorCache[name]||'#0673c1';
+      const border=readableTeamColor(hex==='CAMO'?'#5a6e4a':hex);
+      const placeIdx=placements.indexOf(name);
+      const isPlaced=placeIdx>=0;
+      teamBtns+='<div class="podium-team-btn '+(isPlaced?'placed':'')+'" '
+        +'style="'+(isPlaced?'border-color:'+border+';background:'+border+'15':'')+';" '
+        +'onclick="podiumTap('+rot.rotation_number+',\''+name+'\')">'+  
+        (isPlaced?'<span class="podium-place-badge" style="background:'+border+';color:#fff">'+placeLabels[placeIdx]+'</span>':'<span class="podium-place-badge" style="color:var(--text-muted)">'+(allPlaced?'—':'?')+'</span>')
+        +'<span class="podium-team-name" style="color:'+border+'">'+name+'</span>'
+        +(isPlaced?'<span class="podium-pts-badge" style="border-color:'+border+';color:'+border+'">+'+pts[placeIdx]+' pts</span>':'')
+        +'</div>';
+    });
+
+    let placeSummary='';
+    for(let i=0;i<3;i++){
+      const team=placements[i];
+      placeSummary+='<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">'
+        +'<span style="font-size:12px;font-weight:800;color:var(--text-muted);min-width:28px">'+placeLabels[i]+'</span>'
+        +'<span style="flex:1;font-size:13px;font-weight:700;color:'+(team?readableTeamColor(teamColorCache[team]||'#333'):'var(--text-muted)')+'">'+( team||'Not set')+'</span>'
+        +'<span style="font-size:12px;font-weight:800;color:var(--blue)">+'+pts[i]+' pts</span>'
+        +'</div>';
+    }
+
+    el.innerHTML='<div class="scorecard-wrap">'
+      +pips+gameLabel
+      +'<div style="background:#f0fdfa;border:1.5px solid #0d9488;border-radius:10px;padding:12px 14px;margin-bottom:14px">'
+      +'<div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#0d9488;margin-bottom:8px">3-Team Round · 1st=2pts · 2nd=1pt</div>'
+      +placeSummary
+      +'</div>'
+      +'<div class="podium-instructions">Tap teams in finishing order</div>'
+      +'<div class="podium-wrap">'+teamBtns+'</div>'
+      +(placements.length>0?'<button class="podium-clear-btn" onclick="podiumPlacements['+rot.rotation_number+']=[];renderCoachScorecard()">↩ Reset</button>':'')
+      +'<button class="next-btn" onclick="'+(scored?'jumpToRotation('+(coachCurrentRotation+1)+')':'threeTeamAward('+rot.rotation_number+')')+'">'+( scored?'✓ Next Rotation →':'Award Points & Continue')+'</button>'
+      +(scored?'<button class="undo-btn" onclick="undoScore('+rot.rotation_number+');podiumPlacements['+rot.rotation_number+']=[];renderCoachScorecard()">↩ Undo</button>':'')
+      +'</div>';
+    return;
+  }
+
+
   // ── NO SCORECARD — simple tap to award ──
+  const allTeamsBtns=[
+    {name:rot.team1,hex:t1hex,border:t1b},
+    {name:rot.team2,hex:t2hex,border:t2b},
+    ...(rot.team3?[{name:rot.team3,hex:teamColorCache[rot.team3]||'#16a34a',border:readableTeamColor(teamColorCache[rot.team3]||'#16a34a')}]:[])
+  ];
   el.innerHTML=`<div class="scorecard-wrap">
     ${pips}${gameLabel}
-    <div class="matchup">
-      <div class="team-score-btn ${scored===rot.team1?'winner':''}" style="${scored===rot.team1?`border-color:${t1b}`:''}" onclick="scoreWinner('${rot.team1}',${rot.rotation_number})">
-        <div>${colorDot(t1hex,24)}</div>
-        <div class="team-name-lg">${rot.team1||'—'}</div>
+    <div class="${rot.team3?'podium-wrap':'matchup'}">
+      ${allTeamsBtns.map(t=>`
+      <div class="team-score-btn ${scored===t.name?'winner':''}" style="${rot.team3?'width:100%;':''}${scored===t.name?`border-color:${t.border}`:''}" onclick="scoreWinner('${t.name}',${rot.rotation_number})">
+        <div>${colorDot(t.hex,24)}</div>
+        <div class="team-name-lg" style="color:${t.border}">${t.name||'—'}</div>
         <div class="tap-hint">Tap to Award</div><div class="winner-badge">✓ Point</div>
       </div>
-      <div class="vs-center">VS</div>
-      <div class="team-score-btn ${scored===rot.team2?'winner':''}" style="${scored===rot.team2?`border-color:${t2b}`:''}" onclick="scoreWinner('${rot.team2}',${rot.rotation_number})">
-        <div>${colorDot(t2hex,24)}</div>
-        <div class="team-name-lg">${rot.team2||'—'}</div>
-        <div class="tap-hint">Tap to Award</div><div class="winner-badge">✓ Point</div>
-      </div>
+      ${!rot.team3&&t.name===rot.team1?'<div class="vs-center">VS</div>':''}`).join('')}
     </div>
-    <div class="score-summary">
+    ${!rot.team3?`<div class="score-summary">
       <div><div class="score-lbl">${rot.team1}</div><div class="score-tally" style="color:${t1b}">${totals[rot.team1]||0}</div></div>
       <div class="score-divider-v"></div>
       <div style="text-align:center"><div class="score-lbl">Station Points</div></div>
       <div class="score-divider-v"></div>
       <div style="text-align:right"><div class="score-lbl">${rot.team2}</div><div class="score-tally" style="color:${t2b}">${totals[rot.team2]||0}</div></div>
-    </div>
-    <button class="btn btn-sm" onclick="scoreWinner('TIE',${rot.rotation_number})" style="width:100%;margin-bottom:10px;${scored==='TIE'?'border-color:var(--text-muted);background:var(--text-muted);color:#fff':''}">
+    </div>`:''}
+    ${!rot.team3?`<button class="btn btn-sm" onclick="scoreWinner('TIE',${rot.rotation_number})" style="width:100%;margin-bottom:10px;${scored==='TIE'?'border-color:var(--text-muted);background:var(--text-muted);color:#fff':''}">
       ${scored==='TIE'?'✓ Tied':'Declare Tie'}
-    </button>
+    </button>`:''}
     <button class="next-btn" onclick="nextRotation()" ${!scored?'disabled':''}>${coachCurrentRotation+1<total?'Next Rotation →':'Wrap Up & Lock Scores ✓'}</button>
     ${scored?`<button class="undo-btn" onclick="undoScore(${rot.rotation_number})">↩ Undo Last Point</button>`:''}
   </div>`;
@@ -2897,6 +3138,15 @@ function podiumSaveEdits(rotNum){
   renderCoachScorecard();
 }
 
+async function threeTeamAward(rotNum){
+  const placements=podiumPlacements[rotNum]||[];
+  if(placements.length<3)return;
+  const pts=[2,1,0];
+  const podiumStr='PODIUM:'+placements.map((t,i)=>t+':'+pts[i]).join('|');
+  await scoreWinner(podiumStr,rotNum);
+  jumpToRotation(coachCurrentRotation+1);
+}
+
 function podiumTap(rotNum,teamName){
   if(!podiumPlacements[rotNum])podiumPlacements[rotNum]=[];
   const placements=podiumPlacements[rotNum];
@@ -3038,6 +3288,17 @@ async function loadResultsPage(){
 
     teams.forEach(t=>{teamColorCache[t.name]=t.color||'#0673c1';});
 
+    // Reconstruct team3 for 3-team events where it wasn't saved to DB
+    if(teams.length===3){
+      const tnames=teams.map(t=>t.name);
+      rotations.forEach(r=>{
+        if(!r.team3&&r.team1&&r.team2){
+          const missing=tnames.find(t=>t!==r.team1&&t!==r.team2);
+          if(missing)r.team3=missing;
+        }
+      });
+    }
+
 
 
     // ── SCHEDULE SECTION ──
@@ -3060,40 +3321,46 @@ async function loadResultsPage(){
     const isTwoTeam=sets.length>0&&sets[0].length===1&&h2h.length===sets.length;
 
     if(isTwoTeam){
-      // Single table: rows = all games, col = matchup
       const allDurs=sets.map(stns=>{
         const rp=(stns[0].games||'').split('|');
         const dp=rp.find(p=>p.startsWith('DUR:'));
         return dp?parseInt(dp.replace('DUR:','')):(10);
       });
-      let thead='<tr><th style="min-width:90px">Game / Coach</th><th style="text-align:center;width:100px">Matchup</th><th style="text-align:center;width:60px">Duration</th></tr>';
+      const _c='</';
+      let thead='<tr><th style="min-width:90px">Game / Coach'+_c+'th><th style="text-align:center;width:100px">Matchup'+_c+'th><th style="text-align:center;width:60px">Duration'+_c+'th>'+_c+'tr>';
       let tbody='';
       sets.forEach((stns,si)=>{
         const stn=stns[0];
         const setRots=rotations.filter(r=>r.station_id===stn.id).sort((a,b)=>a.rotation_number-b.rotation_number);
         const rot=setRots[0];
         const r=rot?rotations.find(x=>x.station_id===stn.id&&x.rotation_number===rot.rotation_number):null;
-        tbody+='<tr>';
-        tbody+='<td style="white-space:normal;padding:8px">'
-          +'<div style="font-size:9px;font-weight:700;color:var(--text-muted)">STN '+stn.number+'</div>'
-          +'<div style="font-size:12px;font-weight:800;color:var(--text)">'+getGameName(stn)+'</div>'
-          +(stn.coaches?'<div style="font-size:10px;font-weight:600;color:var(--text-muted)">'+stn.coaches+'</div>':'')
-          +'</td>';
+        let row='<tr>';
+        row+='<td style="white-space:normal;padding:8px"><div style="font-size:9px;font-weight:700;color:var(--text-muted)">STN '+stn.number+_c+'div>'
+          +'<div style="font-size:12px;font-weight:800;color:var(--text)">'+getGameName(stn)+_c+'div>'
+          +(stn.coaches?'<div style="font-size:10px;font-weight:600;color:var(--text-muted)">'+stn.coaches+_c+'div>':'')
+          +_c+'td>';
         if(r&&r.team1&&r.team2){
           const c1=teamColorCache[r.team1]||'#0673c1';
           const c2=teamColorCache[r.team2]||'#e02020';
           const rd1=readableTeamColor(c1==='CAMO'?'#5a6e4a':c1);
           const rd2=readableTeamColor(c2==='CAMO'?'#5a6e4a':c2);
-          tbody+='<td style="padding:6px 8px;text-align:center"><div style="display:flex;flex-direction:column;gap:1px;align-items:center">'
-            +'<span class="it-team" style="color:'+rd1+'">'+r.team1+'</span>'
-            +'<span style="font-size:8px;color:var(--text-muted);font-weight:600">vs</span>'
-            +'<span class="it-team" style="color:'+rd2+'">'+r.team2+'</span>'
-            +'</div></td>';
-        } else tbody+='<td style="color:var(--text-muted);text-align:center">—</td>';
-        tbody+='<td style="text-align:center;font-size:11px;font-weight:800;color:var(--blue)">'+allDurs[si]+'m</td>';
-        tbody+='</tr>';
+          if(r.team3){
+            row+='<td style="padding:6px 8px;text-align:center"><span style="font-size:12px;font-weight:800;color:var(--blue)">All Teams'+_c+'span>'+_c+'td>';
+          } else {
+            row+='<td style="padding:6px 8px;text-align:center"><div style="display:flex;flex-direction:column;gap:1px;align-items:center">'
+              +'<span class="it-team" style="color:'+rd1+'">'+r.team1+_c+'span>'
+              +'<span style="font-size:8px;color:var(--text-muted);font-weight:600">vs'+_c+'span>'
+              +'<span class="it-team" style="color:'+rd2+'">'+r.team2+_c+'span>'
+              +_c+'div>'+_c+'td>';
+          }
+        } else {
+          row+='<td style="color:var(--text-muted);text-align:center">—'+_c+'td>';
+        }
+        row+='<td style="text-align:center;font-size:11px;font-weight:800;color:var(--blue)">'+allDurs[si]+'m'+_c+'td>';
+        row+=_c+'tr>';
+        tbody+=row;
       });
-      schedHtml+='<div style="overflow-x:auto"><table class="itinerary-table"><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table></div>';
+      schedHtml+='<div style="overflow-x:auto"><table class="itinerary-table"><thead>'+thead+'<tbody>'+tbody+_c+'tbody>'+_c+'table>'+_c+'div>';
 
     } else {
 
@@ -3126,12 +3393,15 @@ async function loadResultsPage(){
           if(r&&r.team1&&r.team2){
             const c1=teamColorCache[r.team1]||'#0673c1';
             const c2=teamColorCache[r.team2]||'#e02020';
+            const c3=r.team3?(teamColorCache[r.team3]||'#16a34a'):null;
             const rd1=readableTeamColor(c1==='CAMO'?'#5a6e4a':c1);
             const rd2=readableTeamColor(c2==='CAMO'?'#5a6e4a':c2);
+            const rd3=c3?readableTeamColor(c3==='CAMO'?'#5a6e4a':c3):null;
             tbody+='<td style="padding:6px 8px"><div style="display:flex;flex-direction:column;gap:1px">'
               +'<span class="it-team" style="color:'+rd1+'">'+r.team1+'</span>'
               +'<span style="font-size:8px;color:var(--text-muted);font-weight:600">vs</span>'
               +'<span class="it-team" style="color:'+rd2+'">'+r.team2+'</span>'
+              +(r.team3?'<span style="font-size:8px;color:var(--text-muted);font-weight:600">vs</span>'+'<span class="it-team" style="color:'+rd3+'">'+r.team3+'</span>':'')
               +'</div></td>';
           } else tbody+='<td style="color:var(--text-muted)">—</td>';
         });
